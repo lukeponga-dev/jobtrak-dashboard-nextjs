@@ -1,7 +1,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, Home, Briefcase, PlusCircle } from "lucide-react";
 import Link from "next/link";
 import {
   SidebarProvider,
@@ -24,6 +24,9 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/logo";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { AddApplicationDialog } from "@/components/dashboard/add-application-dialog";
+import { addApplication } from "@/lib/actions";
+import { DashboardMobileNav } from "@/components/dashboard/dashboard-mobile-nav";
 
 export default async function DashboardLayout({
   children,
@@ -41,7 +44,7 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <Sidebar>
+      <Sidebar className="hidden sm:flex">
         <SidebarHeader>
           <Logo />
         </SidebarHeader>
@@ -57,6 +60,9 @@ export default async function DashboardLayout({
             </form>
         </SidebarFooter>
       </Sidebar>
+      <div className="sm:hidden">
+        <DashboardMobileNav />
+      </div>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <SidebarTrigger className="sm:hidden" />
@@ -95,7 +101,9 @@ export default async function DashboardLayout({
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        {children}
+        <div className="pb-16 sm:pb-0">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

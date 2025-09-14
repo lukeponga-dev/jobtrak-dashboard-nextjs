@@ -33,7 +33,6 @@ type ApplicationsTableProps = {
   applications: JobApplication[];
   onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
-  mobileView: 'card' | 'list';
 };
 
 type SortKey = "company" | "role" | "date" | "status";
@@ -43,7 +42,6 @@ export function ApplicationsTable({
   applications,
   onUpdateStatus,
   onDeleteApplication,
-  mobileView,
 }: ApplicationsTableProps) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -90,9 +88,8 @@ export function ApplicationsTable({
 
   return (
     <>
-      {/* Mobile View */}
       <div className="grid gap-4 md:hidden">
-        {mobileView === 'card' && sortedApplications.map((app) => (
+        {sortedApplications.map((app) => (
           <Card key={app.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium leading-6">
@@ -136,31 +133,6 @@ export function ApplicationsTable({
             </CardContent>
           </Card>
         ))}
-         {mobileView === 'list' && (
-          <Card>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Application</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedApplications.map((app) => (
-                  <TableRow key={app.id}>
-                    <TableCell>
-                      <div className="font-medium">{app.role}</div>
-                      <div className="text-sm text-muted-foreground">{app.company}</div>
-                    </TableCell>
-                    <TableCell className="text-right">
-                       <StatusBadge status={app.status} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        )}
       </div>
       
       {/* Desktop View */}
