@@ -88,13 +88,13 @@ export function ApplicationsTable({
 
   return (
     <>
-      <div className="grid gap-4 md:hidden">
+      <div className="grid gap-4 sm:hidden">
         {sortedApplications.map((app) => (
           <Card key={app.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium leading-6">
+              <CardTitle className="text-base font-medium leading-6">
                 <div className="font-bold">{app.role}</div>
-                <div className="text-muted-foreground">{app.company}</div>
+                <div className="text-sm text-muted-foreground">{app.company}</div>
               </CardTitle>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -136,7 +136,7 @@ export function ApplicationsTable({
       </div>
       
       {/* Desktop View */}
-      <Card className="hidden md:block">
+      <Card className="hidden sm:block">
         <div className="relative w-full overflow-auto">
           <Table>
             <TableHeader>

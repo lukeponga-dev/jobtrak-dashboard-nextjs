@@ -48,7 +48,7 @@ export function StatsCards({ applications }: StatsCardsProps) {
 
   return (
     <>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 sm:hidden">
+      <div className="sm:hidden -ml-4">
         <Carousel opts={{
           align: "start",
           dragFree: true,
@@ -76,7 +76,7 @@ export function StatsCards({ applications }: StatsCardsProps) {
         {stats.map((stat) => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xs sm:text-sm font-medium">{stat.title}</CardTitle>
+              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
               <stat.icon className={`h-4 w-4 text-muted-foreground ${stat.color}`} />
             </CardHeader>
             <CardContent>
