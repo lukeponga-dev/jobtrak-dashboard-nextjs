@@ -5,6 +5,46 @@ import { suggestApplicationStatus as suggestStatus } from "@/ai/flows/suggest-ap
 import type { SuggestApplicationStatusInput } from "@/ai/flows/suggest-application-status";
 import type { JobApplication, ApplicationStatus } from "./types";
 import { createClient } from "./supabase/server";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export async function signIn(formData: FormData) {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    return { error: "Could not authenticate user" };
+  }
+
+  revalidatePath("/dashboard", "layout");
+  redirect("/dashboard");
+}
+
+export async function signInWithGoogle() {
+  const origin = headers().get("origin");
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    return redirect("/login?message=Could not authenticate with Google");
+  }
+  
+  if (data.url) {
+    return redirect(data.url);
+  }
+}
+
 
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
