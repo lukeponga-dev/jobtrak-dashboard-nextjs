@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState } from "react";
-import { Card } from "../ui/card";
+import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
@@ -71,11 +71,13 @@ export function ApplicationsTable({
   const SortableHeader = ({
     sortKey: key,
     children,
+    className,
   }: {
     sortKey: SortKey;
     children: React.ReactNode;
+    className?: string;
   }) => (
-    <TableHead>
+    <TableHead className={className}>
       <Button variant="ghost" onClick={() => handleSort(key)}>
         {children}
         <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -84,70 +86,129 @@ export function ApplicationsTable({
   );
 
   return (
-    <Card>
-      <div className="relative w-full overflow-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <SortableHeader sortKey="company">Company</SortableHeader>
-              <SortableHeader sortKey="role">Role</SortableHeader>
-              <SortableHeader sortKey="date">Date Applied</SortableHeader>
-              <SortableHeader sortKey="status">Status</SortableHeader>
-              <TableHead>Current Status</TableHead>
-              <TableHead>
-                <span className="sr-only">Actions</span>
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {sortedApplications.map((app) => (
-              <TableRow key={app.id}>
-                <TableCell className="font-medium">{app.company}</TableCell>
-                <TableCell>{app.role}</TableCell>
-                <TableCell>
-                  {new Date(app.date).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <StatusBadge status={app.status} />
-                </TableCell>
-                <TableCell>
-                  <Select
-                    value={app.status}
-                    onValueChange={(value: ApplicationStatus) =>
-                      onUpdateStatus(app.id, value)
-                    }
-                  >
-                    <SelectTrigger className="w-full min-w-[180px]">
-                      <SelectValue placeholder="Update status" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Applied">Applied</SelectItem>
-                      <SelectItem value="Interviewing">Interviewing</SelectItem>
-                      <SelectItem value="Offer">Offer</SelectItem>
-                      <SelectItem value="Rejected">Rejected</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => onDeleteApplication(app.id)}>
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+    <>
+      {/* Mobile View */}
+      <div className="grid gap-4 md:hidden">
+        {sortedApplications.map((app) => (
+          <Card key={app.id}>
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium leading-6">
+                <div className="font-bold">{app.role}</div>
+                <div className="text-muted-foreground">{app.company}</div>
+              </CardTitle>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button aria-haspopup="true" size="icon" variant="ghost">
+                    <MoreHorizontal className="h-4 w-4" />
+                    <span className="sr-only">Toggle menu</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => onDeleteApplication(app.id)}>
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </CardHeader>
+            <CardContent>
+              <div className="text-sm text-muted-foreground mb-4">
+                Applied on {new Date(app.date).toLocaleDateString()}
+              </div>
+               <Select
+                  value={app.status}
+                  onValueChange={(value: ApplicationStatus) =>
+                    onUpdateStatus(app.id, value)
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Update status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Applied">Applied</SelectItem>
+                    <SelectItem value="Interviewing">Interviewing</SelectItem>
+                    <SelectItem value="Offer">Offer</SelectItem>
+                    <SelectItem value="Rejected">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+            </CardContent>
+          </Card>
+        ))}
       </div>
-    </Card>
+      
+      {/* Desktop View */}
+      <Card className="hidden md:block">
+        <div className="relative w-full overflow-auto">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <SortableHeader sortKey="company">Company</SortableHeader>
+                <SortableHeader sortKey="role">Role</SortableHeader>
+                <SortableHeader sortKey="date">Date Applied</SortableHeader>
+                <SortableHeader sortKey="status">Status</SortableHeader>
+                <TableHead>Current Status</TableHead>
+                <TableHead>
+                  <span className="sr-only">Actions</span>
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sortedApplications.map((app) => (
+                <TableRow key={app.id}>
+                  <TableCell className="font-medium">{app.company}</TableCell>
+                  <TableCell>{app.role}</TableCell>
+                  <TableCell>
+                    {new Date(app.date).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <StatusBadge status={app.status} />
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      value={app.status}
+                      onValueChange={(value: ApplicationStatus) =>
+                        onUpdateStatus(app.id, value)
+                      }
+                    >
+                      <SelectTrigger className="w-full min-w-[180px]">
+                        <SelectValue placeholder="Update status" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Applied">Applied</SelectItem>
+                        <SelectItem value="Interviewing">
+                          Interviewing
+                        </SelectItem>
+                        <SelectItem value="Offer">Offer</SelectItem>
+                        <SelectItem value="Rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          aria-haspopup="true"
+                          size="icon"
+                          variant="ghost"
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => onDeleteApplication(app.id)}
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      </Card>
+    </>
   );
 }

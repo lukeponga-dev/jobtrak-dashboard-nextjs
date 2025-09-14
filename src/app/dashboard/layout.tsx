@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { Home, Briefcase, Settings, LogOut } from "lucide-react";
 import {
   SidebarProvider,
