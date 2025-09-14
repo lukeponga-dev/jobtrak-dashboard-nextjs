@@ -115,8 +115,8 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   };
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-      <div className="flex items-center">
+    <>
+      <div className="flex items-center gap-4">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
         <div className="ml-auto flex items-center gap-2">
            <div className="sm:hidden">
@@ -128,14 +128,6 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
-          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-            <Button size="sm" className="h-8 gap-1">
-              <PlusCircle className="h-3.5 w-3.5" />
-              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                Add New
-              </span>
-            </Button>
-          </AddApplicationDialog>
         </div>
       </div>
       <StatsCards applications={applications} />
@@ -145,6 +137,6 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
         onDeleteApplication={handleDeleteApplication}
         viewMode={viewMode}
       />
-    </main>
+    </>
   );
 }

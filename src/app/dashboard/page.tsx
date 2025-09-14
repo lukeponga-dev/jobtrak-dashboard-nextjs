@@ -24,5 +24,7 @@ export default async function DashboardPage() {
     // You might want to show an error message to the user here
   }
 
-  return <DashboardClient initialApplications={applications} />;
+  return (
+      <DashboardClient initialApplications={applications} />
+  );
 }

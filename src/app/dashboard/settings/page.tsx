@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardContent,
 } from "@/components/ui/card";
 
 export default async function SettingsPage() {
@@ -20,24 +21,33 @@ export default async function SettingsPage() {
   }
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
-      <div className="flex items-center">
-        <h1 className="font-semibold text-lg md:text-2xl">Settings</h1>
+    <>
+      <div className="mx-auto grid w-full max-w-6xl gap-2">
+        <h1 className="text-3xl font-semibold">Settings</h1>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle>Account Information</CardTitle>
-          <CardDescription>
-            Update your account details here.
-          </CardDescription>
-        </CardHeader>
-        <SettingsForm
-          user={{
-            email: user.email || "",
-            fullName: user.user_metadata.full_name || "",
-          }}
-        />
-      </Card>
-    </main>
+      <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+        <nav className="grid gap-4 text-sm text-muted-foreground">
+          <a href="#" className="font-semibold text-primary">
+            General
+          </a>
+        </nav>
+        <div className="grid gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Account Information</CardTitle>
+              <CardDescription>
+                Update your account details here.
+              </CardDescription>
+            </CardHeader>
+            <SettingsForm
+              user={{
+                email: user.email || "",
+                fullName: user.user_metadata.full_name || "",
+              }}
+            />
+          </Card>
+        </div>
+      </div>
+    </>
   );
 }
