@@ -54,23 +54,9 @@ export async function signUp(formData: FormData) {
 
 
 export async function signInWithGoogle() {
-  // TODO: Implement Google Sign-In
-  const origin = headers().get("origin");
-  const supabase = createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: {
-      redirectTo: `${origin}/auth/callback`,
-    },
-  });
-
-  if (error) {
-    return redirect("/login?message=Could not authenticate with Google");
-  }
-  
-  if (data.url) {
-    return redirect(data.url);
-  }
+  // TODO: Re-implement Google Sign-In
+  console.log("Google Sign-In not implemented");
+  return null;
 }
 
 
@@ -149,4 +135,48 @@ export async function deleteApplication(id: number) {
     console.error("Error deleting application:", error);
     return { success: false, error: "Failed to delete application." };
   }
+}
+
+export async function updateUser(formData: FormData) {
+  const supabase = createClient();
+  const fullName = formData.get("fullName") as string;
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return { success: false, error: "Authentication error." };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    data: { full_name: fullName }
+  });
+
+  if (error) {
+    console.error("Error updating user:", error);
+    return { success: false, error: "Failed to update user information." };
+  }
+  
+  revalidatePath("/dashboard/settings");
+  revalidatePath("/dashboard", "layout");
+  return { success: true, message: "Your name has been updated successfully." };
+}
+
+export async function changePassword(formData: FormData) {
+  const supabase = createClient();
+  const newPassword = formData.get("newPassword") as string;
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    return { success: false, error: "Authentication error." };
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword
+  });
+
+  if (error) {
+    console.error("Error changing password:", error);
+    return { success: false, error: "Failed to change password. Your new password must be at least 6 characters long." };
+  }
+
+  return { success: true, message: "Your password has been changed successfully." };
 }

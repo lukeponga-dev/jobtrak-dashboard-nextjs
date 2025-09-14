@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Home, Briefcase, Settings, LogOut } from "lucide-react";
+import Link from "next/link";
 import {
   SidebarProvider,
   Sidebar,
@@ -60,7 +61,7 @@ export default async function DashboardLayout({
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton href="#">
+              <SidebarMenuButton href="/dashboard/settings">
                 <Settings />
                 Settings
               </SidebarMenuButton>
@@ -107,7 +108,9 @@ export default async function DashboardLayout({
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/settings">Settings</Link>
+              </DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
