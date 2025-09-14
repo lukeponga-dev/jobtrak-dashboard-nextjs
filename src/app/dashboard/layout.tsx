@@ -1,16 +1,13 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Home, Briefcase, Settings, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import {
   SidebarProvider,
   Sidebar,
   SidebarHeader,
   SidebarContent,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
   SidebarFooter,
   SidebarTrigger,
   SidebarInset,
@@ -26,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/logo";
+import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 
 export default async function DashboardLayout({
   children,
@@ -48,40 +46,15 @@ export default async function DashboardLayout({
           <Logo />
         </SidebarHeader>
         <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard" isActive>
-                <Home />
-                Dashboard
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="#">
-                <Briefcase />
-                Analytics
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton href="/dashboard/settings">
-                <Settings />
-                Settings
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          <SidebarNav />
         </SidebarContent>
         <SidebarFooter>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <form action="/auth/signout" method="post">
-                <SidebarMenuButton asChild>
-                  <button type="submit" className="w-full">
-                    <LogOut />
-                    Logout
-                  </button>
-                </SidebarMenuButton>
-              </form>
-            </SidebarMenuItem>
-          </SidebarMenu>
+            <form action="/auth/signout" method="post" className="p-2">
+              <Button type="submit" className="w-full justify-start gap-2">
+                <LogOut />
+                Logout
+              </Button>
+            </form>
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
