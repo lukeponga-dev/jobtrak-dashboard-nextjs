@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { useState } from "react";
+import { Card } from "../ui/card";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
@@ -84,72 +85,69 @@ export function ApplicationsTable({
 
   return (
     <Card>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <SortableHeader sortKey="company">Company</SortableHeader>
-            <SortableHeader sortKey="role">Role</SortableHeader>
-            <SortableHeader sortKey="date">Date Applied</SortableHeader>
-            <SortableHeader sortKey="status">Status</SortableHeader>
-            <TableHead>Current Status</TableHead>
-            <TableHead>
-              <span className="sr-only">Actions</span>
-            </TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sortedApplications.map((app) => (
-            <TableRow key={app.id}>
-              <TableCell className="font-medium">{app.company}</TableCell>
-              <TableCell>{app.role}</TableCell>
-              <TableCell>
-                {new Date(app.date).toLocaleDateString()}
-              </TableCell>
-              <TableCell>
-                <StatusBadge status={app.status} />
-              </TableCell>
-              <TableCell>
-                <Select
-                  value={app.status}
-                  onValueChange={(value: ApplicationStatus) =>
-                    onUpdateStatus(app.id, value)
-                  }
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Update status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Applied">Applied</SelectItem>
-                    <SelectItem value="Interviewing">Interviewing</SelectItem>
-                    <SelectItem value="Offer">Offer</SelectItem>
-                    <SelectItem value="Rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
-              </TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <MoreHorizontal className="h-4 w-4" />
-                      <span className="sr-only">Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onDeleteApplication(app.id)}>
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+      <div className="relative w-full overflow-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHeader sortKey="company">Company</SortableHeader>
+              <SortableHeader sortKey="role">Role</SortableHeader>
+              <SortableHeader sortKey="date">Date Applied</SortableHeader>
+              <SortableHeader sortKey="status">Status</SortableHeader>
+              <TableHead>Current Status</TableHead>
+              <TableHead>
+                <span className="sr-only">Actions</span>
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {sortedApplications.map((app) => (
+              <TableRow key={app.id}>
+                <TableCell className="font-medium">{app.company}</TableCell>
+                <TableCell>{app.role}</TableCell>
+                <TableCell>
+                  {new Date(app.date).toLocaleDateString()}
+                </TableCell>
+                <TableCell>
+                  <StatusBadge status={app.status} />
+                </TableCell>
+                <TableCell>
+                  <Select
+                    value={app.status}
+                    onValueChange={(value: ApplicationStatus) =>
+                      onUpdateStatus(app.id, value)
+                    }
+                  >
+                    <SelectTrigger className="w-full min-w-[180px]">
+                      <SelectValue placeholder="Update status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Applied">Applied</SelectItem>
+                      <SelectItem value="Interviewing">Interviewing</SelectItem>
+                      <SelectItem value="Offer">Offer</SelectItem>
+                      <SelectItem value="Rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </TableCell>
+                <TableCell>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onDeleteApplication(app.id)}>
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </Card>
   );
 }
-
-// Dummy Card component to satisfy compiler
-const Card = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-lg border bg-card text-card-foreground shadow-sm">{children}</div>
-);
