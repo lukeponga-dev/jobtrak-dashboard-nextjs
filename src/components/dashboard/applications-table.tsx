@@ -43,7 +43,6 @@ export function ApplicationsTable({
   applications,
   onUpdateStatus,
   onDeleteApplication,
-  mobileView,
 }: ApplicationsTableProps) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -92,16 +91,16 @@ export function ApplicationsTable({
     <>
       {/* Mobile View */}
       <div className="grid gap-4 md:hidden">
-        {mobileView === 'card' && sortedApplications.map((app) => (
+        {sortedApplications.map((app) => (
           <Card key={app.id}>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium leading-6">
-                <div className="font-bold">{app.role}</div>
-                <div className="text-muted-foreground">{app.company}</div>
-              </CardTitle>
+            <CardHeader className="flex flex-row items-start justify-between gap-4 pb-2">
+              <div className="flex flex-col gap-1">
+                <CardTitle className="text-base font-bold leading-tight">{app.role}</CardTitle>
+                <div className="text-sm text-muted-foreground">{app.company}</div>
+              </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost">
+                  <Button aria-haspopup="true" size="icon" variant="ghost" className="-mt-1 -mr-2">
                     <MoreHorizontal className="h-4 w-4" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>
@@ -113,8 +112,8 @@ export function ApplicationsTable({
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardHeader>
-            <CardContent>
-              <div className="text-sm text-muted-foreground mb-4">
+            <CardContent className="flex flex-col gap-4">
+              <div className="text-sm text-muted-foreground">
                 Applied on {new Date(app.date).toLocaleDateString()}
               </div>
                <Select
@@ -136,31 +135,6 @@ export function ApplicationsTable({
             </CardContent>
           </Card>
         ))}
-         {mobileView === 'list' && (
-          <Card>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="px-2 py-2">Application</TableHead>
-                  <TableHead className="text-right px-2 py-2">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {sortedApplications.map((app) => (
-                  <TableRow key={app.id}>
-                    <TableCell className="px-2 py-3">
-                      <div className="font-medium text-sm">{app.role}</div>
-                      <div className="text-xs text-muted-foreground">{app.company}</div>
-                    </TableCell>
-                    <TableCell className="text-right px-2 py-3">
-                       <StatusBadge status={app.status} />
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Card>
-        )}
       </div>
       
       {/* Desktop View */}

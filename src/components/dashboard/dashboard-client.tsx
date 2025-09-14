@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, PlusCircle, List, LayoutGrid } from "lucide-react";
+import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ApplicationsTable } from "./applications-table";
@@ -21,7 +21,6 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-  const [mobileView, setMobileView] = useState<'card' | 'list'>('card');
   const { toast } = useToast();
 
   const handleAddApplication = async (newApplication: Omit<JobApplication, 'id'>) => {
@@ -117,16 +116,6 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
         <div className="flex-1 flex items-center justify-end gap-2">
-           <div className="flex sm:hidden">
-            <Button
-              size="sm"
-              variant="outline"
-              className="p-2"
-              onClick={() => setMobileView(mobileView === 'card' ? 'list' : 'card')}
-            >
-              {mobileView === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-            </Button>
-          </div>
           <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
             <Download className="h-4 w-4 mr-2" />
             Export
@@ -144,7 +133,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
         applications={applications}
         onUpdateStatus={handleUpdateStatus}
         onDeleteApplication={handleDeleteApplication}
-        mobileView={mobileView}
+        mobileView="card"
       />
     </main>
   );

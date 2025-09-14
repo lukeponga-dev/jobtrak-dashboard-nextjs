@@ -39,6 +39,8 @@ export default async function DashboardLayout({
     return redirect("/login");
   }
 
+  const userFullName = user.user_metadata.full_name || user.email;
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -80,16 +82,18 @@ export default async function DashboardLayout({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{userFullName}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings">Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                 <form action="/auth/signout" method="post">
-                  <button type="submit" className="w-full text-left">Logout</button>
+               <DropdownMenuItem asChild>
+                <form action="/auth/signout" method="post" className="w-full">
+                  <button type="submit" className="w-full text-left">
+                    Logout
+                  </button>
                 </form>
               </DropdownMenuItem>
             </DropdownMenuContent>
