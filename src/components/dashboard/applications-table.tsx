@@ -90,7 +90,7 @@ export function ApplicationsTable({
       {/* Mobile View */}
       <div className="grid gap-4 md:hidden">
         {sortedApplications.map((app) => (
-          <Card key={app.id} className="bg-secondary">
+          <Card key={app.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium leading-6">
                 <div className="font-bold">{app.role}</div>
@@ -136,7 +136,7 @@ export function ApplicationsTable({
       </div>
       
       {/* Desktop View */}
-      <Card className="hidden md:block bg-secondary">
+      <Card className="hidden md:block">
         <div className="relative w-full overflow-auto">
           <Table>
             <TableHeader>
