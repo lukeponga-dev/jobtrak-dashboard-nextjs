@@ -1,19 +1,23 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDWmwh-BrwFlONo4j1qT1tFJAE-7T8r3ko",
-  authDomain: "jobtrack-x2rna.firebaseapp.com",
-  projectId: "jobtrack-x2rna",
-  storageBucket: "jobtrack-x2rna.firebasestorage.app",
-  messagingSenderId: "397558567090",
-  appId: "1:397558567090:web:b284b4204f740a7d59f9ab"
+  apiKey: "AIzaSyBw6TCeNs-kzfKd8WWYyfaeMAsVDYK2-uo",
+  authDomain: "shaped-utility-430217-r8.firebaseapp.com",
+  projectId: "shaped-utility-430217-r8",
+  storageBucket: "shaped-utility-430217-r8.firebasestorage.app",
+  messagingSenderId: "57036522763",
+  appId: "1:57036522763:web:59d1d432aee1042a74ce0e",
+  measurementId: "G-HCBCMJYKWQ"
 };
 
 // Initialize Firebase
 const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const analytics = typeof window !== 'undefined' ? getAnalytics(app) : null;
 
-export { app };
+export { app, analytics };
