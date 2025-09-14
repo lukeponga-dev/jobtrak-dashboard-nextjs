@@ -26,7 +26,6 @@ import { Logo } from "@/components/logo";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { AddApplicationDialog } from "@/components/dashboard/add-application-dialog";
 import { addApplication } from "@/lib/actions";
-import { DashboardMobileNav } from "@/components/dashboard/dashboard-mobile-nav";
 
 export default async function DashboardLayout({
   children,
@@ -44,7 +43,7 @@ export default async function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <Sidebar className="hidden sm:flex">
+      <Sidebar>
         <SidebarHeader>
           <Logo />
         </SidebarHeader>
@@ -60,13 +59,17 @@ export default async function DashboardLayout({
             </form>
         </SidebarFooter>
       </Sidebar>
-      <div className="sm:hidden">
-        <DashboardMobileNav />
-      </div>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          <SidebarTrigger className="sm:hidden" />
-          <div className="relative ml-auto flex-1 md:grow-0" />
+          <SidebarTrigger />
+          <div className="relative ml-auto flex-1 md:grow-0">
+            <AddApplicationDialog onApplicationAdd={addApplication}>
+              <Button size="sm" className="w-full">
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add New
+              </Button>
+            </AddApplicationDialog>
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -101,9 +104,7 @@ export default async function DashboardLayout({
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <div className="pb-16 sm:pb-0">
-          {children}
-        </div>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   );

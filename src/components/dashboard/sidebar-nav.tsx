@@ -21,12 +21,12 @@ export function SidebarNav() {
         </SidebarMenuButton>
       </SidebarMenuItem>
       <SidebarMenuItem>
-        <SidebarMenuButton href="#" isActive={pathname === "/dashboard/analytics"}>
+        <SidebarMenuButton href="#" isActive={pathname.startsWith("/dashboard/analytics")}>
           <Briefcase />
           Analytics
         </SidebarMenuButton>
       </SidebarMenuItem>
-      <SidebarMenuItem>
+       <SidebarMenuItem>
         <SidebarMenuButton href="/dashboard/settings" isActive={pathname === "/dashboard/settings"}>
           <Settings />
           Settings

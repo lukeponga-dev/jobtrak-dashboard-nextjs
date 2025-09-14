@@ -28,11 +28,13 @@ import {
 } from "../ui/select";
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { cn } from "@/lib/utils";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
   onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
+  viewMode: 'card' | 'list';
 };
 
 type SortKey = "company" | "role" | "date" | "status";
@@ -42,6 +44,7 @@ export function ApplicationsTable({
   applications,
   onUpdateStatus,
   onDeleteApplication,
+  viewMode
 }: ApplicationsTableProps) {
   const [sortKey, setSortKey] = useState<SortKey | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
@@ -85,10 +88,9 @@ export function ApplicationsTable({
       </Button>
     </TableHead>
   );
-
-  return (
-    <>
-      <div className="grid gap-4 sm:hidden">
+  
+  const MobileCardView = () => (
+    <div className="grid gap-4 sm:hidden">
         {sortedApplications.map((app) => (
           <Card key={app.id}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -133,6 +135,60 @@ export function ApplicationsTable({
             </CardContent>
           </Card>
         ))}
+      </div>
+  )
+
+  const MobileListView = () => (
+     <Card className="sm:hidden">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Application</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">
+              <span className="sr-only">Actions</span>
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sortedApplications.map((app) => (
+            <TableRow key={app.id}>
+              <TableCell>
+                <div className="font-medium">{app.role}</div>
+                <div className="text-sm text-muted-foreground">{app.company}</div>
+              </TableCell>
+              <TableCell>
+                <StatusBadge status={app.status} />
+              </TableCell>
+              <TableCell className="text-right">
+                 <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onDeleteApplication(app.id)}>
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
+  )
+
+  return (
+    <>
+      <div className={cn("sm:hidden", viewMode === 'card' ? 'block' : 'hidden')}>
+        <MobileCardView />
+      </div>
+      <div className={cn("sm:hidden", viewMode === 'list' ? 'block' : 'hidden')}>
+        <MobileListView />
       </div>
       
       {/* Desktop View */}

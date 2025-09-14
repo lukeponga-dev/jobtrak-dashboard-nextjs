@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, PlusCircle } from "lucide-react";
+import { Download, PlusCircle, List, LayoutGrid } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ApplicationsTable } from "./applications-table";
@@ -17,11 +17,14 @@ type DashboardClientProps = {
   initialApplications: JobApplication[];
 };
 
+type ViewMode = "card" | "list";
+
 export function DashboardClient({ initialApplications }: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
   const { toast } = useToast();
+  const [viewMode, setViewMode] = useState<ViewMode>("card");
 
   const handleAddApplication = async (newApplication: Omit<JobApplication, 'id'>) => {
     const result = await addApplication(newApplication);
@@ -112,18 +115,25 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   };
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex items-center">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="hidden sm:flex flex-1 items-center justify-end gap-2">
-          <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
-            <Download className="h-4 w-4 mr-2" />
+        <div className="ml-auto flex items-center gap-2">
+           <div className="sm:hidden">
+            <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}>
+              {viewMode === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
+            </Button>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleExport}>
+            <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
           <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-            <Button size="sm" className="w-full sm:w-auto">
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add New
+            <Button size="sm" className="h-8 gap-1">
+              <PlusCircle className="h-3.5 w-3.5" />
+              <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+                Add New
+              </span>
             </Button>
           </AddApplicationDialog>
         </div>
@@ -133,6 +143,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
         applications={applications}
         onUpdateStatus={handleUpdateStatus}
         onDeleteApplication={handleDeleteApplication}
+        viewMode={viewMode}
       />
     </main>
   );

@@ -3,8 +3,6 @@
 import { Award, Briefcase, ClipboardList, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { JobApplication } from "@/lib/types";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
-
 
 type StatsCardsProps = {
   applications: JobApplication[];
@@ -47,44 +45,18 @@ export function StatsCards({ applications }: StatsCardsProps) {
   ];
 
   return (
-    <>
-      <div className="sm:hidden -ml-4">
-        <Carousel opts={{
-          align: "start",
-          dragFree: true,
-        }}
-        className="w-full"
-        >
-          <CarouselContent>
-            {stats.map((stat) => (
-              <CarouselItem key={stat.title} className="basis-1/2 xs:basis-1/3">
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                      <CardTitle className="text-xs sm:text-sm font-medium">{stat.title}</CardTitle>
-                      <stat.icon className={`h-4 w-4 text-muted-foreground ${stat.color}`} />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-2xl font-bold">{stat.value}</div>
-                    </CardContent>
-                  </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </div>
-       <div className="hidden sm:grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              <stat.icon className={`h-4 w-4 text-muted-foreground ${stat.color}`} />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </>
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat) => (
+        <Card key={stat.title}>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+            <stat.icon className={`h-4 w-4 text-muted-foreground ${stat.color}`} />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stat.value}</div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
   );
 }
