@@ -26,6 +26,32 @@ export async function signIn(formData: FormData) {
   redirect("/dashboard");
 }
 
+export async function signUp(formData: FormData) {
+  const origin = headers().get("origin");
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const fullName = formData.get("full-name") as string;
+  const supabase = createClient();
+
+  const { error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: `${origin}/auth/callback`,
+      data: {
+        full_name: fullName,
+      },
+    },
+  });
+
+  if (error) {
+    return { error: "Could not authenticate user" };
+  }
+
+  return { message: "Check email to continue sign up process" };
+}
+
+
 export async function signInWithGoogle() {
   const origin = headers().get("origin");
   const supabase = createClient();
