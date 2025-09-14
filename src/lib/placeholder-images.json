@@ -1,3 +1,4 @@
+
 {
   "placeholderImages": [
     {
@@ -5,6 +6,12 @@
       "description": "Abstract background image for login page",
       "imageUrl": "https://picsum.photos/seed/3/1200/1800",
       "imageHint": "abstract office"
+    },
+    {
+      "id": "landing-hero",
+      "description": "Hero background image for the landing page",
+      "imageUrl": "https://picsum.photos/seed/4/1920/1080",
+      "imageHint": "office building"
     }
   ]
 }
