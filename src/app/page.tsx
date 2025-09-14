@@ -1,9 +1,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
+import { placeholderImages } from '@/lib/placeholder-images.json';
+
+const heroImage = placeholderImages.find(p => p.id === 'landing-hero-2');
 
 export default function LandingPage() {
   return (
@@ -19,13 +22,13 @@ export default function LandingPage() {
       </header>
       <main className="flex-1">
         <section className="relative w-full h-[calc(100vh-3.5rem)] flex items-center justify-center">
-          <Image
-            src="https://picsum.photos/seed/4/1920/1080"
-            alt="Hero Background"
-            data-ai-hint="office building"
+          {heroImage && <Image
+            src={heroImage.imageUrl}
+            alt={heroImage.description}
+            data-ai-hint={heroImage.imageHint}
             fill
-            className="object-cover -z-10 brightness-[0.4]"
-          />
+            className="object-cover -z-10 brightness-[0.5]"
+          />}
           <div className="container px-4 md:px-6 text-center text-primary-foreground">
             <div className="space-y-4">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">

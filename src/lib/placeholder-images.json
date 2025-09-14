@@ -12,6 +12,12 @@
       "description": "Hero background image for the landing page",
       "imageUrl": "https://picsum.photos/seed/4/1920/1080",
       "imageHint": "office building"
+    },
+    {
+      "id": "landing-hero-2",
+      "description": "Abstract hero background image for the landing page",
+      "imageUrl": "https://picsum.photos/seed/design/1920/1080",
+      "imageHint": "abstract design"
     }
   ]
 }
