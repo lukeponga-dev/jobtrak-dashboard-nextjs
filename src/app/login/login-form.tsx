@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useTransition } from "react";
@@ -68,7 +69,8 @@ export function LoginForm() {
           Login
         </Button>
         <Button
-          formAction={handleSignInWithGoogle}
+          type="button"
+          onClick={handleSignInWithGoogle}
           variant="outline"
           className="w-full"
           loading={isPending}
