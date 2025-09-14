@@ -1,9 +1,10 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { suggestApplicationStatus as suggestStatus } from "@/ai/flows/suggest-application-status";
 import type { SuggestApplicationStatusInput } from "@/ai/flows/suggest-application-status";
 import type { JobApplication, ApplicationStatus } from "./types";
-import sql from "./db";
+import { createClient } from "./supabase/server";
 
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
@@ -17,17 +18,29 @@ export async function suggestApplicationStatus(
   }
 }
 
-// This is a placeholder for when auth is implemented.
-const FAKE_USER_ID = '00000000-0000-0000-0000-000000000000';
-
 export async function addApplication(application: Omit<JobApplication, 'id'>) {
+  const supabase = createClient();
+   const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: "Authentication error." };
+  }
+
   try {
-    const [newApplication] = await sql<JobApplication[]>`
-      INSERT INTO job_applications (user_id, company, role, date, status, notes)
-      VALUES (${FAKE_USER_ID}, ${application.company}, ${application.role}, ${application.date}, ${application.status}, ${application.notes})
-      RETURNING id, company, role, date, status, notes
-    `;
-    return { success: true, data: newApplication };
+    const { data, error } = await supabase
+      .from('job_applications')
+      .insert([
+        { ...application, user_id: user.id },
+      ])
+      .select()
+      .single();
+
+    if (error) throw error;
+    
+    revalidatePath("/dashboard");
+    return { success: true, data };
   } catch (error) {
     console.error("Error adding application:", error);
     return { success: false, error: "Failed to add application." };
@@ -35,12 +48,16 @@ export async function addApplication(application: Omit<JobApplication, 'id'>) {
 }
 
 export async function updateApplicationStatus(input: {id: number, status: ApplicationStatus}) {
+  const supabase = createClient();
   try {
-    await sql`
-      UPDATE job_applications
-      SET status = ${input.status}
-      WHERE id = ${input.id} AND user_id = ${FAKE_USER_ID}
-    `;
+     const { error } = await supabase
+      .from('job_applications')
+      .update({ status: input.status })
+      .eq('id', input.id)
+
+    if (error) throw error;
+    
+    revalidatePath("/dashboard");
     return { success: true };
   } catch (error) {
     console.error("Error updating status:", error);
@@ -49,11 +66,16 @@ export async function updateApplicationStatus(input: {id: number, status: Applic
 }
 
 export async function deleteApplication(id: number) {
+   const supabase = createClient();
   try {
-    await sql`
-      DELETE FROM job_applications
-      WHERE id = ${id} AND user_id = ${FAKE_USER_ID}
-    `;
+    const { error } = await supabase
+      .from('job_applications')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw error;
+
+    revalidatePath("/dashboard");
     return { success: true };
   } catch (error) {
     console.error("Error deleting application:", error);

@@ -1,12 +1,7 @@
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import Link from "next/link";
-import {
-  Bell,
-  Home,
-  User,
-  Settings,
-  Briefcase,
-  LogOut,
-} from "lucide-react";
+import { Home, Briefcase, Settings, LogOut } from "lucide-react";
 import {
   SidebarProvider,
   Sidebar,
@@ -31,11 +26,20 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/logo";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return redirect("/login");
+  }
+
   return (
     <SidebarProvider>
       <Sidebar>
@@ -67,12 +71,14 @@ export default function DashboardLayout({
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild>
-                <Link href="/login">
-                  <LogOut />
-                  Logout
-                </Link>
-              </SidebarMenuButton>
+              <form action="/auth/signout" method="post">
+                <SidebarMenuButton asChild>
+                  <button type="submit" className="w-full">
+                    <LogOut />
+                    Logout
+                  </button>
+                </SidebarMenuButton>
+              </form>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarFooter>
@@ -89,8 +95,13 @@ export default function DashboardLayout({
                 className="overflow-hidden rounded-full"
               >
                 <Avatar>
-                  <AvatarImage src="https://picsum.photos/seed/user/32/32" alt="@user" />
-                  <AvatarFallback>UR</AvatarFallback>
+                  <AvatarImage
+                    src={user.user_metadata.avatar_url}
+                    alt={user.user_metadata.full_name}
+                  />
+                  <AvatarFallback>
+                    {user.email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -101,7 +112,9 @@ export default function DashboardLayout({
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link href="/login">Logout</Link>
+                 <form action="/auth/signout" method="post">
+                  <button type="submit" className="w-full text-left">Logout</button>
+                </form>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
