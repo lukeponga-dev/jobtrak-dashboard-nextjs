@@ -52,7 +52,7 @@ const formSchema = z.object({
 });
 
 type AddApplicationDialogProps = {
-  onApplicationAdd: (application: Omit<JobApplication, 'id'>) => void;
+  onApplicationAdd: (application: Omit<JobApplication, 'id'>) => Promise<void>;
   children: React.ReactNode;
 };
 
@@ -62,6 +62,7 @@ export function AddApplicationDialog({
 }: AddApplicationDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSuggesting, startSuggestionTransition] = useTransition();
+  const [isSubmitting, startSubmittingTransition] = useTransition();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -75,15 +76,17 @@ export function AddApplicationDialog({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const newApplication: Omit<JobApplication, 'id'> = {
-      company: values.company,
-      role: values.role,
-      date: values.date.toISOString(),
-      status: values.status,
-    };
-    onApplicationAdd(newApplication);
-    form.reset();
-    setOpen(false);
+    startSubmittingTransition(async () => {
+      const newApplication: Omit<JobApplication, 'id'> = {
+        company: values.company,
+        role: values.role,
+        date: values.date.toISOString(),
+        status: values.status,
+      };
+      await onApplicationAdd(newApplication);
+      form.reset();
+      setOpen(false);
+    });
   }
 
   const handleSuggestStatus = () => {
@@ -165,6 +168,7 @@ export function AddApplicationDialog({
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
+                          type="button"
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
@@ -222,10 +226,10 @@ export function AddApplicationDialog({
                       variant="outline"
                       size="icon"
                       onClick={handleSuggestStatus}
-                      disabled={isSuggesting}
+                      loading={isSuggesting}
                       aria-label="Suggest Status with AI"
                     >
-                      <Sparkles className={cn("h-4 w-4", isSuggesting && "animate-spin")} />
+                      {!isSuggesting && <Sparkles className="h-4 w-4" />}
                     </Button>
                   </div>
                   <FormMessage />
@@ -234,7 +238,7 @@ export function AddApplicationDialog({
             />
 
             <DialogFooter>
-              <Button type="submit">Add Application</Button>
+              <Button type="submit" loading={isSubmitting}>Add Application</Button>
             </DialogFooter>
           </form>
         </Form>

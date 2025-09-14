@@ -26,7 +26,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
     const result = await addApplication(newApplication);
 
     if (result.success && result.data) {
-      setApplications((prev) => [result.data!, ...prev]);
+      setApplications((prev) => [result.data!, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
       toast({
         title: "Application Added",
         description: `${newApplication.company} - ${newApplication.role} has been added to your tracker.`,
@@ -41,31 +41,55 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   };
 
   const handleUpdateStatus = async (id: number, status: ApplicationStatus) => {
+    // Optimistic update
+    const originalApplications = applications;
     setApplications((prev) =>
       prev.map((app) => (app.id === id ? { ...app, status } : app))
     );
-    await updateApplicationStatus({id, status});
-    toast({
-      title: "Status Updated",
-      description: `The status has been updated to "${status}".`,
-    });
+
+    const result = await updateApplicationStatus({id, status});
+    if (result.success) {
+      toast({
+        title: "Status Updated",
+        description: `The status has been updated to "${status}".`,
+      });
+    } else {
+      // Revert on failure
+      setApplications(originalApplications);
+      toast({
+        title: "Error updating status",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDeleteApplication = async (id: number) => {
+    const originalApplications = applications;
     setApplications((prev) => prev.filter((app) => app.id !== id));
-    await deleteApplication(id);
-    toast({
-      title: "Application Deleted",
-      description: "The application has been removed from your tracker.",
-      variant: "destructive",
-    });
+    
+    const result = await deleteApplication(id);
+
+    if (result.success) {
+      toast({
+        title: "Application Deleted",
+        description: "The application has been removed from your tracker.",
+      });
+    } else {
+      setApplications(originalApplications);
+      toast({
+        title: "Error deleting application",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
   };
 
   const handleExport = () => {
     const headers = ["Company", "Role", "Date Applied", "Status"];
     const rows = applications.map((app) => [
-      app.company,
-      app.role,
+      `"${app.company.replace(/"/g, '""')}"`,
+      `"${app.role.replace(/"/g, '""')}"`,
       new Date(app.date).toLocaleDateString(),
       app.status,
     ]);
