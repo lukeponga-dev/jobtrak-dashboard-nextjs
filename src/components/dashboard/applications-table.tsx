@@ -18,7 +18,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
-import { StatusBadge } from "./status-badge";
 import {
   Select,
   SelectContent,
@@ -28,12 +27,12 @@ import {
 } from "../ui/select";
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { format } from "date-fns";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
   onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
-  mobileView: 'card' | 'list';
 };
 
 type SortKey = "company" | "role" | "date" | "status";
@@ -93,14 +92,14 @@ export function ApplicationsTable({
       <div className="grid gap-4 md:hidden">
         {sortedApplications.map((app) => (
           <Card key={app.id}>
-            <CardHeader className="flex flex-row items-start justify-between gap-4 pb-2">
-              <div className="flex flex-col gap-1">
+            <CardHeader className="flex flex-row items-start justify-between gap-4">
+               <div className="flex flex-col gap-1">
                 <CardTitle className="text-base font-bold leading-tight">{app.role}</CardTitle>
-                <div className="text-sm text-muted-foreground">{app.company}</div>
+                <div className="text-sm text-muted-foreground font-medium">{app.company}</div>
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost" className="-mt-1 -mr-2">
+                  <Button aria-haspopup="true" size="icon" variant="ghost" className="-mt-2 -mr-2">
                     <MoreHorizontal className="h-4 w-4" />
                     <span className="sr-only">Toggle menu</span>
                   </Button>
@@ -112,26 +111,30 @@ export function ApplicationsTable({
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <div className="text-sm text-muted-foreground">
-                Applied on {new Date(app.date).toLocaleDateString()}
+            <CardContent className="grid grid-cols-2 gap-x-4 gap-y-2">
+              <div className="text-sm text-muted-foreground space-y-1">
+                <p className="font-medium">Applied on</p>
+                 <p>{format(new Date(app.date), "MMM d, yyyy")}</p>
               </div>
-               <Select
-                  value={app.status}
-                  onValueChange={(value: ApplicationStatus) =>
-                    onUpdateStatus(app.id, value)
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Update status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Applied">Applied</SelectItem>
-                    <SelectItem value="Interviewing">Interviewing</SelectItem>
-                    <SelectItem value="Offer">Offer</SelectItem>
-                    <SelectItem value="Rejected">Rejected</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="text-sm text-muted-foreground space-y-1">
+                 <p className="font-medium">Status</p>
+                 <Select
+                    value={app.status}
+                    onValueChange={(value: ApplicationStatus) =>
+                      onUpdateStatus(app.id, value)
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Update status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Applied">Applied</SelectItem>
+                      <SelectItem value="Interviewing">Interviewing</SelectItem>
+                      <SelectItem value="Offer">Offer</SelectItem>
+                      <SelectItem value="Rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+              </div>
             </CardContent>
           </Card>
         ))}
@@ -147,7 +150,6 @@ export function ApplicationsTable({
                 <SortableHeader sortKey="role">Role</SortableHeader>
                 <SortableHeader sortKey="date">Date Applied</SortableHeader>
                 <SortableHeader sortKey="status">Status</SortableHeader>
-                <TableHead>Current Status</TableHead>
                 <TableHead>
                   <span className="sr-only">Actions</span>
                 </TableHead>
@@ -159,10 +161,7 @@ export function ApplicationsTable({
                   <TableCell className="font-medium">{app.company}</TableCell>
                   <TableCell>{app.role}</TableCell>
                   <TableCell>
-                    {new Date(app.date).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    <StatusBadge status={app.status} />
+                    {format(new Date(app.date), "MMM d, yyyy")}
                   </TableCell>
                   <TableCell>
                     <Select
