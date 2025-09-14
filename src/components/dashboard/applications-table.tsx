@@ -141,18 +141,18 @@ export function ApplicationsTable({
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Application</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
+                  <TableHead className="px-2 py-2">Application</TableHead>
+                  <TableHead className="text-right px-2 py-2">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {sortedApplications.map((app) => (
                   <TableRow key={app.id}>
-                    <TableCell>
-                      <div className="font-medium">{app.role}</div>
-                      <div className="text-sm text-muted-foreground">{app.company}</div>
+                    <TableCell className="px-2 py-3">
+                      <div className="font-medium text-sm">{app.role}</div>
+                      <div className="text-xs text-muted-foreground">{app.company}</div>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right px-2 py-3">
                        <StatusBadge status={app.status} />
                     </TableCell>
                   </TableRow>
