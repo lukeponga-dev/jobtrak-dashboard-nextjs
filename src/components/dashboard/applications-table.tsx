@@ -29,8 +29,8 @@ import { useState } from "react";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
-  onUpdateStatus: (id: string, status: ApplicationStatus) => void;
-  onDeleteApplication: (id: string) => void;
+  onUpdateStatus: (id: number, status: ApplicationStatus) => void;
+  onDeleteApplication: (id: number) => void;
 };
 
 type SortKey = "company" | "role" | "date" | "status";

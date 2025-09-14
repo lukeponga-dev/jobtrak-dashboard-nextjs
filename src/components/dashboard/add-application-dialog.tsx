@@ -52,7 +52,7 @@ const formSchema = z.object({
 });
 
 type AddApplicationDialogProps = {
-  onApplicationAdd: (application: JobApplication) => void;
+  onApplicationAdd: (application: Omit<JobApplication, 'id'>) => void;
   children: React.ReactNode;
 };
 
@@ -75,8 +75,7 @@ export function AddApplicationDialog({
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const newApplication: JobApplication = {
-      id: crypto.randomUUID(),
+    const newApplication: Omit<JobApplication, 'id'> = {
       company: values.company,
       role: values.role,
       date: values.date.toISOString(),

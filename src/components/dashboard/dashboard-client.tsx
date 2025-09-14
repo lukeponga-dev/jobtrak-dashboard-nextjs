@@ -9,6 +9,8 @@ import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
+import { addApplication, updateApplicationStatus, deleteApplication } from "@/lib/actions";
+
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -20,26 +22,38 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   );
   const { toast } = useToast();
 
-  const handleAddApplication = (newApplication: JobApplication) => {
-    setApplications((prev) => [newApplication, ...prev]);
-    toast({
-      title: "Application Added",
-      description: `${newApplication.company} - ${newApplication.role} has been added to your tracker.`,
-    });
+  const handleAddApplication = async (newApplication: Omit<JobApplication, 'id'>) => {
+    const result = await addApplication(newApplication);
+
+    if (result.success && result.data) {
+      setApplications((prev) => [result.data!, ...prev]);
+      toast({
+        title: "Application Added",
+        description: `${newApplication.company} - ${newApplication.role} has been added to your tracker.`,
+      });
+    } else {
+       toast({
+        title: "Error adding application",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
   };
 
-  const handleUpdateStatus = (id: string, status: ApplicationStatus) => {
+  const handleUpdateStatus = async (id: number, status: ApplicationStatus) => {
     setApplications((prev) =>
       prev.map((app) => (app.id === id ? { ...app, status } : app))
     );
+    await updateApplicationStatus({id, status});
     toast({
       title: "Status Updated",
       description: `The status has been updated to "${status}".`,
     });
   };
 
-  const handleDeleteApplication = (id: string) => {
+  const handleDeleteApplication = async (id: number) => {
     setApplications((prev) => prev.filter((app) => app.id !== id));
+    await deleteApplication(id);
     toast({
       title: "Application Deleted",
       description: "The application has been removed from your tracker.",

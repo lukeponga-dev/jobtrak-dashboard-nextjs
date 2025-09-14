@@ -1,7 +1,7 @@
 export type ApplicationStatus = "Applied" | "Interviewing" | "Offer" | "Rejected";
 
 export interface JobApplication {
-  id: string;
+  id: number;
   company: string;
   role: string;
   date: string;
