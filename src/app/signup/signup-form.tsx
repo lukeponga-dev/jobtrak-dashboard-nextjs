@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useTransition } from "react";
@@ -37,12 +36,14 @@ export function SignupForm({
   };
 
   return (
-    <Card className="mx-auto max-w-sm w-full">
-      <CardHeader className="space-y-4 text-center">
-        <Logo className="justify-center" />
-        <CardTitle className="text-2xl">Create an account</CardTitle>
+    <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
+      <CardHeader className="space-y-2 text-center">
+         <div className="flex justify-center">
+            <Logo />
+        </div>
+        <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
         <CardDescription>
-          Enter your information to create an account
+          Enter your information to get started with JobTrackr.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -85,7 +86,7 @@ export function SignupForm({
         </form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link href="/login" className="underline">
+          <Link href="/login" className="text-primary/80 hover:text-primary underline">
             Login
           </Link>
         </div>

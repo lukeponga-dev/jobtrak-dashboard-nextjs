@@ -27,17 +27,17 @@ export function LoginForm() {
         // You might want to show an error message to the user
         console.error(result.error);
         router.push(`/login?message=${result.error}`);
-      } else {
-        router.push("/dashboard");
       }
     });
   };
 
   return (
-    <Card className="mx-auto max-w-sm w-full">
-      <CardHeader className="space-y-4 text-center">
-        <Logo className="justify-center" />
-        <CardTitle className="text-2xl">Login to your account</CardTitle>
+    <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
+      <CardHeader className="space-y-2 text-center">
+         <div className="flex justify-center">
+            <Logo />
+        </div>
+        <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
         <CardDescription>
           Enter your email and password to access your dashboard.
         </CardDescription>
@@ -66,7 +66,7 @@ export function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="#"
-                className="ml-auto inline-block text-sm underline"
+                className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
               >
                 Forgot your password?
               </Link>
@@ -79,7 +79,7 @@ export function LoginForm() {
         </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="underline">
+          <Link href="/signup" className="text-primary/80 hover:text-primary underline">
             Sign up
           </Link>
         </div>

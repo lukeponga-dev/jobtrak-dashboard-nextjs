@@ -1,8 +1,7 @@
-
 "use client";
 
 import { useState } from "react";
-import { Download, PlusCircle, List, LayoutGrid } from "lucide-react";
+import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ApplicationsTable } from "./applications-table";
@@ -17,16 +16,13 @@ type DashboardClientProps = {
   initialApplications: JobApplication[];
 };
 
-type ViewMode = "card" | "list";
-
 export function DashboardClient({ initialApplications }: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
   const { toast } = useToast();
-  const [viewMode, setViewMode] = useState<ViewMode>("card");
 
-  const handleAddApplication = async (newApplication: Omit<JobApplication, 'id'>) => {
+  const handleAddApplication = async (newApplication: Omit<JobApplication, 'id' | 'user_id'>) => {
     const result = await addApplication(newApplication);
 
     if (result.success && result.data) {
@@ -115,46 +111,34 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   };
 
   return (
-    <>
-      <div className="flex items-center gap-4 mb-8">
-        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="ml-auto flex items-center gap-2">
-           <div className="sm:hidden">
-            <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}>
-              {viewMode === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-            </Button>
-          </div>
-          <Button variant="outline" size="sm" onClick={handleExport}>
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-           <div className="hidden sm:flex">
-             <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                <Button size="sm">
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Add New
-                </Button>
-            </AddApplicationDialog>
-           </div>
-           <div className="sm:hidden">
-            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                <Button size="icon">
-                  <PlusCircle className="h-4 w-4" />
-                </Button>
-            </AddApplicationDialog>
-           </div>
-        </div>
-      </div>
+    <div className="space-y-6">
       <StatsCards applications={applications} />
-      <div className="mt-8">
-        <h2 className="font-semibold text-lg md:text-xl mb-4">Recent Applications</h2>
+      
+      <div className="space-y-4">
+         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+                <h2 className="text-xl font-semibold">Your Applications</h2>
+                <p className="text-sm text-muted-foreground">Track and manage all your job applications in one place.</p>
+            </div>
+            <div className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleExport}>
+                    <Download className="mr-2 h-4 w-4" />
+                    Export
+                </Button>
+                <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                    <Button size="sm">
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        Add Application
+                    </Button>
+                </AddApplicationDialog>
+            </div>
+        </div>
         <ApplicationsTable
           applications={applications}
           onUpdateStatus={handleUpdateStatus}
           onDeleteApplication={handleDeleteApplication}
-          viewMode={viewMode}
         />
       </div>
-    </>
+    </div>
   );
 }

@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 
 export default async function SettingsPage() {
@@ -21,33 +20,25 @@ export default async function SettingsPage() {
   }
 
   return (
-    <>
-      <div className="mx-auto grid w-full max-w-6xl gap-2">
-        <h1 className="text-3xl font-semibold">Settings</h1>
+    <div className="space-y-6">
+       <div>
+        <h1 className="text-lg font-semibold md:text-2xl">Settings</h1>
+        <p className="text-muted-foreground text-sm">Manage your account and preferences.</p>
       </div>
-      <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-        <nav className="grid gap-4 text-sm text-muted-foreground">
-          <a href="#" className="font-semibold text-primary">
-            General
-          </a>
-        </nav>
-        <div className="grid gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Account Information</CardTitle>
-              <CardDescription>
-                Update your account details here.
-              </CardDescription>
-            </CardHeader>
-            <SettingsForm
-              user={{
-                email: user.email || "",
-                fullName: user.user_metadata.full_name || "",
-              }}
-            />
-          </Card>
-        </div>
-      </div>
-    </>
+       <Card>
+        <CardHeader>
+          <CardTitle>Account Information</CardTitle>
+          <CardDescription>
+            Update your account details here.
+          </CardDescription>
+        </CardHeader>
+        <SettingsForm
+          user={{
+            email: user.email || "",
+            fullName: user.user_metadata.full_name || "",
+          }}
+        />
+      </Card>
+    </div>
   );
 }
