@@ -5,11 +5,13 @@ import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ApplicationsTable } from "./applications-table";
+import { ApplicationsCards } from "./applications-cards";
 import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import { addApplication, updateApplicationStatus, deleteApplication } from "@/lib/actions";
+import { ViewToggle } from "./view-toggle";
 
 
 type DashboardClientProps = {
@@ -20,6 +22,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
+  const [view, setView] = useState<"card" | "table">("card");
   const { toast } = useToast();
 
   const handleAddApplication = async (newApplication: Omit<JobApplication, 'id' | 'user_id'>) => {
@@ -121,6 +124,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
                 <p className="text-sm text-muted-foreground">Track and manage all your job applications in one place.</p>
             </div>
             <div className="flex items-center gap-2">
+                <ViewToggle view={view} setView={setView} />
                 <Button variant="outline" size="sm" onClick={handleExport}>
                     <Download className="mr-2 h-4 w-4" />
                     Export
@@ -133,11 +137,19 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
                 </AddApplicationDialog>
             </div>
         </div>
-        <ApplicationsTable
-          applications={applications}
-          onUpdateStatus={handleUpdateStatus}
-          onDeleteApplication={handleDeleteApplication}
-        />
+        {view === 'card' ? (
+          <ApplicationsCards
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        ) : (
+          <ApplicationsTable
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        )}
       </div>
     </div>
   );

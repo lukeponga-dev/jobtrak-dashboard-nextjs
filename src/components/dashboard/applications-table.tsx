@@ -1,6 +1,14 @@
 "use client";
 
 import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -17,9 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
-import { Badge } from "../ui/badge";
-
+import { Card, CardContent } from "../ui/card";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
@@ -46,58 +52,66 @@ export function ApplicationsTable({
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {applications.map((app) => (
-        <Card key={app.id} className="flex flex-col">
-          <CardHeader className="flex-grow">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <CardTitle className="text-lg font-semibold leading-tight">
-                  {app.role}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">{app.company}</p>
-              </div>
-               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost">
-                    <MoreHorizontal className="h-4 w-4" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => onDeleteApplication(app.id)}>
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </CardHeader>
-          <CardContent className="flex-grow">
-             <div className="text-xs text-muted-foreground">
-              Applied on {new Date(app.date).toLocaleDateString()}
-            </div>
-          </CardContent>
-          <CardFooter className="flex items-center justify-between">
-            <StatusBadge status={app.status} />
-            <Select
-              value={app.status}
-              onValueChange={(value: ApplicationStatus) =>
-                onUpdateStatus(app.id, value)
-              }
-            >
-              <SelectTrigger className="w-auto text-xs h-7 px-2 py-1">
-                <SelectValue placeholder="Update status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Applied">Applied</SelectItem>
-                <SelectItem value="Interviewing">Interviewing</SelectItem>
-                <SelectItem value="Offer">Offer</SelectItem>
-                <SelectItem value="Rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+    <Card>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Company</TableHead>
+            <TableHead>Role</TableHead>
+            <TableHead>Date Applied</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {applications.map((app) => (
+            <TableRow key={app.id}>
+              <TableCell className="font-medium">{app.company}</TableCell>
+              <TableCell>{app.role}</TableCell>
+              <TableCell>{new Date(app.date).toLocaleDateString()}</TableCell>
+              <TableCell>
+                <StatusBadge status={app.status} />
+              </TableCell>
+              <TableCell className="text-right">
+                <div className="flex items-center justify-end gap-2">
+                   <Select
+                    value={app.status}
+                    onValueChange={(value: ApplicationStatus) =>
+                      onUpdateStatus(app.id, value)
+                    }
+                  >
+                    <SelectTrigger className="w-[120px] text-xs h-8">
+                      <SelectValue placeholder="Update..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Applied">Applied</SelectItem>
+                      <SelectItem value="Interviewing">Interviewing</SelectItem>
+                      <SelectItem value="Offer">Offer</SelectItem>
+                      <SelectItem value="Rejected">Rejected</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem
+                        onClick={() => onDeleteApplication(app.id)}
+                        className="text-destructive"
+                      >
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Card>
   );
 }
