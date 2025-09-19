@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useTransition } from "react";
@@ -9,6 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
 import { signIn } from "@/lib/actions";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function LoginForm() {
   const router = useRouter();
@@ -26,49 +32,58 @@ export function LoginForm() {
       }
     });
   };
-  
+
   return (
-    <div className="mx-auto grid w-[350px] gap-6">
-      <div className="grid gap-2 text-center">
+    <Card className="mx-auto max-w-sm w-full">
+      <CardHeader className="space-y-4 text-center">
         <Logo className="justify-center" />
-        <h1 className="text-3xl font-bold mt-4">Login</h1>
-        <p className="text-balance text-muted-foreground">
-          Enter your email below to login to your account
-        </p>
-      </div>
-      <form className="grid gap-4">
-        <div className="grid gap-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="m@example.com"
-            required
-          />
-        </div>
-        <div className="grid gap-2">
-          <div className="flex items-center">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              href="#"
-              className="ml-auto inline-block text-sm underline"
-            >
-              Forgot your password?
-            </Link>
+        <CardTitle className="text-2xl">Login to your account</CardTitle>
+        <CardDescription>
+          Enter your email and password to access your dashboard.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            handleSignIn(formData);
+          }}
+          className="space-y-4"
+        >
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+            />
           </div>
-          <Input id="password" name="password" type="password" required />
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                href="#"
+                className="ml-auto inline-block text-sm underline"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+            <Input id="password" name="password" type="password" required />
+          </div>
+          <Button type="submit" className="w-full" loading={isPending}>
+            Login
+          </Button>
+        </form>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <Link href="/signup" className="underline">
+            Sign up
+          </Link>
         </div>
-        <Button formAction={handleSignIn} type="submit" className="w-full" loading={isPending}>
-          Login
-        </Button>
-      </form>
-      <div className="mt-4 text-center text-sm">
-        Don&apos;t have an account?{" "}
-        <Link href="/signup" className="underline">
-          Sign up
-        </Link>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
