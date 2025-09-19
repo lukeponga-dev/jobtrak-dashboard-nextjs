@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 
+=======
+>>>>>>> cf9dba1 (have a toggle to change view)
 "use client";
 
 import {
@@ -19,7 +22,10 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
+<<<<<<< HEAD
 import { cn } from "@/lib/utils";
+=======
+>>>>>>> cf9dba1 (have a toggle to change view)
 
 type ApplicationsCardsProps = {
   applications: JobApplication[];
@@ -34,6 +40,7 @@ export function ApplicationsCards({
 }: ApplicationsCardsProps) {
   if (applications.length === 0) {
     return (
+<<<<<<< HEAD
         <Card className="flex flex-col items-center justify-center py-12">
           <CardContent className="text-center">
             <h3 className="text-xl font-semibold">No Applications Yet</h3>
@@ -42,6 +49,16 @@ export function ApplicationsCards({
             </p>
           </CardContent>
         </Card>
+=======
+      <Card className="flex flex-col items-center justify-center py-12">
+        <CardContent className="text-center">
+          <h3 className="text-xl font-semibold">No Applications Yet</h3>
+          <p className="text-muted-foreground mt-2">
+            Click "Add Application" to start tracking your job search.
+          </p>
+        </CardContent>
+      </Card>
+>>>>>>> cf9dba1 (have a toggle to change view)
     );
   }
 

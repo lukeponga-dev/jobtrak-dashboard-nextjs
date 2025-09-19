@@ -10,6 +10,7 @@ import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
+<<<<<<< HEAD
 import {
   addApplication,
   updateApplicationStatus,
@@ -17,6 +18,11 @@ import {
 } from "@/lib/actions";
 import { ViewToggle } from "./view-toggle";
 import { cn } from "@/lib/utils";
+=======
+import { addApplication, updateApplicationStatus, deleteApplication } from "@/lib/actions";
+import { ViewToggle } from "./view-toggle";
+
+>>>>>>> cf9dba1 (have a toggle to change view)
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -132,6 +138,7 @@ export function DashboardClient({
       </div>
 
       <div className="space-y-4">
+<<<<<<< HEAD
         <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === 'card' ? 'px-4 lg:px-6' : 'px-0')}>
           <div>
             <h2 className="text-xl font-semibold">Your Applications</h2>
@@ -150,6 +157,18 @@ export function DashboardClient({
                 <Button size="sm">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Add Application
+=======
+         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+                <h2 className="text-xl font-semibold">Your Applications</h2>
+                <p className="text-sm text-muted-foreground">Track and manage all your job applications in one place.</p>
+            </div>
+            <div className="flex items-center gap-2">
+                <ViewToggle view={view} setView={setView} />
+                <Button variant="outline" size="sm" onClick={handleExport}>
+                    <Download className="mr-2 h-4 w-4" />
+                    Export
+>>>>>>> cf9dba1 (have a toggle to change view)
                 </Button>
               </AddApplicationDialog>
             </div>
@@ -172,6 +191,22 @@ export function DashboardClient({
             />
           )}
         </div>
+<<<<<<< HEAD
+=======
+        {view === 'card' ? (
+          <ApplicationsCards
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        ) : (
+          <ApplicationsTable
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        )}
+>>>>>>> cf9dba1 (have a toggle to change view)
       </div>
     </div>
   );

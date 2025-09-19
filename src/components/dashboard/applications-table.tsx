@@ -52,7 +52,11 @@ export function ApplicationsTable({
   }
 
   return (
+<<<<<<< HEAD
     <Card className="mx-0">
+=======
+    <Card>
+>>>>>>> cf9dba1 (have a toggle to change view)
       <Table>
         <TableHeader>
           <TableRow>
