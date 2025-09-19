@@ -127,6 +127,7 @@ export function DashboardClient({
   };
 
   return (
+<<<<<<< HEAD
     <div className="flex flex-col gap-4 lg:gap-6 -mx-4 lg:-mx-6">
       <div className="px-4 lg:px-6">
         <StatsCards applications={applications} />
@@ -175,5 +176,42 @@ export function DashboardClient({
         </div>
       </div>
     </div>
+=======
+    <>
+      <div className="flex items-center gap-4 mb-8">
+        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
+        <div className="ml-auto flex items-center gap-2">
+           <div className="sm:hidden">
+            <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}>
+              {viewMode === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
+            </Button>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleExport}>
+            <Download className="mr-2 h-4 w-4" />
+            Export
+          </Button>
+           <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+              <Button size="sm" className="hidden sm:flex">
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add New
+              </Button>
+              <Button size="icon" className="sm:hidden">
+                <PlusCircle className="h-4 w-4" />
+              </Button>
+          </AddApplicationDialog>
+        </div>
+      </div>
+      <StatsCards applications={applications} />
+      <div className="mt-8">
+        <h2 className="font-semibold text-lg md:text-xl mb-4">Recent Applications</h2>
+        <ApplicationsTable
+          applications={applications}
+          onUpdateStatus={handleUpdateStatus}
+          onDeleteApplication={handleDeleteApplication}
+          viewMode={viewMode}
+        />
+      </div>
+    </>
+>>>>>>> cec7630 (change User Interface)
   );
 }

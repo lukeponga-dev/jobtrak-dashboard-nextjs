@@ -10,11 +10,20 @@ const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
+<<<<<<< HEAD
       <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
+=======
+      <header className="px-4 lg:px-6 h-16 flex items-center">
+>>>>>>> cec7630 (change User Interface)
         <Link href="#" className="flex items-center justify-center">
           <Logo />
+          <span className="sr-only">JobTrackr</span>
         </Link>
+<<<<<<< HEAD
         <nav className="ml-auto flex gap-2">
+=======
+        <nav className="ml-auto flex gap-4 sm:gap-6">
+>>>>>>> cec7630 (change User Interface)
           <Link
             href="/login"
             className={cn(buttonVariants({ variant: 'ghost' }))}
@@ -23,15 +32,24 @@ export default function LandingPage() {
           </Link>
           <Link
             href="/signup"
+<<<<<<< HEAD
             className={cn(buttonVariants({ variant: 'default' }))}
+=======
+            className={cn(buttonVariants())}
+>>>>>>> cec7630 (change User Interface)
           >
             Sign Up
           </Link>
         </nav>
       </header>
       <main className="flex-1">
+<<<<<<< HEAD
         <section className="relative w-full h-screen flex items-center justify-center">
            {heroImage && (
+=======
+        <section className="relative w-full h-[calc(100vh-4rem)] flex items-center justify-center">
+          {heroImage && (
+>>>>>>> cec7630 (change User Interface)
             <Image
               src={heroImage.imageUrl}
               alt={heroImage.description}
@@ -42,6 +60,7 @@ export default function LandingPage() {
             />
           )}
           <div className="relative container px-4 md:px-6 text-center text-primary-foreground z-10">
+<<<<<<< HEAD
             <div className="space-y-4 max-w-3xl mx-auto">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                 Land Your Dream Job Faster
@@ -50,11 +69,26 @@ export default function LandingPage() {
                 JobTrackr is the ultimate tool to organize, track, and accelerate your job search. Say goodbye to messy spreadsheets and hello to streamlined success.
               </p>
               <div className="space-x-4 pt-4">
+=======
+            <div className="space-y-4">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl">
+                Track Your Job Applications Effortlessly
+              </h1>
+              <p className="mx-auto max-w-[700px] text-primary-foreground/80 md:text-xl">
+                JobTrackr helps you manage your job search, from application to offer. Stay organized and
+                focused on landing your dream job.
+              </p>
+              <div className="space-x-4">
+>>>>>>> cec7630 (change User Interface)
                 <Link
                   href="/signup"
                   className={cn(buttonVariants({ size: 'lg' }))}
                 >
+<<<<<<< HEAD
                   Get Started for Free
+=======
+                  Get Started
+>>>>>>> cec7630 (change User Interface)
                 </Link>
               </div>
             </div>

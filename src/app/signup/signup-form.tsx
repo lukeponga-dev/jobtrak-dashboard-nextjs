@@ -37,6 +37,7 @@ export function SignupForm({
   };
 
   return (
+<<<<<<< HEAD
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
       <CardHeader className="space-y-2 text-center">
          <div className="flex justify-center">
@@ -45,6 +46,14 @@ export function SignupForm({
         <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
         <CardDescription>
           Enter your information to get started with JobTrackr.
+=======
+    <Card className="mx-auto max-w-sm w-full">
+      <CardHeader className="space-y-4 text-center">
+        <Logo className="justify-center" />
+        <CardTitle className="text-2xl">Create an account</CardTitle>
+        <CardDescription>
+          Enter your information to create an account
+>>>>>>> cec7630 (change User Interface)
         </CardDescription>
       </CardHeader>
       <CardContent>
