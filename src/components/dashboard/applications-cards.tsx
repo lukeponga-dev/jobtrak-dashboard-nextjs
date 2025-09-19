@@ -1,7 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> cf9dba1 (have a toggle to change view)
+=======
+
+>>>>>>> 08b27bf (when on table view mode make it container-fluid)
 "use client";
 
 import {
@@ -23,9 +27,13 @@ import {
 } from "../ui/select";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { cn } from "@/lib/utils";
 =======
 >>>>>>> cf9dba1 (have a toggle to change view)
+=======
+import { cn } from "@/lib/utils";
+>>>>>>> 08b27bf (when on table view mode make it container-fluid)
 
 type ApplicationsCardsProps = {
   applications: JobApplication[];
@@ -41,6 +49,10 @@ export function ApplicationsCards({
   if (applications.length === 0) {
     return (
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      <div className="px-4 lg:px-6">
+>>>>>>> 08b27bf (when on table view mode make it container-fluid)
         <Card className="flex flex-col items-center justify-center py-12">
           <CardContent className="text-center">
             <h3 className="text-xl font-semibold">No Applications Yet</h3>
@@ -49,6 +61,7 @@ export function ApplicationsCards({
             </p>
           </CardContent>
         </Card>
+<<<<<<< HEAD
 =======
       <Card className="flex flex-col items-center justify-center py-12">
         <CardContent className="text-center">
@@ -59,11 +72,14 @@ export function ApplicationsCards({
         </CardContent>
       </Card>
 >>>>>>> cf9dba1 (have a toggle to change view)
+=======
+      </div>
+>>>>>>> 08b27bf (when on table view mode make it container-fluid)
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 lg:px-6">
       {applications.map((app) => (
         <Card key={app.id} className="flex flex-col">
           <CardHeader className="flex-grow">

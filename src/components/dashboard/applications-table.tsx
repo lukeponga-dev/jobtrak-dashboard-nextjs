@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -40,12 +41,21 @@ export function ApplicationsTable({
 }: ApplicationsTableProps) {
   if (applications.length === 0) {
     return (
+<<<<<<< HEAD
       <Card>
         <CardContent className="flex flex-col items-center justify-center py-12 text-center">
             <h3 className="text-xl font-semibold">No Applications Yet</h3>
             <p className="text-muted-foreground mt-2">
               Click "Add Application" to start tracking your job search.
             </p>
+=======
+      <Card className="flex flex-col items-center justify-center py-12 mx-4 lg:mx-6">
+        <CardContent className="text-center">
+          <h3 className="text-xl font-semibold">No Applications Yet</h3>
+          <p className="text-muted-foreground mt-2">
+            Click "Add Application" to start tracking your job search.
+          </p>
+>>>>>>> 08b27bf (when on table view mode make it container-fluid)
         </CardContent>
       </Card>
     );
@@ -53,10 +63,14 @@ export function ApplicationsTable({
 
   return (
 <<<<<<< HEAD
+<<<<<<< HEAD
     <Card className="mx-0">
 =======
     <Card>
 >>>>>>> cf9dba1 (have a toggle to change view)
+=======
+    <Card className="mx-4 lg:mx-6">
+>>>>>>> 08b27bf (when on table view mode make it container-fluid)
       <Table>
         <TableHeader>
           <TableRow>
