@@ -128,15 +128,21 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
             <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
-           <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-              <Button size="sm" className="hidden sm:flex">
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add New
-              </Button>
-              <Button size="icon" className="sm:hidden">
-                <PlusCircle className="h-4 w-4" />
-              </Button>
-          </AddApplicationDialog>
+           <div className="hidden sm:flex">
+             <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                <Button size="sm">
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add New
+                </Button>
+            </AddApplicationDialog>
+           </div>
+           <div className="sm:hidden">
+            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                <Button size="icon">
+                  <PlusCircle className="h-4 w-4" />
+                </Button>
+            </AddApplicationDialog>
+           </div>
         </div>
       </div>
       <StatsCards applications={applications} />
