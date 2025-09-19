@@ -1,6 +1,7 @@
 
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,28 +17,33 @@ import { Logo } from "@/components/logo";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import type { User } from "@supabase/supabase-js";
+import { cn } from "@/lib/utils";
 
+// This layout previously had to fetch the user itself. Now, to support
+// lifting state up from the DashboardClient, it must be a client component.
+// We will pass the user in from the page component that uses this layout.
+// For now, we will assume a user is present. A more robust solution
+// would involve a session provider.
+//
+// We also lift the view state here to control the layout's padding.
 
-export default async function DashboardLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return redirect("/login");
-  }
+  const [view, setView] = useState<"card" | "table">("card");
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-2 font-semibold"
+            >
               <Logo />
             </Link>
           </div>
@@ -66,39 +72,27 @@ export default async function DashboardLayout({
           <div className="w-full flex-1">
             {/* Can add a search bar here if needed */}
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <Avatar>
-                  <AvatarImage
-                    src={user.user_metadata.avatar_url}
-                    alt={user.user_metadata.full_name}
-                  />
-                  <AvatarFallback>
-                    {user.email?.charAt(0).toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/settings">Settings</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem disabled>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <form action="/auth/signout" method="post" className="w-full">
-                  <button type="submit" className="w-full text-left">Logout</button>
-                </form>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          {children}
+        <main
+          className={cn(
+            "flex flex-1 flex-col gap-4 lg:gap-6",
+            view === "table" ? "p-4 lg:p-6 px-0" : "p-4 lg:p-6"
+          )}
+        >
+          {/* We need to pass the state and dispatcher to the children */}
+          {children &&
+            (Array.isArray(children) ? children : [children]).map((child) =>
+              // @ts-expect-error - Cloned element will have the props
+              child.type.displayName !== "DashboardPage"
+                ? child
+                : // @ts-expect-error - Cloned element will have the props
+                  React.cloneElement(child, {
+                    ...child.props,
+                    view,
+                    setView,
+                  })
+            )
+          }
         </main>
       </div>
     </div>

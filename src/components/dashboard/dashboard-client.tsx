@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -10,32 +11,47 @@ import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
-import { addApplication, updateApplicationStatus, deleteApplication } from "@/lib/actions";
+import {
+  addApplication,
+  updateApplicationStatus,
+  deleteApplication,
+} from "@/lib/actions";
 import { ViewToggle } from "./view-toggle";
-
+import { cn } from "@/lib/utils";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
+  view?: "card" | "table";
+  setView?: (view: "card" | "table") => void;
 };
 
-export function DashboardClient({ initialApplications }: DashboardClientProps) {
+export function DashboardClient({
+  initialApplications,
+  view = "card",
+  setView = () => {},
+}: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-  const [view, setView] = useState<"card" | "table">("card");
   const { toast } = useToast();
 
-  const handleAddApplication = async (newApplication: Omit<JobApplication, 'id' | 'user_id'>) => {
+  const handleAddApplication = async (
+    newApplication: Omit<JobApplication, "id" | "user_id">
+  ) => {
     const result = await addApplication(newApplication);
 
     if (result.success && result.data) {
-      setApplications((prev) => [result.data!, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+      setApplications((prev) =>
+        [result.data!, ...prev].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+      );
       toast({
         title: "Application Added",
         description: `${newApplication.company} - ${newApplication.role} has been added to your tracker.`,
       });
     } else {
-       toast({
+      toast({
         title: "Error adding application",
         description: result.error,
         variant: "destructive",
@@ -50,7 +66,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
       prev.map((app) => (app.id === id ? { ...app, status } : app))
     );
 
-    const result = await updateApplicationStatus({id, status});
+    const result = await updateApplicationStatus({ id, status });
     if (result.success) {
       toast({
         title: "Status Updated",
@@ -70,7 +86,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   const handleDeleteApplication = async (id: number) => {
     const originalApplications = applications;
     setApplications((prev) => prev.filter((app) => app.id !== id));
-    
+
     const result = await deleteApplication(id);
 
     if (result.success) {
@@ -115,41 +131,52 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
 
   return (
     <div className="space-y-6">
-      <StatsCards applications={applications} />
-      
+      <div className={cn(view === "card" && "px-4 lg:px-6")}>
+        <StatsCards applications={applications} />
+      </div>
+
       <div className="space-y-4">
-         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-                <h2 className="text-xl font-semibold">Your Applications</h2>
-                <p className="text-sm text-muted-foreground">Track and manage all your job applications in one place.</p>
-            </div>
-            <div className="flex items-center gap-2">
-                <ViewToggle view={view} setView={setView} />
-                <Button variant="outline" size="sm" onClick={handleExport}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Export
-                </Button>
-                <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                    <Button size="sm">
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Add Application
-                    </Button>
-                </AddApplicationDialog>
-            </div>
+        <div
+          className={cn(
+            "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
+            "px-4 lg:px-6"
+          )}
+        >
+          <div>
+            <h2 className="text-xl font-semibold">Your Applications</h2>
+            <p className="text-sm text-muted-foreground">
+              Track and manage all your job applications in one place.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <ViewToggle view={view} setView={setView} />
+            <Button variant="outline" size="sm" onClick={handleExport}>
+              <Download className="mr-2 h-4 w-4" />
+              Export
+            </Button>
+            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+              <Button size="sm">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Application
+              </Button>
+            </AddApplicationDialog>
+          </div>
         </div>
-        {view === 'card' ? (
-          <ApplicationsCards
-            applications={applications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-          />
-        ) : (
-          <ApplicationsTable
-            applications={applications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-          />
-        )}
+        <div className={cn(view === "table" ? "px-4 lg:px-6" : "")}>
+          {view === "card" ? (
+            <ApplicationsCards
+              applications={applications}
+              onUpdateStatus={handleUpdateStatus}
+              onDeleteApplication={handleDeleteApplication}
+            />
+          ) : (
+            <ApplicationsTable
+              applications={applications}
+              onUpdateStatus={handleUpdateStatus}
+              onDeleteApplication={handleDeleteApplication}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

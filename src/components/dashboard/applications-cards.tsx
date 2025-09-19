@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -18,6 +19,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
+import { cn } from "@/lib/utils";
 
 type ApplicationsCardsProps = {
   applications: JobApplication[];
@@ -32,19 +34,21 @@ export function ApplicationsCards({
 }: ApplicationsCardsProps) {
   if (applications.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center py-12">
-        <CardContent className="text-center">
-          <h3 className="text-xl font-semibold">No Applications Yet</h3>
-          <p className="text-muted-foreground mt-2">
-            Click "Add Application" to start tracking your job search.
-          </p>
-        </CardContent>
-      </Card>
+      <div className="px-4 lg:px-6">
+        <Card className="flex flex-col items-center justify-center py-12">
+          <CardContent className="text-center">
+            <h3 className="text-xl font-semibold">No Applications Yet</h3>
+            <p className="text-muted-foreground mt-2">
+              Click "Add Application" to start tracking your job search.
+            </p>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 lg:px-6">
       {applications.map((app) => (
         <Card key={app.id} className="flex flex-col">
           <CardHeader className="flex-grow">
