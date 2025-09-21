@@ -4,7 +4,7 @@ JobTrackr is a modern, responsive dashboard designed to help you efficiently tra
 
 ## ✨ Features
 
-- **Secure Authentication**: Sign up and log in securely with email/password or Google, powered by Supabase Auth.
+- **Secure Authentication**: Sign up and log in securely with email/password, powered by Supabase Auth.
 - **Intuitive Dashboard**: Get a quick overview of your application stats with clean, easy-to-read cards.
 - **Application Tracking**: Add, update, and delete job applications with details like company, role, date applied, and status.
 - **AI-Powered Suggestions**: Get smart suggestions for your application's status based on the role and application date.
@@ -64,19 +64,19 @@ Start the Next.js development server:
 npm run dev
 ```
 
-The application will be available at [http://localhost:9002](http://localhost:9002).
+The application will be available at [http://localhost:3000](http://localhost:3000).
 
 ## 📁 Project Structure
 
 ```
 .
 ├── src
-│   ├── app         # Next.js App Router (pages, layouts, etc.)
+│   ├── app         # Next.js App Router pages and layouts
 │   ├── ai          # Genkit AI flows and configuration
-│   ├── components  # Reusable React components (UI and dashboard)
-│   ├── lib         # Core logic, Supabase clients, actions, and types
+│   ├── components  # Reusable React components
+│   ├── lib         # Core logic, Supabase clients, and actions
 │   ├── hooks       # Custom React hooks
-│   └── ...
+│   └── middleware.ts # Next.js middleware for session management
 ├── supabase
 │   └── migrations  # Database migration files
 └── ...
