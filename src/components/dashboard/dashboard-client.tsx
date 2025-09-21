@@ -102,12 +102,13 @@ export function DashboardClient({
   };
 
   const handleExport = () => {
-    const headers = ["Company", "Role", "Date Applied", "Status"];
+    const headers = ["Company", "Role", "Date Applied", "Status", "Notes"];
     const rows = applications.map((app) => [
       `"${app.company.replace(/"/g, '""')}"`,
       `"${app.role.replace(/"/g, '""')}"`,
       new Date(app.date).toLocaleDateString(),
       app.status,
+      `"${(app.notes || '').replace(/"/g, '""')}"`
     ]);
 
     let csvContent = "data:text/csv;charset=utf-8,";
