@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,7 +17,6 @@ import {
 import { ApplicationsTable } from "./applications-table";
 import { ApplicationsCards } from "./applications-cards";
 import { ViewToggle } from "./view-toggle";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -29,11 +28,21 @@ export function DashboardClient({
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-    const isMobile = useIsMobile();
-  const [view, setView] = useState<"card" | "table">(isMobile ? "card" : "table");
-
+  const [view, setView] = useState<"card" | "table">("table");
+  const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
 
   const { toast } = useToast();
+
+  const filteredApplications = useMemo(() => {
+    if (activeFilter === "All") {
+      return applications;
+    }
+    if (activeFilter === 'Applied') {
+      const otherStatuses = ["Interviewing", "Offer", "Rejected"];
+      return applications.filter(app => !otherStatuses.includes(app.status));
+    }
+    return applications.filter((app) => app.status === activeFilter);
+  }, [applications, activeFilter]);
 
   const handleAddApplication = async (
     newApplication: Omit<JobApplication, "id" | "user_id">
@@ -106,7 +115,7 @@ export function DashboardClient({
 
   const handleExport = () => {
     const headers = ["Company", "Role", "Date Applied", "Status", "Notes"];
-    const rows = applications.map((app) => [
+    const rows = filteredApplications.map((app) => [
       `"${app.company.replace(/"/g, '""')}"`,
       `"${app.role.replace(/"/g, '""')}"`,
       new Date(app.date).toLocaleDateString(),
@@ -124,7 +133,7 @@ export function DashboardClient({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "job_applications.csv");
+    link.setAttribute("download", `job_applications_${activeFilter}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -148,24 +157,28 @@ export function DashboardClient({
           </AddApplicationDialog>
         </div>
       </div>
-      <StatsCards applications={applications} />
-      <div className="sm:hidden">
+      <StatsCards 
+        applications={applications}
+        activeFilter={activeFilter}
+        onFilterChange={setActiveFilter}
+      />
+      <div className="md:hidden">
          <ApplicationsCards
-            applications={applications}
+            applications={filteredApplications}
             onUpdateStatus={handleUpdateStatus}
             onDeleteApplication={handleDeleteApplication}
           />
       </div>
-      <div className="hidden sm:block">
+      <div className="hidden md:block">
         {view === 'table' ? (
           <ApplicationsTable
-            applications={applications}
+            applications={filteredApplications}
             onUpdateStatus={handleUpdateStatus}
             onDeleteApplication={handleDeleteApplication}
           />
         ) : (
           <ApplicationsCards
-            applications={applications}
+            applications={filteredApplications}
             onUpdateStatus={handleUpdateStatus}
             onDeleteApplication={handleDeleteApplication}
           />
