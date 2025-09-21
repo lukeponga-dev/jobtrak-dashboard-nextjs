@@ -41,95 +41,82 @@ export function ApplicationsTable({
 }: ApplicationsTableProps) {
   if (applications.length === 0) {
     return (
-<<<<<<< HEAD
-      <Card>
-        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-            <h3 className="text-xl font-semibold">No Applications Yet</h3>
-            <p className="text-muted-foreground mt-2">
-              Click "Add Application" to start tracking your job search.
-            </p>
-=======
-      <Card className="flex flex-col items-center justify-center py-12 mx-4 lg:mx-6">
-        <CardContent className="text-center">
-          <h3 className="text-xl font-semibold">No Applications Yet</h3>
-          <p className="text-muted-foreground mt-2">
-            Click "Add Application" to start tracking your job search.
-          </p>
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
-        </CardContent>
-      </Card>
+      <div className="px-4 lg:px-6">
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+              <h3 className="text-xl font-semibold">No Applications Yet</h3>
+              <p className="text-muted-foreground mt-2">
+                Click "Add Application" to start tracking your job search.
+              </p>
+          </CardContent>
+        </Card>
+      </div>
     );
   }
 
   return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <Card className="mx-0">
-=======
-    <Card>
->>>>>>> cf9dba1 (have a toggle to change view)
-=======
-    <Card className="mx-4 lg:mx-6">
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Company</TableHead>
-            <TableHead>Role</TableHead>
-            <TableHead>Date Applied</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {applications.map((app) => (
-            <TableRow key={app.id}>
-              <TableCell className="font-medium">{app.company}</TableCell>
-              <TableCell>{app.role}</TableCell>
-              <TableCell>{new Date(app.date).toLocaleDateString()}</TableCell>
-              <TableCell>
-                <StatusBadge status={app.status} />
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex items-center justify-end gap-2">
-                   <Select
-                    value={app.status}
-                    onValueChange={(value: ApplicationStatus) =>
-                      onUpdateStatus(app.id, value)
-                    }
-                  >
-                    <SelectTrigger className="w-[120px] text-xs h-8">
-                      <SelectValue placeholder="Update..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Applied">Applied</SelectItem>
-                      <SelectItem value="Interviewing">Interviewing</SelectItem>
-                      <SelectItem value="Offer">Offer</SelectItem>
-                      <SelectItem value="Rejected">Rejected</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button aria-haspopup="true" size="icon" variant="ghost">
-                        <MoreHorizontal className="h-4 w-4" />
-                        <span className="sr-only">Toggle menu</span>
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem
-                        onClick={() => onDeleteApplication(app.id)}
-                        className="text-destructive"
-                      >
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </TableCell>
+    <div className="px-4 lg:px-6">
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Company</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Date Applied</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Card>
+          </TableHeader>
+          <TableBody>
+            {applications.map((app) => (
+              <TableRow key={app.id}>
+                <TableCell className="font-medium">{app.company}</TableCell>
+                <TableCell>{app.role}</TableCell>
+                <TableCell>{new Date(app.date).toLocaleDateString()}</TableCell>
+                <TableCell>
+                  <StatusBadge status={app.status} />
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex items-center justify-end gap-2">
+                     <Select
+                      value={app.status}
+                      onValueChange={(value: ApplicationStatus) =>
+                        onUpdateStatus(app.id, value)
+                      }
+                    >
+                      <SelectTrigger className="w-[120px] text-xs h-8">
+                        <SelectValue placeholder="Update..." />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Applied">Applied</SelectItem>
+                        <SelectItem value="Interviewing">Interviewing</SelectItem>
+                        <SelectItem value="Offer">Offer</SelectItem>
+                        <SelectItem value="Rejected">Rejected</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button aria-haspopup="true" size="icon" variant="ghost">
+                          <MoreHorizontal className="h-4 w-4" />
+                          <span className="sr-only">Toggle menu</span>
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => onDeleteApplication(app.id)}
+                          className="text-destructive"
+                        >
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Card>
+    </div>
   );
 }

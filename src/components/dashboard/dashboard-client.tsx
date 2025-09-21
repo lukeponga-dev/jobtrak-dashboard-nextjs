@@ -11,47 +11,27 @@ import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
 import {
   addApplication,
   updateApplicationStatus,
   deleteApplication,
 } from "@/lib/actions";
-<<<<<<< HEAD
 import { ViewToggle } from "./view-toggle";
 import { cn } from "@/lib/utils";
-=======
-import { addApplication, updateApplicationStatus, deleteApplication } from "@/lib/actions";
-import { ViewToggle } from "./view-toggle";
-
->>>>>>> cf9dba1 (have a toggle to change view)
-=======
-import { ViewToggle } from "./view-toggle";
-import { cn } from "@/lib/utils";
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
-  view?: "card" | "table";
-  setView?: (view: "card" | "table") => void;
 };
 
 export function DashboardClient({
-<<<<<<< HEAD
   initialApplications
-=======
-  initialApplications,
-  view = "card",
-  setView = () => {},
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
 }: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
   const { toast } = useToast();
+  const [view, setView] = useState<'card' | 'table'>('card');
+
 
   const handleAddApplication = async (
     newApplication: Omit<JobApplication, "id" | "user_id">
@@ -148,28 +128,13 @@ export function DashboardClient({
   };
 
   return (
-<<<<<<< HEAD
     <div className="flex flex-col gap-4 lg:gap-6">
       <div className={cn(view === 'card' && 'px-4 lg:px-6')}>
-=======
-    <div className="space-y-6">
-      <div className={cn(view === "card" && "px-4 lg:px-6")}>
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
         <StatsCards applications={applications} />
       </div>
 
       <div className="space-y-4">
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === 'card' ? 'px-4 lg:px-6' : 'px-0')}>
-=======
-        <div
-          className={cn(
-            "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
-            "px-4 lg:px-6"
-          )}
-        >
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
+        <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === 'card' ? 'px-4 lg:px-6' : 'px-4 lg:px-6')}>
           <div>
             <h2 className="text-xl font-semibold">Your Applications</h2>
             <p className="text-sm text-muted-foreground">
@@ -182,24 +147,11 @@ export function DashboardClient({
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
-<<<<<<< HEAD
             <div className="hidden md:block">
               <AddApplicationDialog onApplicationAdd={handleAddApplication}>
                 <Button size="sm">
                   <PlusCircle className="mr-2 h-4 w-4" />
                   Add Application
-=======
-         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div>
-                <h2 className="text-xl font-semibold">Your Applications</h2>
-                <p className="text-sm text-muted-foreground">Track and manage all your job applications in one place.</p>
-            </div>
-            <div className="flex items-center gap-2">
-                <ViewToggle view={view} setView={setView} />
-                <Button variant="outline" size="sm" onClick={handleExport}>
-                    <Download className="mr-2 h-4 w-4" />
-                    Export
->>>>>>> cf9dba1 (have a toggle to change view)
                 </Button>
               </AddApplicationDialog>
             </div>
@@ -207,48 +159,6 @@ export function DashboardClient({
         </div>
         <div>
           {view === "card" ? (
-            <div className="px-4 lg:px-6">
-            <ApplicationsCards
-              applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDeleteApplication={handleDeleteApplication}
-            />
-            </div>
-          ) : (
-            <ApplicationsTable
-              applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDeleteApplication={handleDeleteApplication}
-            />
-          )}
-        </div>
-<<<<<<< HEAD
-=======
-        {view === 'card' ? (
-          <ApplicationsCards
-            applications={applications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-          />
-        ) : (
-          <ApplicationsTable
-            applications={applications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-          />
-        )}
->>>>>>> cf9dba1 (have a toggle to change view)
-=======
-            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-              <Button size="sm">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add Application
-              </Button>
-            </AddApplicationDialog>
-          </div>
-        </div>
-        <div className={cn(view === "table" ? "px-4 lg:px-6" : "")}>
-          {view === "card" ? (
             <ApplicationsCards
               applications={applications}
               onUpdateStatus={handleUpdateStatus}
@@ -262,7 +172,6 @@ export function DashboardClient({
             />
           )}
         </div>
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
       </div>
     </div>
   );
