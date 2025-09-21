@@ -17,7 +17,6 @@ import {
   deleteApplication,
 } from "@/lib/actions";
 import { ViewToggle } from "./view-toggle";
-import { cn } from "@/lib/utils";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -135,7 +134,7 @@ export function DashboardClient({
         </div>
 
         <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-6">
+           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-6">
             <div>
               <h2 className="text-xl font-semibold">Your Applications</h2>
               <p className="text-sm text-muted-foreground">
