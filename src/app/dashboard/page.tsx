@@ -16,6 +16,7 @@ export default async function DashboardPage() {
   }
 
   let applications: JobApplication[] = [];
+<<<<<<< HEAD
   try {
     const { data, error } = await supabase
       .from("job_applications")
@@ -29,12 +30,40 @@ export default async function DashboardPage() {
     console.error("Database error:", error);
     // Fail gracefully
     applications = [];
+=======
+  if (user) {
+    try {
+        applications = await sql<JobApplication[]>`
+          SELECT id, company, role, date, status, notes 
+          FROM job_applications 
+          WHERE user_id = ${user.id}
+          ORDER BY date DESC
+        `;
+    } catch (error) {
+      console.error("Database error:", error);
+      // Fail gracefully
+      applications = [];
+    }
+>>>>>>> 56c83c2 (please re create entire project)
   }
+  
+  const userName = user?.user_metadata?.full_name?.split(' ')[0] || 'there';
 
   return (
+<<<<<<< HEAD
     <DashboardClient
       initialApplications={applications}
     />
+=======
+    <>
+      <div className="flex items-center justify-between">
+        <h1 className="text-lg font-semibold md:text-2xl">
+          Hi, {userName}!
+        </h1>
+      </div>
+      <DashboardClient initialApplications={applications} />
+    </>
+>>>>>>> 56c83c2 (please re create entire project)
   );
 }
 

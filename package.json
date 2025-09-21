@@ -53,10 +53,6 @@
     "next-themes": "^0.3.0",
     "patch-package": "^8.0.0",
     "popper.js": "^1.16.1",
-<<<<<<< HEAD
-=======
-    "postgres": "^3.4.7",
->>>>>>> cec7630 (change User Interface)
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",

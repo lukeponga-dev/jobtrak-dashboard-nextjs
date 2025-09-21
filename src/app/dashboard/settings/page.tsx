@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardContent,
 } from "@/components/ui/card";
 import type { User } from "@supabase/supabase-js";
 
@@ -24,7 +23,11 @@ export default async function SettingsPage({ user }: { user: User | null }) {
   }
 
   return (
+<<<<<<< HEAD
     <div className="space-y-6 px-4 lg:px-0">
+=======
+    <div className="space-y-6">
+>>>>>>> 56c83c2 (please re create entire project)
        <div>
         <h1 className="text-lg font-semibold md:text-2xl">Settings</h1>
         <p className="text-muted-foreground text-sm">Manage your account and preferences.</p>

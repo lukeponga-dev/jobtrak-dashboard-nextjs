@@ -32,34 +32,19 @@ export function LoginForm() {
   };
 
   return (
-<<<<<<< HEAD
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
       <CardHeader className="space-y-2 text-center">
          <div className="flex justify-center">
             <Logo />
         </div>
         <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
-=======
-    <Card className="mx-auto max-w-sm w-full">
-      <CardHeader className="space-y-4 text-center">
-        <Logo className="justify-center" />
-        <CardTitle className="text-2xl">Login to your account</CardTitle>
->>>>>>> cec7630 (change User Interface)
         <CardDescription>
           Enter your email and password to access your dashboard.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form
-<<<<<<< HEAD
           action={handleSignIn}
-=======
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            handleSignIn(formData);
-          }}
->>>>>>> cec7630 (change User Interface)
           className="space-y-4"
         >
           <div className="space-y-2">
@@ -77,11 +62,7 @@ export function LoginForm() {
               <Label htmlFor="password">Password</Label>
               <Link
                 href="#"
-<<<<<<< HEAD
                 className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
-=======
-                className="ml-auto inline-block text-sm underline"
->>>>>>> cec7630 (change User Interface)
               >
                 Forgot your password?
               </Link>
@@ -94,11 +75,7 @@ export function LoginForm() {
         </form>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
-<<<<<<< HEAD
           <Link href="/signup" className="text-primary/80 hover:text-primary underline">
-=======
-          <Link href="/signup" className="underline">
->>>>>>> cec7630 (change User Interface)
             Sign up
           </Link>
         </div>

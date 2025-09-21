@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -127,14 +126,13 @@ export function DashboardClient({
   };
 
   return (
-<<<<<<< HEAD
-    <div className="flex flex-col gap-4 lg:gap-6 -mx-4 lg:-mx-6">
-      <div className="px-4 lg:px-6">
+    <div className="flex flex-col gap-4 lg:gap-6">
+      <div className={cn(view === 'card' && 'px-4 lg:px-6')}>
         <StatsCards applications={applications} />
       </div>
 
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-6">
+        <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === 'card' ? 'px-4 lg:px-6' : 'px-0')}>
           <div>
             <h2 className="text-xl font-semibold">Your Applications</h2>
             <p className="text-sm text-muted-foreground">
@@ -176,48 +174,5 @@ export function DashboardClient({
         </div>
       </div>
     </div>
-=======
-    <>
-      <div className="flex items-center gap-4 mb-8">
-        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="ml-auto flex items-center gap-2">
-           <div className="sm:hidden">
-            <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}>
-              {viewMode === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-            </Button>
-          </div>
-          <Button variant="outline" size="sm" onClick={handleExport}>
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-           <div className="hidden sm:flex">
-             <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                <Button size="sm">
-                  <PlusCircle className="h-4 w-4 mr-2" />
-                  Add New
-                </Button>
-            </AddApplicationDialog>
-           </div>
-           <div className="sm:hidden">
-            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                <Button size="icon">
-                  <PlusCircle className="h-4 w-4" />
-                </Button>
-            </AddApplicationDialog>
-           </div>
-        </div>
-      </div>
-      <StatsCards applications={applications} />
-      <div className="mt-8">
-        <h2 className="font-semibold text-lg md:text-xl mb-4">Recent Applications</h2>
-        <ApplicationsTable
-          applications={applications}
-          onUpdateStatus={handleUpdateStatus}
-          onDeleteApplication={handleDeleteApplication}
-          viewMode={viewMode}
-        />
-      </div>
-    </>
->>>>>>> cec7630 (change User Interface)
   );
 }
