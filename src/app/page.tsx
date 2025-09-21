@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
 import { cn } from '@/lib/utils';
-import { placeholderImages } from '@/lib/placeholder-images.json';
+import { placeholderImages } from '@/lib/placeholder-images';
 
 const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 

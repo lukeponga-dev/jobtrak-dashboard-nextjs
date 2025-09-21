@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { SignupForm } from "./signup-form";
-import { placeholderImages } from "@/lib/placeholder-images.json";
+import { placeholderImages } from "@/lib/placeholder-images";
 
 const bgImage = placeholderImages.find(p => p.id === 'login-background-2');
 
