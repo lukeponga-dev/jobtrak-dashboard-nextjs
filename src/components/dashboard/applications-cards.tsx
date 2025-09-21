@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,6 +20,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../ui/collapsible";
+
 
 type ApplicationsCardsProps = {
   applications: JobApplication[];
@@ -49,55 +52,69 @@ export function ApplicationsCards({
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 lg:px-6">
       {applications.map((app) => (
-        <Card key={app.id} className="flex flex-col">
-          <CardHeader className="flex-grow">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <CardTitle className="text-lg font-semibold leading-tight">
-                  {app.role}
-                </CardTitle>
-                <p className="text-sm text-muted-foreground">{app.company}</p>
+        <Collapsible key={app.id} asChild>
+          <Card className="flex flex-col">
+            <CardHeader className="flex-grow">
+              <div className="flex items-start justify-between">
+                <div className="space-y-1">
+                  <CardTitle className="text-lg font-semibold leading-tight">
+                    {app.role}
+                  </CardTitle>
+                  <p className="text-sm text-muted-foreground">{app.company}</p>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button aria-haspopup="true" size="icon" variant="ghost">
+                      <MoreHorizontal className="h-4 w-4" />
+                      <span className="sr-only">Toggle menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
-               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button aria-haspopup="true" size="icon" variant="ghost">
-                    <MoreHorizontal className="h-4 w-4" />
-                    <span className="sr-only">Toggle menu</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          </CardHeader>
-          <CardContent className="flex-grow">
-             <div className="text-xs text-muted-foreground">
-              Applied on {new Date(app.date).toLocaleDateString()}
-            </div>
-          </CardContent>
-          <CardFooter className="flex items-center justify-between">
-            <StatusBadge status={app.status} />
-            <Select
-              value={app.status}
-              onValueChange={(value: ApplicationStatus) =>
-                onUpdateStatus(app.id, value)
-              }
-            >
-              <SelectTrigger className="w-auto text-xs h-7 px-2 py-1">
-                <SelectValue placeholder="Update status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Applied">Applied</SelectItem>
-                <SelectItem value="Interviewing">Interviewing</SelectItem>
-                <SelectItem value="Offer">Offer</SelectItem>
-                <SelectItem value="Rejected">Rejected</SelectItem>
-              </SelectContent>
-            </Select>
-          </CardFooter>
-        </Card>
+            </CardHeader>
+            <CardContent className="flex-grow space-y-2">
+              <div className="text-xs text-muted-foreground">
+                Applied on {new Date(app.date).toLocaleDateString()}
+              </div>
+              {app.notes && (
+                <>
+                  <CollapsibleContent className="space-y-2">
+                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{app.notes}</p>
+                  </CollapsibleContent>
+                  <CollapsibleTrigger asChild>
+                     <Button variant="link" className="p-0 h-auto text-xs text-primary/80">
+                       Show {open ? 'less' : 'more'}
+                     </Button>
+                  </CollapsibleTrigger>
+                </>
+              )}
+            </CardContent>
+            <CardFooter className="flex items-center justify-between">
+              <StatusBadge status={app.status} />
+              <Select
+                value={app.status}
+                onValueChange={(value: ApplicationStatus) =>
+                  onUpdateStatus(app.id, value)
+                }
+              >
+                <SelectTrigger className="w-auto text-xs h-7 px-2 py-1">
+                  <SelectValue placeholder="Update status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Applied">Applied</SelectItem>
+                  <SelectItem value="Interviewing">Interviewing</SelectItem>
+                  <SelectItem value="Offer">Offer</SelectItem>
+                  <SelectItem value="Rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+            </CardFooter>
+          </Card>
+        </Collapsible>
       ))}
     </div>
   );

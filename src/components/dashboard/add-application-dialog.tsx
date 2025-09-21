@@ -39,6 +39,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { suggestApplicationStatus } from "@/lib/actions";
@@ -49,6 +50,7 @@ const formSchema = z.object({
   role: z.string().min(1, "Job role is required"),
   date: z.date({ required_error: "Application date is required" }),
   status: z.enum(["Applied", "Interviewing", "Offer", "Rejected"]),
+  notes: z.string().optional(),
 });
 
 type AddApplicationDialogProps = {
@@ -72,6 +74,7 @@ export function AddApplicationDialog({
       role: "",
       date: new Date(),
       status: "Applied",
+      notes: "",
     },
   });
 
@@ -82,6 +85,7 @@ export function AddApplicationDialog({
         role: values.role,
         date: values.date.toISOString(),
         status: values.status,
+        notes: values.notes,
       };
       await onApplicationAdd(newApplication);
       form.reset();
@@ -232,6 +236,23 @@ export function AddApplicationDialog({
                       {!isSuggesting && <Sparkles className="h-4 w-4" />}
                     </Button>
                   </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="notes"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Notes</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Add any notes about the application..."
+                      className="resize-none"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
