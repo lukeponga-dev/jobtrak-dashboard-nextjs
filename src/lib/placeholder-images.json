@@ -1,34 +1,33 @@
-{
-  "placeholderImages": [
-    {
-      "id": "login-background",
-      "description": "Abstract background image for login page",
-      "imageUrl": "https://images.unsplash.com/photo-1599658880436-55a7985489dc?q=80&w=2592&auto=format&fit=crop",
-      "imageHint": "abstract office"
-    },
-    {
-      "id": "login-background-2",
-      "description": "Dark abstract background image for login page",
-      "imageUrl": "https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?q=80&w=2787&auto=format&fit=crop",
-      "imageHint": "abstract dark"
-    },
-    {
-      "id": "landing-hero",
-      "description": "Hero background image for the landing page",
-      "imageUrl": "https://picsum.photos/seed/4/1920/1080",
-      "imageHint": "office building"
-    },
-    {
-      "id": "landing-hero-2",
-      "description": "Abstract hero background image for the landing page",
-      "imageUrl": "https://picsum.photos/seed/design/1920/1080",
-      "imageHint": "abstract design"
-    },
-    {
-      "id": "landing-hero-3",
-      "description": "Modern office hero background image for the landing page",
-      "imageUrl": "https://images.unsplash.com/photo-1497032628192-86f99d791ba7?q=80&w=2670&auto=format&fit=crop",
-      "imageHint": "modern office"
-    }
-  ]
-}
+
+[
+  {
+    "id": "login-background",
+    "description": "Abstract background image for login page",
+    "imageUrl": "https://images.unsplash.com/photo-1599658880436-55a7985489dc?q=80&w=2592&auto=format&fit=crop",
+    "imageHint": "abstract office"
+  },
+  {
+    "id": "login-background-2",
+    "description": "Dark abstract background image for login page",
+    "imageUrl": "https://images.unsplash.com/photo-1553095066-5014bc7b7f2d?q=80&w=2787&auto=format&fit=crop",
+    "imageHint": "abstract dark"
+  },
+  {
+    "id": "landing-hero",
+    "description": "Hero background image for the landing page",
+    "imageUrl": "https://picsum.photos/seed/4/1920/1080",
+    "imageHint": "office building"
+  },
+  {
+    "id": "landing-hero-2",
+    "description": "Abstract hero background image for the landing page",
+    "imageUrl": "https://picsum.photos/seed/design/1920/1080",
+    "imageHint": "abstract design"
+  },
+  {
+    "id": "landing-hero-3",
+    "description": "Modern office hero background image for the landing page",
+    "imageUrl": "https://images.unsplash.com/photo-1497032628192-86f99d791ba7?q=80&w=2670&auto=format&fit=crop",
+    "imageHint": "modern office"
+  }
+]
