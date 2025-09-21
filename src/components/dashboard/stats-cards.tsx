@@ -73,7 +73,7 @@ export function StatsCards({
   ];
 
   return (
-    <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 px-4 lg:px-6">
+    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 px-4 lg:px-6">
       {stats.map((stat) => (
         <Card
           key={stat.title}
