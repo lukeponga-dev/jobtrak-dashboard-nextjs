@@ -128,51 +128,62 @@ export function DashboardClient({
   };
 
   return (
-    <div className="flex flex-col gap-4 lg:gap-6">
-      <div className={cn(view === 'card' && 'px-4 lg:px-6')}>
-        <StatsCards applications={applications} />
-      </div>
+    <>
+      <div className="flex flex-col gap-4 lg:gap-6">
+        <div className="px-4 lg:px-6">
+          <StatsCards applications={applications} />
+        </div>
 
-      <div className="space-y-4">
-        <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === 'card' ? 'px-4 lg:px-6' : 'px-4 lg:px-6')}>
-          <div>
-            <h2 className="text-xl font-semibold">Your Applications</h2>
-            <p className="text-sm text-muted-foreground">
-              Track and manage all your job applications in one place.
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <ViewToggle view={view} setView={setView} />
-            <Button variant="outline" size="sm" onClick={handleExport}>
-              <Download className="mr-2 h-4 w-4" />
-              Export
-            </Button>
-            <div className="hidden md:block">
-              <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                <Button size="sm">
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add Application
-                </Button>
-              </AddApplicationDialog>
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-6">
+            <div>
+              <h2 className="text-xl font-semibold">Your Applications</h2>
+              <p className="text-sm text-muted-foreground">
+                Track and manage all your job applications in one place.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <ViewToggle view={view} setView={setView} />
+              <Button variant="outline" size="sm" onClick={handleExport}>
+                <Download className="mr-2 h-4 w-4" />
+                Export
+              </Button>
+              <div className="hidden md:block">
+                <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                  <Button size="sm">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Add Application
+                  </Button>
+                </AddApplicationDialog>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
-          {view === "card" ? (
-            <ApplicationsCards
-              applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDeleteApplication={handleDeleteApplication}
-            />
-          ) : (
-            <ApplicationsTable
-              applications={applications}
-              onUpdateStatus={handleUpdateStatus}
-              onDeleteApplication={handleDeleteApplication}
-            />
-          )}
+          <div>
+            {view === "card" ? (
+              <ApplicationsCards
+                applications={applications}
+                onUpdateStatus={handleUpdateStatus}
+                onDeleteApplication={handleDeleteApplication}
+              />
+            ) : (
+              <ApplicationsTable
+                applications={applications}
+                onUpdateStatus={handleUpdateStatus}
+                onDeleteApplication={handleDeleteApplication}
+              />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+       {/* Floating Action Button for Mobile */}
+      <div className="md:hidden fixed bottom-4 right-4 z-50">
+        <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+          <Button size="icon" className="h-14 w-14 rounded-full shadow-lg">
+            <PlusCircle className="h-6 w-6" />
+            <span className="sr-only">Add Application</span>
+          </Button>
+        </AddApplicationDialog>
+      </div>
+    </>
   );
 }
