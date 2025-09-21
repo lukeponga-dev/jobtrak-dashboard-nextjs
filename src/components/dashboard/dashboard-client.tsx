@@ -185,5 +185,29 @@ export function DashboardClient({
         </AddApplicationDialog>
       </div>
     </>
+    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
+        <div className="flex-1 flex items-center justify-end gap-2">
+          <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+            <Button size="sm" className="w-full sm:w-auto">
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add New
+            </Button>
+          </AddApplicationDialog>
+        </div>
+      </div>
+      <StatsCards applications={applications} />
+      <ApplicationsTable
+        applications={applications}
+        onUpdateStatus={handleUpdateStatus}
+        onDeleteApplication={handleDeleteApplication}
+        mobileView="card"
+      />
+    </main>
   );
 }
