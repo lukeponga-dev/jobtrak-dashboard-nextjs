@@ -6,15 +6,7 @@ import type { User } from "@supabase/supabase-js";
 
 // Because the layout is now a client component, we pass the user
 // and initial applications down from this server component.
-export default async function DashboardPage({
-  view,
-  setView,
-  user,
-}: {
-  view?: "card" | "table";
-  setView?: (view: "card" | "table") => void;
-  user: User | null;
-}) {
+export default async function DashboardPage() {
   const supabase = createClient();
   const {
     data: { user: authUser },
@@ -41,7 +33,7 @@ export default async function DashboardPage({
   }
 
   const userName =
-    user?.user_metadata?.full_name?.split(" ")[0] || "there";
+    authUser?.user_metadata?.full_name?.split(" ")[0] || "there";
 
   return (
     <>
@@ -50,8 +42,6 @@ export default async function DashboardPage({
       </div>
       <DashboardClient
         initialApplications={applications}
-        view={view}
-        setView={setView}
       />
     </>
   );

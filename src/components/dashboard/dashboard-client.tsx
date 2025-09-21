@@ -21,18 +21,15 @@ import { cn } from "@/lib/utils";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
-  view?: "card" | "table";
-  setView?: (view: "card" | "table") => void;
 };
 
 export function DashboardClient({
-  initialApplications,
-  view = "card",
-  setView = () => {},
+  initialApplications
 }: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
+  const [view, setView] = useState<"card" | "table">("card");
   const { toast } = useToast();
 
   const handleAddApplication = async (
@@ -131,12 +128,12 @@ export function DashboardClient({
 
   return (
     <div className="flex flex-col gap-4 lg:gap-6">
-      <div className="px-4 lg:px-0">
+      <div className={cn(view === "card" ? "px-4 lg:px-0" : "")}>
         <StatsCards applications={applications} />
       </div>
 
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-0">
+        <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === "card" ? "px-4 lg:px-0" : "")}>
           <div>
             <h2 className="text-xl font-semibold">Your Applications</h2>
             <p className="text-sm text-muted-foreground">

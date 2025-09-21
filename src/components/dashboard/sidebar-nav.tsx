@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "../logo";
-import { Home, Settings, Briefcase } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 
 type SidebarNavProps = {
   isMobile?: boolean;

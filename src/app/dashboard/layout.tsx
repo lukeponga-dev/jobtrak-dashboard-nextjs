@@ -21,6 +21,8 @@ import type { User } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
 import { AddApplicationDialog } from "@/components/dashboard/add-application-dialog";
 import { addApplication } from "@/lib/actions";
+import React from 'react';
+
 
 // This layout previously had to fetch the user itself. Now, to support
 // lifting state up from the DashboardClient, it must be a client component.
@@ -121,24 +123,16 @@ export default function DashboardLayout({
           </DropdownMenu>
         </header>
         <main
-          className={cn(
-            "flex flex-1 flex-col gap-4 lg:gap-6",
-            view === "table" ? "p-4 lg:p-6" : "p-4 lg:p-6"
-          )}
+          className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6"
         >
           {/* We need to pass the state and dispatcher to the children */}
-          {children &&
-            (Array.isArray(children) ? children : [children]).map((child, i) =>
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement(child)) {
               // @ts-expect-error - Cloned element will have the props
-              React.cloneElement(child, {
-                ...child.props,
-                key: i,
-                view,
-                setView,
-                user,
-              })
-            )
-          }
+              return React.cloneElement(child, { user });
+            }
+            return child;
+          })}
         </main>
       </div>
     </div>
