@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useTransition } from "react";
@@ -44,11 +45,7 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const formData = new FormData(e.currentTarget);
-            handleSignIn(formData);
-          }}
+          action={handleSignIn}
           className="space-y-4"
         >
           <div className="space-y-2">
