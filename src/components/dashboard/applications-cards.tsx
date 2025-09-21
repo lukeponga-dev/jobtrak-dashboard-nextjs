@@ -50,7 +50,7 @@ export function ApplicationsCards({
   }
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 lg:px-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4 lg:px-6">
       {applications.map((app) => (
         <Collapsible key={app.id} asChild>
           <Card className="flex flex-col">
@@ -82,36 +82,40 @@ export function ApplicationsCards({
                 Applied on {new Date(app.date).toLocaleDateString()}
               </div>
               {app.notes && (
-                <>
-                  <CollapsibleContent className="space-y-2">
-                    <p className="text-sm text-muted-foreground whitespace-pre-wrap">{app.notes}</p>
-                  </CollapsibleContent>
-                  <CollapsibleTrigger asChild>
-                     <Button variant="link" className="p-0 h-auto text-xs text-primary/80">
-                       Show {open ? 'less' : 'more'}
-                     </Button>
-                  </CollapsibleTrigger>
-                </>
+                <CollapsibleContent className="space-y-2">
+                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">{app.notes}</p>
+                </CollapsibleContent>
               )}
             </CardContent>
             <CardFooter className="flex items-center justify-between">
-              <StatusBadge status={app.status} />
-              <Select
-                value={app.status}
-                onValueChange={(value: ApplicationStatus) =>
-                  onUpdateStatus(app.id, value)
-                }
-              >
-                <SelectTrigger className="w-auto text-xs h-7 px-2 py-1">
-                  <SelectValue placeholder="Update status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Applied">Applied</SelectItem>
-                  <SelectItem value="Interviewing">Interviewing</SelectItem>
-                  <SelectItem value="Offer">Offer</SelectItem>
-                  <SelectItem value="Rejected">Rejected</SelectItem>
-                </SelectContent>
-              </Select>
+               <div className="flex-1">
+                {app.notes && (
+                  <CollapsibleTrigger asChild>
+                    <Button variant="link" className="p-0 h-auto text-xs text-primary/80">
+                      View Notes
+                    </Button>
+                  </CollapsibleTrigger>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <StatusBadge status={app.status} />
+                <Select
+                  value={app.status}
+                  onValueChange={(value: ApplicationStatus) =>
+                    onUpdateStatus(app.id, value)
+                  }
+                >
+                  <SelectTrigger className="w-auto text-xs h-7 px-2 py-1">
+                    <SelectValue placeholder="Update status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Applied">Applied</SelectItem>
+                    <SelectItem value="Interviewing">Interviewing</SelectItem>
+                    <SelectItem value="Offer">Offer</SelectItem>
+                    <SelectItem value="Rejected">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardFooter>
           </Card>
         </Collapsible>
