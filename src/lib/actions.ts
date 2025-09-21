@@ -72,7 +72,7 @@ export async function suggestApplicationStatus(
   }
 }
 
-export async function addApplication(application: Omit<JobApplication, 'id'>) {
+export async function addApplication(application: Omit<JobApplication, 'id' | 'user_id'>) {
   const supabase = createClient();
    const {
     data: { user },

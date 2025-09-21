@@ -1,21 +1,24 @@
 import Image from "next/image";
 import { LoginForm } from "./login-form";
+import { placeholderImages } from "@/lib/placeholder-images";
+
+const bgImage = placeholderImages.find(p => p.id === 'login-background-2');
 
 export default function LoginPage() {
   return (
-    <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
-      <div className="flex items-center justify-center py-12">
-        <LoginForm />
-      </div>
-      <div className="hidden bg-muted lg:block">
+    <div className="w-full min-h-screen flex items-center justify-center p-4 relative">
+       {bgImage && (
         <Image
-          src="https://picsum.photos/seed/3/1200/1800"
-          alt="Abstract background image"
-          data-ai-hint="abstract office"
-          width="1200"
-          height="1800"
-          className="h-full w-full object-cover dark:brightness-[0.3]"
+          src={bgImage.imageUrl}
+          alt={bgImage.description}
+          data-ai-hint={bgImage.imageHint}
+          fill
+          className="object-cover absolute inset-0 z-0"
+          style={{ filter: 'brightness(0.3)'}}
         />
+      )}
+      <div className="relative z-10 w-full">
+         <LoginForm />
       </div>
     </div>
   );

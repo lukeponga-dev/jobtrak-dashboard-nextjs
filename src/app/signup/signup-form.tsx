@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useTransition } from "react";
@@ -37,19 +36,19 @@ export function SignupForm({
   };
 
   return (
-    <Card className="mx-auto max-w-sm w-full">
-      <CardHeader className="space-y-4">
-        <Logo className="justify-center" />
-        <div className="text-center">
-          <CardTitle className="text-2xl">Create an account</CardTitle>
-          <CardDescription>
-            Enter your information to create an account
-          </CardDescription>
+    <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
+      <CardHeader className="space-y-2 text-center">
+         <div className="flex justify-center">
+            <Logo />
         </div>
+        <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
+        <CardDescription>
+          Enter your information to get started with JobTrackr.
+        </CardDescription>
       </CardHeader>
       <CardContent>
-        <form className="grid gap-4">
-          <div className="grid gap-2">
+        <form className="space-y-4" action={handleSignUp}>
+          <div className="space-y-2">
             <Label htmlFor="full-name">Full name</Label>
             <Input
               id="full-name"
@@ -58,7 +57,7 @@ export function SignupForm({
               required
             />
           </div>
-          <div className="grid gap-2">
+          <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
@@ -68,12 +67,11 @@ export function SignupForm({
               required
             />
           </div>
-          <div className="grid gap-2">
+          <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input id="password" name="password" type="password" required />
           </div>
           <Button
-            formAction={handleSignUp}
             type="submit"
             className="w-full"
             loading={isPending}
@@ -81,14 +79,14 @@ export function SignupForm({
             Create an account
           </Button>
           {searchParams?.message && (
-            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
+            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">
               {searchParams.message}
             </p>
           )}
         </form>
         <div className="mt-4 text-center text-sm">
           Already have an account?{" "}
-          <Link href="/login" className="underline">
+          <Link href="/login" className="text-primary/80 hover:text-primary underline">
             Login
           </Link>
         </div>

@@ -5,35 +5,50 @@ import { useState } from "react";
 import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ApplicationsTable } from "./applications-table";
 import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
-import { addApplication, updateApplicationStatus, deleteApplication } from "@/lib/actions";
-
+import {
+  addApplication,
+  updateApplicationStatus,
+  deleteApplication,
+} from "@/lib/actions";
+import { ApplicationsTable } from "./applications-table";
+import { ApplicationsCards } from "./applications-cards";
+import { ViewToggle } from "./view-toggle";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
 };
 
-export function DashboardClient({ initialApplications }: DashboardClientProps) {
+export function DashboardClient({
+  initialApplications
+}: DashboardClientProps) {
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
+  const [view, setView] = useState<"card" | "table">("card");
+
   const { toast } = useToast();
 
-  const handleAddApplication = async (newApplication: Omit<JobApplication, 'id'>) => {
+  const handleAddApplication = async (
+    newApplication: Omit<JobApplication, "id" | "user_id">
+  ) => {
     const result = await addApplication(newApplication);
 
     if (result.success && result.data) {
-      setApplications((prev) => [result.data!, ...prev].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+      setApplications((prev) =>
+        [result.data!, ...prev].sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+        )
+      );
       toast({
         title: "Application Added",
         description: `${newApplication.company} - ${newApplication.role} has been added to your tracker.`,
       });
     } else {
-       toast({
+      toast({
         title: "Error adding application",
         description: result.error,
         variant: "destructive",
@@ -48,7 +63,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
       prev.map((app) => (app.id === id ? { ...app, status } : app))
     );
 
-    const result = await updateApplicationStatus({id, status});
+    const result = await updateApplicationStatus({ id, status });
     if (result.success) {
       toast({
         title: "Status Updated",
@@ -68,7 +83,7 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   const handleDeleteApplication = async (id: number) => {
     const originalApplications = applications;
     setApplications((prev) => prev.filter((app) => app.id !== id));
-    
+
     const result = await deleteApplication(id);
 
     if (result.success) {
@@ -87,12 +102,13 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
   };
 
   const handleExport = () => {
-    const headers = ["Company", "Role", "Date Applied", "Status"];
+    const headers = ["Company", "Role", "Date Applied", "Status", "Notes"];
     const rows = applications.map((app) => [
       `"${app.company.replace(/"/g, '""')}"`,
       `"${app.role.replace(/"/g, '""')}"`,
       new Date(app.date).toLocaleDateString(),
       app.status,
+      `"${(app.notes || '').replace(/"/g, '""')}"`
     ]);
 
     let csvContent = "data:text/csv;charset=utf-8,";
@@ -115,7 +131,8 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="flex-1 flex items-center justify-end gap-2">
+        <div className="hidden sm:flex flex-1 items-center justify-end gap-2">
+          <ViewToggle view={view} setView={setView} />
           <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
             <Download className="h-4 w-4 mr-2" />
             Export
@@ -129,12 +146,35 @@ export function DashboardClient({ initialApplications }: DashboardClientProps) {
         </div>
       </div>
       <StatsCards applications={applications} />
-      <ApplicationsTable
-        applications={applications}
-        onUpdateStatus={handleUpdateStatus}
-        onDeleteApplication={handleDeleteApplication}
-        mobileView="card"
-      />
+      <div className="sm:hidden">
+         <ApplicationsCards
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+      </div>
+      <div className="hidden sm:block">
+        {view === 'table' ? (
+          <ApplicationsTable
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        ) : (
+          <ApplicationsCards
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        )}
+      </div>
+       <div className="sm:hidden fixed bottom-4 right-4">
+        <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+          <Button size="icon" className="w-14 h-14 rounded-full shadow-lg">
+            <PlusCircle className="h-6 w-6" />
+          </Button>
+        </AddApplicationDialog>
+      </div>
     </main>
   );
 }

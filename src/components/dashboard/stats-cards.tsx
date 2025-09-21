@@ -1,8 +1,14 @@
 
 "use client";
+
 import { Award, Briefcase, ClipboardList, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { JobApplication } from "@/lib/types";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
 
 type StatsCardsProps = {
@@ -21,48 +27,81 @@ export function StatsCards({ applications }: StatsCardsProps) {
 
   const stats = [
     {
-      title: "Total Applications",
+      title: "Total Applied",
       value: totalApplications,
       icon: Briefcase,
-      color: "text-chart-1",
-      borderColor: "border-chart-1",
+      color: "text-primary",
     },
     {
       title: "Interviewing",
       value: interviewingCount,
       icon: ClipboardList,
-      color: "text-chart-2",
-      borderColor: "border-chart-2",
+      color: "text-yellow-400",
     },
     {
-      title: "Offers",
+      title: "Offers Received",
       value: offerCount,
       icon: Award,
-      color: "text-accent",
-      borderColor: "border-accent",
+      color: "text-green-400",
     },
     {
       title: "Rejected",
       value: rejectedCount,
       icon: XCircle,
-      color: "text-destructive",
-      borderColor: "border-destructive",
+      color: "text-red-400",
     },
   ];
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {stats.map((stat) => (
-        <Card key={stat.title} className={cn("border-l-4", stat.borderColor)}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 p-3 pl-4">
-            <CardTitle className="text-xs font-medium">{stat.title}</CardTitle>
-            <stat.icon className={cn("h-4 w-4 text-muted-foreground", stat.color)} />
-          </CardHeader>
-          <CardContent className="p-3 pt-0 pl-4">
-            <div className="text-xl font-bold">{stat.value}</div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+    <>
+      {/* Mobile view */}
+      <div className="md:hidden px-4 lg:px-6">
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full"
+        >
+          <CarouselContent className="-ml-2">
+            {stats.map((stat, index) => (
+              <CarouselItem key={index} className="basis-3/4 sm:basis-1/2 pl-2">
+                <div className="p-1">
+                  <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">
+                        {stat.title}
+                      </CardTitle>
+                      <stat.icon
+                        className={cn("h-4 w-4 text-muted-foreground", stat.color)}
+                      />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-2xl font-bold">{stat.value}</div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      </div>
+
+      {/* Desktop view */}
+      <div className="hidden md:grid gap-4 md:grid-cols-2 lg:grid-cols-4 px-4 lg:px-6">
+        {stats.map((stat) => (
+          <Card key={stat.title}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {stat.title}
+              </CardTitle>
+              <stat.icon className={cn("h-4 w-4 text-muted-foreground", stat.color)} />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stat.value}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </>
   );
 }

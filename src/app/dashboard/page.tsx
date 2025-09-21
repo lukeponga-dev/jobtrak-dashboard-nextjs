@@ -1,28 +1,40 @@
-import { DashboardClient } from "@/components/dashboard/dashboard-client";
-import sql from "@/lib/db";
-import type { JobApplication } from "@/lib/types";
+
 import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { DashboardClient } from "@/components/dashboard/dashboard-client";
+import type { JobApplication } from "@/lib/types";
 
 export default async function DashboardPage() {
   const supabase = createClient();
   const {
-    data: { user },
+    data: { user: authUser },
   } = await supabase.auth.getUser();
+
+  if (!authUser) {
+    redirect("/login");
+  }
 
   let applications: JobApplication[] = [];
   try {
-    if (user) {
-      applications = await sql<JobApplication[]>`
-        SELECT id, company, role, date, status, notes 
-        FROM job_applications 
-        WHERE user_id = ${user.id}
-        ORDER BY date DESC
-      `;
-    }
+    const { data, error } = await supabase
+      .from("job_applications")
+      .select("id, company, role, date, status, notes")
+      .eq("user_id", authUser.id)
+      .order("date", { ascending: false });
+
+    if (error) throw error;
+    applications = data || [];
   } catch (error) {
     console.error("Database error:", error);
-    // You might want to show an error message to the user here
+    // Fail gracefully
+    applications = [];
   }
 
-  return <DashboardClient initialApplications={applications} />;
+  return (
+    <DashboardClient
+      initialApplications={applications}
+    />
+  );
 }
+
+DashboardPage.displayName = "DashboardPage";

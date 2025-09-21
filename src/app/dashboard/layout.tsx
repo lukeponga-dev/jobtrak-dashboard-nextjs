@@ -1,18 +1,20 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { LogOut } from "lucide-react";
-import Link from "next/link";
+import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { Logo } from "@/components/logo";
+import { Header } from "@/components/dashboard/header";
 import {
-  SidebarProvider,
   Sidebar,
-  SidebarHeader,
   SidebarContent,
   SidebarFooter,
-  SidebarTrigger,
+  SidebarHeader,
   SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,9 +23,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Logo } from "@/components/logo";
-import { SidebarNav } from "@/components/dashboard/sidebar-nav";
+import { LogOut } from "lucide-react";
+import Link from "next/link";
+
 
 export default async function DashboardLayout({
   children,
@@ -36,7 +38,7 @@ export default async function DashboardLayout({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/login");
+    redirect("/login");
   }
 
   const userFullName = user.user_metadata.full_name || user.email;
