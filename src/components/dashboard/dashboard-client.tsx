@@ -5,8 +5,6 @@ import { useState } from "react";
 import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ApplicationsTable } from "./applications-table";
-import { ApplicationsCards } from "./applications-cards";
 import { AddApplicationDialog } from "./add-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
@@ -16,6 +14,8 @@ import {
   updateApplicationStatus,
   deleteApplication,
 } from "@/lib/actions";
+import { ApplicationsTable } from "./applications-table";
+import { ApplicationsCards } from "./applications-cards";
 import { ViewToggle } from "./view-toggle";
 
 type DashboardClientProps = {
@@ -28,9 +28,9 @@ export function DashboardClient({
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-  const { toast } = useToast();
-  const [view, setView] = useState<'card' | 'table'>('card');
+  const [view, setView] = useState<"card" | "table">("card");
 
+  const { toast } = useToast();
 
   const handleAddApplication = async (
     newApplication: Omit<JobApplication, "id" | "user_id">
@@ -128,67 +128,11 @@ export function DashboardClient({
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-4 lg:gap-6">
-        <div className="px-4 lg:px-6">
-          <StatsCards applications={applications} />
-        </div>
-
-        <div className="space-y-4">
-           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-6">
-            <div>
-              <h2 className="text-xl font-semibold">Your Applications</h2>
-              <p className="text-sm text-muted-foreground">
-                Track and manage all your job applications in one place.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <ViewToggle view={view} setView={setView} />
-              <Button variant="outline" size="sm" onClick={handleExport}>
-                <Download className="mr-2 h-4 w-4" />
-                Export
-              </Button>
-              <div className="hidden md:block">
-                <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                  <Button size="sm">
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Add Application
-                  </Button>
-                </AddApplicationDialog>
-              </div>
-            </div>
-          </div>
-          <div>
-            {view === "card" ? (
-              <ApplicationsCards
-                applications={applications}
-                onUpdateStatus={handleUpdateStatus}
-                onDeleteApplication={handleDeleteApplication}
-              />
-            ) : (
-              <ApplicationsTable
-                applications={applications}
-                onUpdateStatus={handleUpdateStatus}
-                onDeleteApplication={handleDeleteApplication}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-       {/* Floating Action Button for Mobile */}
-      <div className="md:hidden fixed bottom-4 right-4 z-50">
-        <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-          <Button size="icon" className="h-14 w-14 rounded-full shadow-lg">
-            <PlusCircle className="h-6 w-6" />
-            <span className="sr-only">Add Application</span>
-          </Button>
-        </AddApplicationDialog>
-      </div>
-    </>
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="flex-1 flex items-center justify-end gap-2">
+        <div className="hidden sm:flex flex-1 items-center justify-end gap-2">
+          <ViewToggle view={view} setView={setView} />
           <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
             <Download className="h-4 w-4 mr-2" />
             Export
@@ -202,12 +146,35 @@ export function DashboardClient({
         </div>
       </div>
       <StatsCards applications={applications} />
-      <ApplicationsTable
-        applications={applications}
-        onUpdateStatus={handleUpdateStatus}
-        onDeleteApplication={handleDeleteApplication}
-        mobileView="card"
-      />
+      <div className="sm:hidden">
+         <ApplicationsCards
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+      </div>
+      <div className="hidden sm:block">
+        {view === 'table' ? (
+          <ApplicationsTable
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        ) : (
+          <ApplicationsCards
+            applications={applications}
+            onUpdateStatus={handleUpdateStatus}
+            onDeleteApplication={handleDeleteApplication}
+          />
+        )}
+      </div>
+       <div className="sm:hidden fixed bottom-4 right-4">
+        <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+          <Button size="icon" className="w-14 h-14 rounded-full shadow-lg">
+            <PlusCircle className="h-6 w-6" />
+          </Button>
+        </AddApplicationDialog>
+      </div>
     </main>
   );
 }
