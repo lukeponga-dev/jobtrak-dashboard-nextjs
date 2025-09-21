@@ -54,9 +54,21 @@ export async function signUp(formData: FormData) {
 
 
 export async function signInWithGoogle() {
-  // TODO: Re-implement Google Sign-In
-  console.log("Google Sign-In not implemented");
-  return null;
+  const origin = headers().get('origin');
+  const supabase = createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+    },
+  });
+
+  if (error) {
+    console.error('Error signing in with Google:', error);
+    return redirect('/login?message=Could not authenticate with Google');
+  }
+
+  return redirect(data.url);
 }
 
 
