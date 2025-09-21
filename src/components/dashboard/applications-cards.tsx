@@ -34,7 +34,6 @@ export function ApplicationsCards({
 }: ApplicationsCardsProps) {
   if (applications.length === 0) {
     return (
-      <div className="px-4 lg:px-6">
         <Card className="flex flex-col items-center justify-center py-12">
           <CardContent className="text-center">
             <h3 className="text-xl font-semibold">No Applications Yet</h3>
@@ -43,12 +42,11 @@ export function ApplicationsCards({
             </p>
           </CardContent>
         </Card>
-      </div>
     );
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 lg:px-6">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {applications.map((app) => (
         <Card key={app.id} className="flex flex-col">
           <CardHeader className="flex-grow">

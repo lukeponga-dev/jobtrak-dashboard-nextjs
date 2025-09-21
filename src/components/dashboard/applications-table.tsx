@@ -41,19 +41,19 @@ export function ApplicationsTable({
 }: ApplicationsTableProps) {
   if (applications.length === 0) {
     return (
-      <Card className="flex flex-col items-center justify-center py-12 mx-4 lg:mx-6">
-        <CardContent className="text-center">
-          <h3 className="text-xl font-semibold">No Applications Yet</h3>
-          <p className="text-muted-foreground mt-2">
-            Click "Add Application" to start tracking your job search.
-          </p>
+      <Card className="mx-4 lg:mx-6">
+        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+            <h3 className="text-xl font-semibold">No Applications Yet</h3>
+            <p className="text-muted-foreground mt-2">
+              Click "Add Application" to start tracking your job search.
+            </p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="mx-4 lg:mx-6">
+    <Card className="mx-0">
       <Table>
         <TableHeader>
           <TableRow>

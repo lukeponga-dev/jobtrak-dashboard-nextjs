@@ -127,13 +127,13 @@ export function DashboardClient({
   };
 
   return (
-    <div className="flex flex-col gap-4 lg:gap-6">
-      <div className={cn(view === "card" ? "px-4 lg:px-0" : "")}>
+    <div className="flex flex-col gap-4 lg:gap-6 -mx-4 lg:-mx-6">
+      <div className="px-4 lg:px-6">
         <StatsCards applications={applications} />
       </div>
 
       <div className="space-y-4">
-        <div className={cn("flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4", view === "card" ? "px-4 lg:px-0" : "")}>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-6">
           <div>
             <h2 className="text-xl font-semibold">Your Applications</h2>
             <p className="text-sm text-muted-foreground">
@@ -158,11 +158,13 @@ export function DashboardClient({
         </div>
         <div>
           {view === "card" ? (
+            <div className="px-4 lg:px-6">
             <ApplicationsCards
               applications={applications}
               onUpdateStatus={handleUpdateStatus}
               onDeleteApplication={handleDeleteApplication}
             />
+            </div>
           ) : (
             <ApplicationsTable
               applications={applications}
