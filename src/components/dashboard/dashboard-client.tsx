@@ -130,19 +130,13 @@ export function DashboardClient({
   };
 
   return (
-<<<<<<< HEAD
-    <div className="space-y-6">
-      <div className={cn(view === "card" && "px-4 lg:px-6")}>
+    <div className="flex flex-col gap-4 lg:gap-6">
+      <div className="px-4 lg:px-0">
         <StatsCards applications={applications} />
       </div>
 
       <div className="space-y-4">
-        <div
-          className={cn(
-            "flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4",
-            "px-4 lg:px-6"
-          )}
-        >
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-4 lg:px-0">
           <div>
             <h2 className="text-xl font-semibold">Your Applications</h2>
             <p className="text-sm text-muted-foreground">
@@ -155,15 +149,17 @@ export function DashboardClient({
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
-            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-              <Button size="sm">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add Application
-              </Button>
-            </AddApplicationDialog>
+            <div className="hidden md:block">
+              <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                <Button size="sm">
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add Application
+                </Button>
+              </AddApplicationDialog>
+            </div>
           </div>
         </div>
-        <div className={cn(view === "table" ? "px-4 lg:px-6" : "")}>
+        <div>
           {view === "card" ? (
             <ApplicationsCards
               applications={applications}
@@ -180,30 +176,5 @@ export function DashboardClient({
         </div>
       </div>
     </div>
-=======
-    <>
-      <div className="flex items-center gap-4">
-        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="ml-auto flex items-center gap-2">
-           <div className="sm:hidden">
-            <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}>
-              {viewMode === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-            </Button>
-          </div>
-          <Button variant="outline" size="sm" onClick={handleExport}>
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-        </div>
-      </div>
-      <StatsCards applications={applications} />
-      <ApplicationsTable
-        applications={applications}
-        onUpdateStatus={handleUpdateStatus}
-        onDeleteApplication={handleDeleteApplication}
-        viewMode={viewMode}
-      />
-    </>
->>>>>>> 5ad038c (Change the Layout to a easy interface)
   );
 }
