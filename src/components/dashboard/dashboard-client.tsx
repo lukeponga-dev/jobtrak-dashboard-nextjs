@@ -17,6 +17,7 @@ import {
 import { ApplicationsTable } from "./applications-table";
 import { ApplicationsCards } from "./applications-cards";
 import { ViewToggle } from "./view-toggle";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -28,7 +29,9 @@ export function DashboardClient({
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-  const [view, setView] = useState<"card" | "table">("card");
+    const isMobile = useIsMobile();
+  const [view, setView] = useState<"card" | "table">(isMobile ? "card" : "table");
+
 
   const { toast } = useToast();
 
