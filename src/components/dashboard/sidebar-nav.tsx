@@ -3,20 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-<<<<<<< HEAD
 import { Logo } from "../logo";
 import { Home, Settings } from "lucide-react";
-=======
-import { Button } from "../ui/button";
-import { Logo } from "../logo";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
-import { Home, Settings, Briefcase } from "lucide-react";
->>>>>>> 56c83c2 (please re create entire project)
 
 type SidebarNavProps = {
   isMobile?: boolean;
@@ -27,10 +15,6 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
-<<<<<<< HEAD
-=======
-    { href: "/dashboard/applications", label: "Applications", icon: Briefcase },
->>>>>>> 56c83c2 (please re create entire project)
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
   ];
 

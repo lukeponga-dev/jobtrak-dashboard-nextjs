@@ -1,11 +1,4 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> cf9dba1 (have a toggle to change view)
-=======
-
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
 "use client";
 
 import {
@@ -26,14 +19,6 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card";
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { cn } from "@/lib/utils";
-=======
->>>>>>> cf9dba1 (have a toggle to change view)
-=======
-import { cn } from "@/lib/utils";
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
 
 type ApplicationsCardsProps = {
   applications: JobApplication[];
@@ -48,11 +33,7 @@ export function ApplicationsCards({
 }: ApplicationsCardsProps) {
   if (applications.length === 0) {
     return (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
       <div className="px-4 lg:px-6">
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
         <Card className="flex flex-col items-center justify-center py-12">
           <CardContent className="text-center">
             <h3 className="text-xl font-semibold">No Applications Yet</h3>
@@ -61,20 +42,7 @@ export function ApplicationsCards({
             </p>
           </CardContent>
         </Card>
-<<<<<<< HEAD
-=======
-      <Card className="flex flex-col items-center justify-center py-12">
-        <CardContent className="text-center">
-          <h3 className="text-xl font-semibold">No Applications Yet</h3>
-          <p className="text-muted-foreground mt-2">
-            Click "Add Application" to start tracking your job search.
-          </p>
-        </CardContent>
-      </Card>
->>>>>>> cf9dba1 (have a toggle to change view)
-=======
       </div>
->>>>>>> 08b27bf (when on table view mode make it container-fluid)
     );
   }
 
