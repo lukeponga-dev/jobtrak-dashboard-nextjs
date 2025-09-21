@@ -130,6 +130,7 @@ export function DashboardClient({
   };
 
   return (
+<<<<<<< HEAD
     <div className="space-y-6">
       <div className={cn(view === "card" && "px-4 lg:px-6")}>
         <StatsCards applications={applications} />
@@ -179,5 +180,30 @@ export function DashboardClient({
         </div>
       </div>
     </div>
+=======
+    <>
+      <div className="flex items-center gap-4">
+        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
+        <div className="ml-auto flex items-center gap-2">
+           <div className="sm:hidden">
+            <Button variant="outline" size="icon" onClick={() => setViewMode(viewMode === 'card' ? 'list' : 'card')}>
+              {viewMode === 'card' ? <List className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
+            </Button>
+          </div>
+          <Button variant="outline" size="sm" onClick={handleExport}>
+            <Download className="mr-2 h-4 w-4" />
+            Export
+          </Button>
+        </div>
+      </div>
+      <StatsCards applications={applications} />
+      <ApplicationsTable
+        applications={applications}
+        onUpdateStatus={handleUpdateStatus}
+        onDeleteApplication={handleDeleteApplication}
+        viewMode={viewMode}
+      />
+    </>
+>>>>>>> 5ad038c (Change the Layout to a easy interface)
   );
 }

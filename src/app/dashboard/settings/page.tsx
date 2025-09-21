@@ -6,21 +6,25 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
+  CardContent,
 } from "@/components/ui/card";
+import type { User } from "@supabase/supabase-js";
 
-export default async function SettingsPage() {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
+export default async function SettingsPage({ user }: { user: User | null }) {
   if (!user) {
-    redirect("/login");
+    const supabase = createClient();
+    const {
+      data: { user: authUser },
+    } = await supabase.auth.getUser();
+
+    if (!authUser) {
+      redirect("/login");
+    }
+    user = authUser;
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 px-4 lg:px-0">
        <div>
         <h1 className="text-lg font-semibold md:text-2xl">Settings</h1>
         <p className="text-muted-foreground text-sm">Manage your account and preferences.</p>

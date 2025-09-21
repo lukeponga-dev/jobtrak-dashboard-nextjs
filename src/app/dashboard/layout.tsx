@@ -15,10 +15,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Logo } from "@/components/logo";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, PlusCircle } from "lucide-react";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import type { User } from "@supabase/supabase-js";
 import { cn } from "@/lib/utils";
+import { AddApplicationDialog } from "@/components/dashboard/add-application-dialog";
+import { addApplication } from "@/lib/actions";
 
 // This layout previously had to fetch the user itself. Now, to support
 // lifting state up from the DashboardClient, it must be a client component.
@@ -30,10 +32,17 @@ import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({
   children,
+  user,
 }: {
   children: React.ReactNode;
+  user: User | null;
 }) {
   const [view, setView] = useState<"card" | "table">("card");
+
+  if (!user) {
+    // Or a loading spinner
+    return null; 
+  }
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -69,28 +78,65 @@ export default function DashboardLayout({
               <SidebarNav isMobile={true} />
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1">
+          <div className="w-full flex-1 md:hidden">
+             <AddApplicationDialog onApplicationAdd={addApplication}>
+                <Button size="sm" className="w-full">
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add New
+                </Button>
+            </AddApplicationDialog>
+          </div>
+          <div className="w-full flex-1 hidden md:block">
             {/* Can add a search bar here if needed */}
           </div>
+           <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" size="icon" className="rounded-full">
+                 <Avatar>
+                  <AvatarImage
+                    src={user.user_metadata.avatar_url}
+                    alt={user.user_metadata.full_name}
+                  />
+                  <AvatarFallback>
+                    {user.email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <span className="sr-only">Toggle user menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                 <Link href="/dashboard/settings">Settings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>Support</DropdownMenuItem>
+              <DropdownMenuSeparator />
+               <DropdownMenuItem asChild>
+                 <form action="/auth/signout" method="post" className="w-full">
+                  <button type="submit" className="w-full text-left">Logout</button>
+                </form>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </header>
         <main
           className={cn(
             "flex flex-1 flex-col gap-4 lg:gap-6",
-            view === "table" ? "p-4 lg:p-6 px-0" : "p-4 lg:p-6"
+            view === "table" ? "p-4 lg:p-6" : "p-4 lg:p-6"
           )}
         >
           {/* We need to pass the state and dispatcher to the children */}
           {children &&
-            (Array.isArray(children) ? children : [children]).map((child) =>
+            (Array.isArray(children) ? children : [children]).map((child, i) =>
               // @ts-expect-error - Cloned element will have the props
-              child.type.displayName !== "DashboardPage"
-                ? child
-                : // @ts-expect-error - Cloned element will have the props
-                  React.cloneElement(child, {
-                    ...child.props,
-                    view,
-                    setView,
-                  })
+              React.cloneElement(child, {
+                ...child.props,
+                key: i,
+                view,
+                setView,
+                user,
+              })
             )
           }
         </main>
