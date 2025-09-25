@@ -158,7 +158,7 @@ export function DashboardClient({
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `job_applications_${activeFilter}.csv`);
+    link.setAttribute("download", `job_applications_${activeFilter.toLowerCase()}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -212,7 +212,10 @@ export function DashboardClient({
           />
         )}
       </div>
-       <div className="sm:hidden fixed bottom-4 right-4">
+       <div className="sm:hidden fixed bottom-4 right-4 space-y-2">
+        <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
+          <Download className="h-6 w-6" />
+        </Button>
         <AddApplicationDialog onApplicationAdd={handleAddApplication}>
           <Button size="icon" className="w-14 h-14 rounded-full shadow-lg">
             <PlusCircle className="h-6 w-6" />
