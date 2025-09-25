@@ -1,0 +1,15 @@
+--- a/node_modules/@types/shimmer/index.d.ts
++++ b/node_modules/@types/shimmer/index.d.ts
+@@ -1,3 +1,11 @@
+-declare module 'shimmer' {
+-  export function wrap(): any;
+-}
++export type Original = (...args: any[]) => any;
++export type Wrapper = (original: Original) => (...args: any[]) => any;
++
++export function wrap<T, N extends keyof T>(nodule: T, name: N, wrapper: Wrapper): void;
++export function unwrap<T, N extends keyof T>(nodule: T, name: N): void;
++
++export type MassWrapper = (original: Original, name: string) => (...args: any[]) => any;
++export function massWrap<T, N extends keyof T>(nodules: T[], names: N[], wrapper: MassWrapper): void;
++export function massUnwrap<T, N extends keyof T>(nodules: T[], names: N[]): void;

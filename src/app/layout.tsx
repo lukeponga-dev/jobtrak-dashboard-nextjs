@@ -1,8 +1,9 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from "geist/font/sans";
 import { cn } from "@/lib/utils";
+import { Sidebar } from "@/components/layout/sidebar";
 
 /**
  * Defines the metadata for the application, including the title and description.
@@ -29,13 +30,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={cn(
+      <body
+        className={cn(
           "min-h-screen bg-background font-sans antialiased",
           GeistSans.variable
-        )}>
-        {/* Renders the child components, which represent the current page. */}
-        {children}
-        {/* The Toaster component is included to handle toast notifications throughout the app. */}
+        )}
+      >
+        <div className="flex">
+          <Sidebar />
+          <main className="flex-1">
+            {children}
+          </main>
+        </div>
         <Toaster />
       </body>
     </html>
