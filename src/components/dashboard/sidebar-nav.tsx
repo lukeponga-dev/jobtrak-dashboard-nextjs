@@ -4,13 +4,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Home, Settings } from "lucide-react";
+import { Home, Settings, Search } from "lucide-react";
 
 export function SidebarNav() {
   const pathname = usePathname();
 
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
+    { href: "/dashboard/job-finder", label: "Job Finder", icon: Search },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
   ];
 
