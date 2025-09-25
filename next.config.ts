@@ -6,8 +6,6 @@ import type { NextConfig } from 'next';
  * This file allows customization of the build process, server behavior, and other features.
  */
 const nextConfig: NextConfig = {
-<<<<<<< HEAD
-=======
   /* General config options can be placed here */
   transpilePackages: [
     '@genkit-ai/ai',
@@ -18,7 +16,6 @@ const nextConfig: NextConfig = {
   /**
    * TypeScript-specific configurations.
    */
->>>>>>> main
   typescript: {
     /**
      * If set to true, TypeScript errors will not fail the build.
