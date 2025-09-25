@@ -1,3 +1,4 @@
+
 # JobTrackr: Professional Job Application Tracker
 
 JobTrackr is a modern, responsive dashboard designed to help you efficiently track your job applications. Built with Next.js, ShadCN UI, and Supabase, it provides a clean and intuitive interface for managing your job search process.
