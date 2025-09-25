@@ -17,8 +17,6 @@ import {
   deleteApplication,
 } from "@/lib/actions";
 import { ApplicationsTable } from "./applications-table";
-import { ApplicationsCards } from "./applications-cards";
-import { ViewToggle } from "./view-toggle";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -30,7 +28,6 @@ export function DashboardClient({
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-  const [view, setView] = useState<"card" | "table">("table");
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
 
   const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
@@ -169,7 +166,6 @@ export function DashboardClient({
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
         <div className="hidden sm:flex flex-1 items-center justify-end gap-2">
-          <ViewToggle view={view} setView={setView} />
           <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
             <Download className="h-4 w-4 mr-2" />
             Export
@@ -187,31 +183,12 @@ export function DashboardClient({
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
       />
-      <div className="md:hidden">
-         <ApplicationsCards
-            applications={filteredApplications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-            onEditApplication={setEditingApplication}
-          />
-      </div>
-      <div className="hidden md:block">
-        {view === 'table' ? (
-          <ApplicationsTable
-            applications={filteredApplications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-            onEditApplication={setEditingApplication}
-          />
-        ) : (
-          <ApplicationsCards
-            applications={filteredApplications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-            onEditApplication={setEditingApplication}
-          />
-        )}
-      </div>
+      <ApplicationsTable
+        applications={filteredApplications}
+        onUpdateStatus={handleUpdateStatus}
+        onDeleteApplication={handleDeleteApplication}
+        onEditApplication={setEditingApplication}
+      />
        <div className="sm:hidden fixed bottom-4 right-4 space-y-2">
         <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
           <Download className="h-6 w-6" />
