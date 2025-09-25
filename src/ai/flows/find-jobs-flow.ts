@@ -3,10 +3,10 @@
 /**
  * @fileOverview An AI agent that finds job openings based on a query.
  * This file defines a Genkit "flow" that uses an AI model and a custom tool
- * to simulate searching for job listings.
+ * to simulate searching for job listings from various job boards.
  *
  * This flow:
- * 1. Defines a tool (`findJobs`) that returns a mock list of jobs.
+ * 1. Defines a tool (`findJobsTool`) that returns a mock list of jobs from sources like Indeed, LinkedIn, Seek, and Trade Me.
  * 2. Defines the input (`FindJobsInput`) and output (`FindJobsOutput`) schemas.
  * 3. Creates a prompt instructing the AI to use the tool to answer user queries.
  * 4. Defines the main flow (`findJobsFlow`) that orchestrates the tool call.
@@ -16,43 +16,43 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-// Mock data for job listings. In a real application, this would come from an API.
+// Mock data simulating job listings from different platforms.
 const MOCK_JOBS = [
   {
-    title: 'Frontend Developer',
-    company: 'Innovatech',
+    title: 'Senior Frontend Developer',
+    company: 'LinkedIn',
     location: 'San Francisco, CA',
-    url: '#',
+    url: 'https://www.linkedin.com/jobs/',
   },
   {
-    title: 'UX/UI Designer',
-    company: 'Creative Solutions',
+    title: 'Lead UX/UI Designer',
+    company: 'Indeed',
     location: 'New York, NY',
-    url: '#',
+    url: 'https://www.indeed.com/',
   },
   {
-    title: 'Product Manager',
-    company: 'Future Gadgets',
-    location: 'Austin, TX',
-    url: '#',
+    title: 'Senior Product Manager',
+    company: 'Seek',
+    location: 'Auckland, NZ',
+    url: 'https://www.seek.co.nz/',
   },
   {
-    title: 'Data Scientist',
-    company: 'Data Insights Inc.',
-    location: 'Boston, MA',
-    url: '#',
+    title: 'Principal Data Scientist',
+    company: 'Trade Me',
+    location: 'Wellington, NZ',
+    url: 'https://www.trademe.co.nz/a/jobs',
   },
   {
-    title: 'Backend Engineer',
-    company: 'Server Systems',
+    title: 'Full Stack Engineer',
+    company: 'LinkedIn',
     location: 'Remote',
-    url: '#',
+    url: 'https://www.linkedin.com/jobs/',
   },
   {
-    title: 'DevOps Engineer',
-    company: 'Cloud Co',
+    title: 'Cloud DevOps Engineer',
+    company: 'Indeed',
     location: 'Seattle, WA',
-    url: '#',
+    url: 'https://www.indeed.com/',
   },
 ];
 
@@ -60,7 +60,8 @@ const MOCK_JOBS = [
 const findJobsTool = ai.defineTool(
   {
     name: 'findJobs',
-    description: 'Finds job openings based on a search query.',
+    description:
+      'Finds job openings from Indeed, LinkedIn, Seek, and Trade Me based on a search query.',
     inputSchema: z.object({
       query: z.string().describe('The job title or keywords to search for.'),
       location: z
@@ -78,7 +79,7 @@ const findJobsTool = ai.defineTool(
     ),
   },
   async input => {
-    // In a real app, you would use an API like the Google Jobs API.
+    // In a real app, you would use APIs for each job board.
     // For this demo, we'll return a filtered list of mock jobs.
     console.log(`Tool called with query: ${input.query}`);
     return MOCK_JOBS.filter(job =>
@@ -112,7 +113,7 @@ const prompt = ai.definePrompt({
   input: {schema: FindJobsInputSchema},
   output: {schema: FindJobsOutputSchema},
   tools: [findJobsTool],
-  prompt: `You are a helpful job search assistant. Use the available tools to find job listings that match the user's query.
+  prompt: `You are a helpful job search assistant. Use the available tools to find job listings that match the user's query from sources like Indeed, LinkedIn, Seek, and Trade Me.
 
   User Query: {{{query}}}
   
