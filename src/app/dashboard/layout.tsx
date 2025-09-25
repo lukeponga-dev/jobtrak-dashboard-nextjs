@@ -3,7 +3,6 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { Logo } from "@/components/logo";
-import { Header } from "@/components/dashboard/header";
 import {
   Sidebar,
   SidebarContent,
@@ -54,9 +53,9 @@ export default async function DashboardLayout({
         </SidebarContent>
         <SidebarFooter>
             <form action="/auth/signout" method="post" className="p-2">
-              <Button type="submit" className="w-full justify-start gap-2">
-                <LogOut />
-                Logout
+              <Button type="submit" variant="ghost" className="w-full justify-start gap-2">
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
               </Button>
             </form>
         </SidebarFooter>
@@ -89,14 +88,12 @@ export default async function DashboardLayout({
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings">Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/support">Support</Link>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
                <DropdownMenuItem asChild>
                 <form action="/auth/signout" method="post" className="w-full">
-                  <button type="submit" className="w-full text-left">
-                    Logout
+                  <button type="submit" className="w-full text-left flex items-center gap-2">
+                     <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
                   </button>
                 </form>
               </DropdownMenuItem>
