@@ -29,6 +29,7 @@ import {
 } from "../ui/select";
 import { Card, CardContent } from "../ui/card";
 import { format } from "date-fns";
+import { StatusBadge } from "./status-badge";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
@@ -109,75 +110,57 @@ export function ApplicationsTable({
   return (
     <Card>
       <div className="relative w-full overflow-auto">
-        <Table>
+        {/* Mobile View: Cards */}
+        <div className="grid gap-4 sm:hidden p-4">
+          {sortedApplications.map((app) => (
+            <div key={app.id} className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 space-y-3">
+              <div className="flex justify-between items-start">
+                <div>
+                  <p className="font-semibold">{app.role}</p>
+                  <p className="text-sm text-muted-foreground">{app.company}</p>
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="-mt-2 -mr-2">
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => onEditApplication(app)}>Edit</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">Delete</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                 <span>{format(new Date(app.date), "MMM d, yyyy")}</span>
+                <StatusBadge status={app.status} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop View: Table */}
+        <Table className="hidden sm:table">
           <TableHeader>
             <TableRow>
-              <SortableHeader sortKey="company" className="hidden sm:table-cell">Company</SortableHeader>
+              <SortableHeader sortKey="company">Company</SortableHeader>
               <SortableHeader sortKey="role">Role</SortableHeader>
-              <SortableHeader sortKey="date" className="hidden sm:table-cell">Date Applied</SortableHeader>
-              <SortableHeader sortKey="status" className="hidden sm:table-cell">Status</SortableHeader>
-              <TableHead className="hidden sm:table-cell">
-                <span className="sr-only">Actions</span>
-              </TableHead>
+              <SortableHeader sortKey="date">Date Applied</SortableHeader>
+              <SortableHeader sortKey="status">Status</SortableHeader>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {sortedApplications.map((app) => (
-              <TableRow key={app.id} className="sm:table-row flex flex-col sm:flex-row p-4 sm:p-0 mb-4 sm:mb-0 border sm:border-none rounded-lg">
-                <TableCell className="font-medium sm:table-cell block p-0 sm:p-4 border-b sm:border-none">
-                  <div className="flex justify-between items-center sm:hidden">
-                    <span className="text-sm text-muted-foreground">{app.company}</span>
-                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button aria-haspopup="true" size="icon" variant="ghost" className="-mr-2 -mt-2">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => onEditApplication(app)}>
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() => onDeleteApplication(app.id)}
-                            className="text-destructive"
-                          >
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                  </div>
-                  <span className="hidden sm:inline">{app.company}</span>
+              <TableRow key={app.id}>
+                <TableCell className="font-medium">{app.company}</TableCell>
+                <TableCell>{app.role}</TableCell>
+                <TableCell>{format(new Date(app.date), "MMM d, yyyy")}</TableCell>
+                <TableCell>
+                  <StatusBadge status={app.status} />
                 </TableCell>
-                <TableCell className="sm:table-cell block p-0 sm:p-4 text-lg sm:text-sm font-bold sm:font-normal border-b sm:border-none">{app.role}</TableCell>
-                <TableCell className="hidden sm:table-cell p-0 sm:p-4">
-                  {format(new Date(app.date), "MMM d, yyyy")}
-                </TableCell>
-                <TableCell className="sm:table-cell p-0 sm:p-4 pt-2">
-                   <div className="flex justify-between items-center">
-                    <div className="sm:hidden text-sm text-muted-foreground">
-                       {format(new Date(app.date), "MMM d, yyyy")}
-                    </div>
-                     <Select
-                        value={app.status}
-                        onValueChange={(value: ApplicationStatus) =>
-                          onUpdateStatus(app.id, value)
-                        }
-                      >
-                        <SelectTrigger className="w-full sm:w-[120px] text-xs h-8">
-                          <SelectValue placeholder="Update..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Applied">Applied</SelectItem>
-                          <SelectItem value="Interviewing">Interviewing</SelectItem>
-                          <SelectItem value="Offer">Offer</SelectItem>
-                          <SelectItem value="Rejected">Rejected</SelectItem>
-                        </SelectContent>
-                      </Select>
-                   </div>
-                </TableCell>
-                <TableCell className="text-right hidden sm:table-cell p-0 sm:p-4">
+                <TableCell className="text-right">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button aria-haspopup="true" size="icon" variant="ghost">
@@ -186,16 +169,9 @@ export function ApplicationsTable({
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => onEditApplication(app)}>
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        onClick={() => onDeleteApplication(app.id)}
-                        className="text-destructive"
-                      >
-                        Delete
-                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onEditApplication(app)}>Edit</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">Delete</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>

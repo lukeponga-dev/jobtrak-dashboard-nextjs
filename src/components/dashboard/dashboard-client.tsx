@@ -185,14 +185,13 @@ export function DashboardClient({
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
       />
-      <div className="px-4 lg:px-6">
-        <ApplicationsTable
-            applications={filteredApplications}
-            onUpdateStatus={handleUpdateStatus}
-            onDeleteApplication={handleDeleteApplication}
-            onEditApplication={setEditingApplication}
-        />
-      </div>
+      
+      <ApplicationsTable
+          applications={filteredApplications}
+          onUpdateStatus={handleUpdateStatus}
+          onDeleteApplication={handleDeleteApplication}
+          onEditApplication={setEditingApplication}
+      />
 
        {isMobile && (
          <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
