@@ -44,12 +44,91 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 
-export function SignupForm({
+function AuthFormContent({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
   const { pending } = useFormStatus();
+
+  return (
+    <>
+      <div className="space-y-4">
+        <form className="space-y-4" action={signUp}>
+          <div className="space-y-2">
+            <Label htmlFor="full-name">Full name</Label>
+            <Input
+              id="full-name"
+              name="full-name"
+              placeholder="Max Robinson"
+              required
+              disabled={pending}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+              disabled={pending}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input id="password" name="password" type="password" required disabled={pending} />
+          </div>
+          <Button
+            type="submit"
+            className="w-full"
+            loading={pending}
+          >
+            Create an account
+          </Button>
+        </form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+        
+        <form action={getGoogleOauthUrl}>
+          <Button variant="outline" className="w-full" type="submit" loading={pending}>
+            <GoogleIcon className="mr-2" />
+            Sign up with Google
+          </Button>
+        </form>
+
+        {searchParams?.message && (
+          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">
+            {searchParams.message}
+          </p>
+        )}
+      </div>
+      <div className="mt-4 text-center text-sm">
+        Already have an account?{" "}
+        <Link href="/login" className="text-primary/80 hover:text-primary underline">
+          Login
+        </Link>
+      </div>
+    </>
+  );
+}
+
+
+export function SignupForm({
+  searchParams,
+}: {
+  searchParams: { message: string };
+}) {
 
   return (
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
@@ -63,72 +142,7 @@ export function SignupForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <form className="space-y-4" action={signUp}>
-            <div className="space-y-2">
-              <Label htmlFor="full-name">Full name</Label>
-              <Input
-                id="full-name"
-                name="full-name"
-                placeholder="Max Robinson"
-                required
-                disabled={pending}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                disabled={pending}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required disabled={pending} />
-            </div>
-            <Button
-              type="submit"
-              className="w-full"
-              loading={pending}
-            >
-              Create an account
-            </Button>
-          </form>
-
-           <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-          
-          <form action={getGoogleOauthUrl}>
-            <Button variant="outline" className="w-full" type="submit" loading={pending}>
-              <GoogleIcon className="mr-2" />
-              Sign up with Google
-            </Button>
-          </form>
-
-          {searchParams?.message && (
-            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">
-              {searchParams.message}
-            </p>
-          )}
-        </div>
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link href="/login" className="text-primary/80 hover:text-primary underline">
-            Login
-          </Link>
-        </div>
+         <AuthFormContent searchParams={searchParams} />
       </CardContent>
     </Card>
   );
