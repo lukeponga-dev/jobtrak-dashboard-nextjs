@@ -7,7 +7,7 @@ import { placeholderImages } from '@/lib/placeholder-images';
 import {
   LayoutDashboard,
   Sparkles,
-  FileStack,
+  ClipboardCheck,
 } from 'lucide-react';
 
 const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
@@ -99,7 +99,7 @@ export default function LandingPage() {
                 </div>
                 <div className="flex flex-col items-start space-y-2">
                   <div className="bg-primary/10 p-3 rounded-full">
-                    <FileStack className="h-8 w-8 text-primary" />
+                    <ClipboardCheck className="h-8 w-8 text-primary" />
                   </div>
                   <h3 className="text-xl font-bold">Effortless Tracking</h3>
                   <p className="text-muted-foreground">
