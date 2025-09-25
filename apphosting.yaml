@@ -5,3 +5,6 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+  environmentVariables:
+    NEXT_PUBLIC_SUPABASE_URL: "https://qxsdphvoaxawtnflrxyp.supabase.co"
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: "sb_publishable_ZwUilz-UPpqPEZLXbNkvGA_tVPQ7Lu6"
