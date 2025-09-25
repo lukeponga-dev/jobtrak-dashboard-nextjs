@@ -183,42 +183,28 @@ export function DashboardClient({
   const currentView = isMobile ? 'card' : view;
 
   return (
-    <div className="flex flex-col gap-8">
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <StatsCards 
-                applications={applications}
-                activeFilter={activeFilter}
-                onFilterChange={setActiveFilter}
-            />
-            <div className="flex items-center gap-2 ml-auto">
-                <Button size="sm" variant="outline" onClick={handleExport}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
-
-    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+    <div className="flex flex-1 flex-col gap-4 md:gap-8">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-         <div className="hidden sm:flex items-center gap-2 ml-auto">
-            {!isMobile && <ViewToggle view={view} setView={setView} />}
-            <Button size="sm" variant="outline" onClick={handleExport}>
-                <Download className="h-4 w-4 mr-2" />
-                Export
+        <StatsCards
+          applications={applications}
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+        />
+        <div className="hidden sm:flex items-center gap-2 ml-auto">
+          {!isMobile && <ViewToggle view={view} setView={setView} />}
+          <Button size="sm" variant="outline" onClick={handleExport}>
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+            <Button size="sm">
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add New
             </Button>
-            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                <Button size="sm">
-                <PlusCircle className="h-4 w-4 mr-2" />
-                Add New
-
-                </Button>
-                <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-                    <Button size="sm">
-                    <PlusCircle className="h-4 w-4 mr-2" />
-                    Add Application
-                    </Button>
-                </AddApplicationDialog>
-            </div>
+          </AddApplicationDialog>
         </div>
-      
+      </div>
+
       {currentView === 'list' ? (
         <ApplicationsTable
           applications={filteredApplications}
@@ -234,23 +220,22 @@ export function DashboardClient({
         />
       )}
 
-
-       {isMobile && (
-         <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
-            <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
-              <Download className="h-6 w-6" />
-              <span className="sr-only">Export</span>
+      {isMobile && (
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+          <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
+            <Download className="h-6 w-6" />
+            <span className="sr-only">Export</span>
+          </Button>
+          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+            <Button size="icon" className="w-14 h-14 rounded-full shadow-lg">
+              <PlusCircle className="h-6 w-6" />
+              <span className="sr-only">Add New Application</span>
             </Button>
-            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-              <Button size="icon" className="w-14 h-14 rounded-full shadow-lg">
-                <PlusCircle className="h-6 w-6" />
-                <span className="sr-only">Add New Application</span>
-              </Button>
-            </AddApplicationDialog>
-          </div>
-       )}
+          </AddApplicationDialog>
+        </div>
+      )}
 
-       {editingApplication && (
+      {editingApplication && (
         <EditApplicationDialog
           application={editingApplication}
           onApplicationUpdate={handleEditApplication}
