@@ -43,10 +43,70 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+function AuthFormContent() {
+  const { pending } = useFormStatus();
+  return (
+    <>
+      <div className="space-y-4">
+        <form action={signIn} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="m@example.com"
+              required
+              disabled={pending}
+            />
+          </div>
+          <div className="space-y-2">
+            <div className="flex items-center">
+              <Label htmlFor="password">Password</Label>
+              <Link
+                href="#"
+                className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
+              >
+                Forgot your password?
+              </Link>
+            </div>
+            <Input id="password" name="password" type="password" required disabled={pending} />
+          </div>
+          <Button type="submit" className="w-full" loading={pending}>
+            Login
+          </Button>
+        </form>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-card px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+        
+        <form action={getGoogleOauthUrl}>
+          <Button variant="outline" className="w-full" type="submit" loading={pending}>
+            <GoogleIcon className="mr-2" />
+            Sign in with Google
+          </Button>
+        </form>
+      </div>
+      <div className="mt-4 text-center text-sm">
+        Don&apos;t have an account?{" "}
+        <Link href="/signup" className="text-primary/80 hover:text-primary underline">
+          Sign up
+        </Link>
+      </div>
+    </>
+  );
+}
+
 
 export function LoginForm() {
-  const { pending } = useFormStatus();
-
   return (
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
       <CardHeader className="space-y-2 text-center">
@@ -59,60 +119,7 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-4">
-          <form action={signIn} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="m@example.com"
-                required
-                disabled={pending}
-              />
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="#"
-                  className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input id="password" name="password" type="password" required disabled={pending} />
-            </div>
-            <Button type="submit" className="w-full" loading={pending}>
-              Login
-            </Button>
-          </form>
-
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-card px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-          
-          <form action={getGoogleOauthUrl}>
-            <Button variant="outline" className="w-full" type="submit" loading={pending}>
-              <GoogleIcon className="mr-2" />
-              Sign in with Google
-            </Button>
-          </form>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-primary/80 hover:text-primary underline">
-            Sign up
-          </Link>
-        </div>
+        <AuthFormContent />
       </CardContent>
     </Card>
   );
