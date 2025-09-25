@@ -200,7 +200,7 @@ export async function deleteApplication(id: number) {
 
     revalidatePath('/dashboard');
     return {success: true};
-  } catch (error) {
+  } catch (error)
     console.error('Error deleting application:', error);
     return {success: false, error: 'Failed to delete application.'};
   }
