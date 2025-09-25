@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
-import { signIn, signInWithGoogle } from "@/lib/actions";
+import { signIn, getGoogleOauthUrl } from "@/lib/actions";
 import {
   Card,
   CardContent,
@@ -63,7 +63,12 @@ export function LoginForm() {
 
   const handleGoogleSignIn = () => {
     startTransition(async () => {
-      await signInWithGoogle();
+      const { url, error } = await getGoogleOauthUrl();
+      if (url) {
+        router.push(url);
+      } else if (error) {
+        router.push(`/login?message=${error}`);
+      }
     });
   };
 
@@ -119,12 +124,10 @@ export function LoginForm() {
             </div>
           </div>
           
-          <form action={handleGoogleSignIn}>
-            <Button variant="outline" className="w-full" type="submit" loading={isPending}>
-              <GoogleIcon className="mr-2" />
-              Sign in with Google
-            </Button>
-          </form>
+          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isPending}>
+            <GoogleIcon className="mr-2" />
+            Sign in with Google
+          </Button>
         </div>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
@@ -136,4 +139,3 @@ export function LoginForm() {
     </Card>
   );
 }
-

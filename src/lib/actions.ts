@@ -53,7 +53,7 @@ export async function signUp(formData: FormData) {
 }
 
 
-export async function signInWithGoogle() {
+export async function getGoogleOauthUrl() {
   const origin = headers().get('origin');
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -64,15 +64,11 @@ export async function signInWithGoogle() {
   });
 
   if (error) {
-    console.error('Error signing in with Google:', error);
-    return redirect('/login?message=Could not authenticate with Google');
+    console.error('Error getting Google OAuth URL:', error);
+    return { error: 'Could not get Google OAuth URL' };
   }
 
-  if (data.url) {
-    return redirect(data.url);
-  }
-
-  return redirect('/login?message=Could not authenticate with Google');
+  return { url: data.url };
 }
 
 

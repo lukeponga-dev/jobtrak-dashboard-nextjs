@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
-import { signUp, signInWithGoogle } from "@/lib/actions";
+import { signUp, getGoogleOauthUrl } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 
@@ -67,7 +67,12 @@ export function SignupForm({
 
   const handleGoogleSignIn = () => {
     startTransition(async () => {
-      await signInWithGoogle();
+      const { url, error } = await getGoogleOauthUrl();
+      if (url) {
+        router.push(url);
+      } else if (error) {
+        router.push(`/login?message=${error}`);
+      }
     });
   };
 
@@ -128,12 +133,10 @@ export function SignupForm({
             </div>
           </div>
           
-          <form action={handleGoogleSignIn}>
-            <Button variant="outline" className="w-full" type="submit" loading={isPending}>
-              <GoogleIcon className="mr-2" />
-              Sign up with Google
-            </Button>
-          </form>
+          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isPending}>
+            <GoogleIcon className="mr-2" />
+            Sign up with Google
+          </Button>
 
           {searchParams?.message && (
             <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">
