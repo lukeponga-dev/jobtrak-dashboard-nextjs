@@ -10,12 +10,9 @@
 
 import {revalidatePath} from 'next/cache';
 import {suggestApplicationStatus as suggestStatus} from '@/ai/flows/suggest-application-status';
-import {generateApplicationNotes as genNotes} from '@/ai/flows/generate-application-notes.ts';
-import { findJobs as findJobsFlow } from '@/ai/flows/find-jobs-flow';
 
 import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
 import type {GenerateApplicationNotesInput} from '@/ai/flows/generate-application-notes.ts';
-import type { FindJobsInput } from '@/ai/flows/find-jobs-flow.d';
 
 import type {JobApplication, ApplicationStatus} from './types';
 import {createClient} from './supabase/server';
