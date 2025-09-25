@@ -17,6 +17,8 @@ import {
   deleteApplication,
 } from "@/lib/actions";
 import { ApplicationsTable } from "./applications-table";
+import { ApplicationsCards } from "./applications-cards";
+import { ViewToggle, type View } from "./view-toggle";
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -29,6 +31,7 @@ export function DashboardClient({
     initialApplications
   );
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
+  const [view, setView] = useState<View>("card");
 
   const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
 
@@ -165,17 +168,20 @@ export function DashboardClient({
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
-        <div className="hidden sm:flex flex-1 items-center justify-end gap-2">
-          <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-            <Button size="sm" className="w-full sm:w-auto">
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add New
-            </Button>
-          </AddApplicationDialog>
+         <div className="flex items-center gap-2 ml-auto">
+            <ViewToggle view={view} setView={setView} />
+            <div className="hidden sm:flex items-center gap-2">
+                <Button size="sm" variant="outline" onClick={handleExport}>
+                    <Download className="h-4 w-4 mr-2" />
+                    Export
+                </Button>
+                <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                    <Button size="sm">
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    Add New
+                    </Button>
+                </AddApplicationDialog>
+            </div>
         </div>
       </div>
       <StatsCards 
@@ -183,12 +189,24 @@ export function DashboardClient({
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
       />
-      <ApplicationsTable
-        applications={filteredApplications}
-        onUpdateStatus={handleUpdateStatus}
-        onDeleteApplication={handleDeleteApplication}
-        onEditApplication={setEditingApplication}
-      />
+      <div className="px-4 lg:px-6">
+        {view === 'list' ? (
+            <ApplicationsTable
+                applications={filteredApplications}
+                onUpdateStatus={handleUpdateStatus}
+                onDeleteApplication={handleDeleteApplication}
+                onEditApplication={setEditingApplication}
+            />
+        ) : (
+            <ApplicationsCards
+                applications={filteredApplications}
+                onUpdateStatus={handleUpdateStatus}
+                onDeleteApplication={handleDeleteApplication}
+                onEditApplication={setEditingApplication}
+            />
+        )}
+      </div>
+
        <div className="sm:hidden fixed bottom-4 right-4 space-y-2">
         <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
           <Download className="h-6 w-6" />
