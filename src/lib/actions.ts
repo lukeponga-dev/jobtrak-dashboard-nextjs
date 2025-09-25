@@ -3,11 +3,17 @@
 
 import { revalidatePath } from "next/cache";
 import { suggestApplicationStatus as suggestStatus } from "@/ai/flows/suggest-application-status";
+import { generateApplicationNotes as genNotes } from "@/ai/flows/generate-application-notes";
+
 import type { SuggestApplicationStatusInput } from "@/ai/flows/suggest-application-status";
+import type { GenerateApplicationNotesInput } from "@/ai/flows/generate-application-notes";
+
 import type { JobApplication, ApplicationStatus } from "./types";
 import { createClient } from "./supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 export async function signIn(formData: FormData) {
   const email = formData.get("email") as string;
@@ -23,7 +29,6 @@ export async function signIn(formData: FormData) {
     return { success: false, error: "Could not authenticate user" };
   }
 
-  revalidatePath("/dashboard", "layout");
   return { success: true };
 }
 
@@ -81,6 +86,16 @@ export async function suggestApplicationStatus(
   } catch (error) {
     console.error("Error suggesting application status:", error);
     return { success: false, error: "Failed to suggest status." };
+  }
+}
+
+export async function generateApplicationNotes(input: GenerateApplicationNotesInput) {
+  try {
+    const result = await genNotes(input);
+    return { success: true, data: result };
+  } catch (error) {
+    console.error("Error generating application notes:", error);
+    return { success: false, error: "Failed to generate notes." };
   }
 }
 
