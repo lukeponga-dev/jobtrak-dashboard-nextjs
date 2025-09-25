@@ -57,6 +57,8 @@ export function LoginForm() {
         // You might want to show an error message to the user
         console.error(result.error);
         router.push(`/login?message=${result.error}`);
+      } else if (result?.success) {
+        router.push("/dashboard");
       }
     });
   };

@@ -20,11 +20,11 @@ export async function signIn(formData: FormData) {
   });
 
   if (error) {
-    return { error: "Could not authenticate user" };
+    return { success: false, error: "Could not authenticate user" };
   }
 
   revalidatePath("/dashboard", "layout");
-  redirect("/dashboard");
+  return { success: true };
 }
 
 export async function signUp(formData: FormData) {
