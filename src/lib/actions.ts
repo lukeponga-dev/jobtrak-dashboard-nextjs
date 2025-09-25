@@ -12,6 +12,7 @@ import type {JobApplication, ApplicationStatus} from './types';
 import {createClient} from './supabase/server';
 import {headers} from 'next/headers';
 import {redirect} from 'next/navigation';
+import { Resend } from 'resend';
 
 export async function signIn(formData: FormData) {
   const email = formData.get('email') as string;
@@ -259,17 +260,42 @@ export async function changePassword(formData: FormData) {
 export async function sendSupportEmail(formData: FormData) {
   const subject = formData.get('subject') as string;
   const message = formData.get('message') as string;
-  const email = 'developmentdesignsltd@gmail.com';
+  const toEmail = process.env.SUPPORT_EMAIL_TO;
+  const fromEmail = process.env.SUPPORT_EMAIL_FROM;
+  const resendApiKey = process.env.RESEND_API_KEY;
 
   if (!subject || !message) {
     return { success: false, error: 'Subject and message are required.' };
   }
+  
+  if (!toEmail || !fromEmail || !resendApiKey) {
+    console.error('Missing email configuration in environment variables.');
+    return { success: false, error: 'Server is not configured to send emails.' };
+  }
+  
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userEmail = user?.email || 'anonymous';
+  
+  const resend = new Resend(resendApiKey);
 
   try {
-    const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
-    return { success: true, mailto };
+    const { data, error } = await resend.emails.send({
+      from: `JobTrackr Support <${fromEmail}>`,
+      to: [toEmail],
+      subject: `Support Request: ${subject}`,
+      html: `<p>New support request from: ${userEmail}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
+      reply_to: userEmail
+    });
+
+    if (error) {
+      console.error('Resend API Error:', error);
+      return { success: false, error: 'Could not send support email.' };
+    }
+
+    return { success: true, message: 'Your support request has been sent successfully!' };
   } catch (error) {
-    console.error('Error creating mailto link:', error);
-    return { success: false, error: 'Could not create email link.' };
+    console.error('Error sending support email:', error);
+    return { success: false, error: 'Could not send support email.' };
   }
 }

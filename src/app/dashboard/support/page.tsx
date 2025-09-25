@@ -41,11 +41,10 @@ export default function SupportPage() {
       
       const result = await sendSupportEmail(formData);
 
-      if (result.success && result.mailto) {
-        window.location.href = result.mailto;
+      if (result.success) {
         toast({
-          title: 'Ready to Send!',
-          description: "Your email client has been opened to send the message.",
+          title: 'Message Sent!',
+          description: "Your support request has been sent successfully.",
         });
         setSubject('');
         setMessage('');
