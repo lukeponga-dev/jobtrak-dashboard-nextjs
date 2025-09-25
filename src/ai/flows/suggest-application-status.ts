@@ -2,15 +2,20 @@
 
 /**
  * @fileOverview An AI agent that suggests the most likely job application status based on the application date and role.
+ * This file defines a Genkit "flow", which is a server-side function that uses an AI model
+ * to perform a specific task.
  *
- * - suggestApplicationStatus - A function that suggests the application status.
- * - SuggestApplicationStatusInput - The input type for the suggestApplicationStatus function.
- * - SuggestApplicationStatusOutput - The return type for the suggestApplicationStatus function.
+ * This flow:
+ * 1. Defines the expected input (`SuggestApplicationStatusInput`) and output (`SuggestApplicationStatusOutput`) schemas using Zod.
+ * 2. Creates a prompt that instructs the AI model on how to behave.
+ * 3. Defines the main flow (`suggestApplicationStatusFlow`) which orchestrates the call to the AI model.
+ * 4. Exports a wrapper function (`suggestApplicationStatus`) to be used as a Server Action in the application.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
+// Defines the schema for the input data required by the flow.
 const SuggestApplicationStatusInputSchema = z.object({
   applicationDate: z
     .string()
@@ -21,6 +26,7 @@ export type SuggestApplicationStatusInput = z.infer<
   typeof SuggestApplicationStatusInputSchema
 >;
 
+// Defines the schema for the output data returned by the flow.
 const SuggestApplicationStatusOutputSchema = z.object({
   suggestedStatus: z
     .enum(['Applied', 'Interviewing', 'Offer', 'Rejected'])
@@ -32,12 +38,17 @@ export type SuggestApplicationStatusOutput = z.infer<
   typeof SuggestApplicationStatusOutputSchema
 >;
 
+/**
+ * Public-facing function that can be called from Server Actions.
+ * It invokes the Genkit flow to get the status suggestion.
+ */
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
 ): Promise<SuggestApplicationStatusOutput> {
   return suggestApplicationStatusFlow(input);
 }
 
+// Defines the AI prompt with instructions for the model.
 const prompt = ai.definePrompt({
   name: 'suggestApplicationStatusPrompt',
   input: {schema: SuggestApplicationStatusInputSchema},
@@ -54,6 +65,7 @@ const prompt = ai.definePrompt({
   Return the suggested status.`,
 });
 
+// Defines the Genkit flow that executes the prompt.
 const suggestApplicationStatusFlow = ai.defineFlow(
   {
     name: 'suggestApplicationStatusFlow',
@@ -61,7 +73,9 @@ const suggestApplicationStatusFlow = ai.defineFlow(
     outputSchema: SuggestApplicationStatusOutputSchema,
   },
   async input => {
+    // Run the prompt with the given input.
     const {output} = await prompt(input);
+    // Return the structured output from the model.
     return output!;
   }
 );

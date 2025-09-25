@@ -10,20 +10,9 @@ import {
   SidebarHeader,
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
-import Link from "next/link";
 
 
 export default async function DashboardLayout({
@@ -40,9 +29,12 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+<<<<<<< HEAD
   const userFullName = user.user_metadata.full_name || user.email;
   const userInitial = user.email?.charAt(0).toUpperCase() || '?';
 
+=======
+>>>>>>> main
   return (
     <SidebarProvider>
       <Sidebar>
@@ -62,6 +54,7 @@ export default async function DashboardLayout({
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
+<<<<<<< HEAD
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur sm:px-6">
           <SidebarTrigger className="sm:hidden" />
           <div className="flex-1" />
@@ -101,6 +94,8 @@ export default async function DashboardLayout({
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
+=======
+>>>>>>> main
         {children}
       </SidebarInset>
     </SidebarProvider>

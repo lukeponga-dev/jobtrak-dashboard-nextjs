@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Award, Briefcase, ClipboardList, XCircle } from "lucide-react";
+import { Award, Briefcase, ClipboardList, XCircle, FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -25,9 +25,13 @@ export function StatsCards({
   const rejectedCount = applications.filter(
     (app) => app.status === "Rejected"
   ).length;
+<<<<<<< HEAD
   const appliedCount = applications.filter(
     (app) => app.status === "Applied"
   ).length;
+=======
+  const appliedCount = applications.filter((app) => app.status === "Applied").length;
+>>>>>>> main
 
 
   const stats: {
@@ -47,8 +51,13 @@ export function StatsCards({
      {
       title: "Applied",
       value: appliedCount,
+<<<<<<< HEAD
       icon: ClipboardList,
       color: "text-blue-500",
+=======
+      icon: FileText,
+      color: "text-blue-400",
+>>>>>>> main
       filter: "Applied",
     },
     {
@@ -75,6 +84,7 @@ export function StatsCards({
   ];
 
   return (
+<<<<<<< HEAD
     <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 px-4 lg:px-6">
       {stats.map((stat) => (
         <Card
@@ -84,6 +94,18 @@ export function StatsCards({
             activeFilter === stat.filter
               ? "ring-2 ring-primary bg-card"
               : "ring-0"
+=======
+    <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+      {stats.map((stat, index) => (
+        <Card
+          key={stat.title}
+          className={cn(
+            "cursor-pointer transition-all duration-200 ease-in-out hover:shadow-lg hover:-translate-y-1",
+            "animate-fade-in-up",
+            activeFilter === stat.filter
+              ? "ring-2 ring-primary bg-primary/10"
+              : "ring-0 hover:bg-card/60"
+>>>>>>> main
           )}
           onClick={() => onFilterChange(stat.filter)}
         >

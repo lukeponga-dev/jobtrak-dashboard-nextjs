@@ -1,4 +1,5 @@
 /**
+<<<<<<< HEAD
  * @fileoverview This is the primary client component for the dashboard. It manages all
  * interactive state and logic for the job application tracker, including adding, editing,
  * updating, and deleting applications.
@@ -9,6 +10,13 @@
  * - All server communications are delegated to the server actions defined in `@/lib/actions`.
  */
 
+=======
+ * @file This is the main client component for the dashboard.
+ * It manages the state for job applications, handles all user interactions (add, edit, delete),
+ * and orchestrates the rendering of child components like the stats cards and applications table.
+ * It receives its initial data from a server component.
+ */
+>>>>>>> main
 "use client";
 
 import { useState, useMemo } from "react";
@@ -27,6 +35,13 @@ import {
   deleteApplication,
 } from "@/lib/actions";
 import { ApplicationsTable } from "./applications-table";
+<<<<<<< HEAD
+=======
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ApplicationsCards } from "./applications-cards";
+import { ViewToggle, type View } from "./view-toggle";
+
+>>>>>>> main
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -35,15 +50,24 @@ type DashboardClientProps = {
 export function DashboardClient({
   initialApplications
 }: DashboardClientProps) {
+  // State for managing the list of applications.
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
+<<<<<<< HEAD
+=======
+  // State for filtering applications by status.
+>>>>>>> main
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
+  const isMobile = useIsMobile();
+  const [view, setView] = useState<View>(isMobile ? 'card' : 'list');
 
+  // State for tracking which application is currently being edited.
   const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
 
   const { toast } = useToast();
 
+  // Memoized derivation of applications to display based on the active filter.
   const filteredApplications = useMemo(() => {
     if (activeFilter === "All") {
       return applications;
@@ -51,6 +75,7 @@ export function DashboardClient({
     return applications.filter((app) => app.status === activeFilter);
   }, [applications, activeFilter]);
 
+  // Handler for adding a new application. Calls a server action.
   const handleAddApplication = async (
     newApplication: Omit<JobApplication, "id" | "user_id">
   ) => {
@@ -75,6 +100,7 @@ export function DashboardClient({
     }
   };
 
+  // Handler for editing an existing application. Calls a server action.
   const handleEditApplication = async (updatedApplication: JobApplication) => {
     const originalApplications = applications;
     setApplications((prev) =>
@@ -101,7 +127,7 @@ export function DashboardClient({
     setEditingApplication(null);
   };
 
-
+  // Handler for updating only the status of an application.
   const handleUpdateStatus = async (id: number, status: ApplicationStatus) => {
     const originalApplications = applications;
     setApplications((prev) =>
@@ -124,6 +150,7 @@ export function DashboardClient({
     }
   };
 
+  // Handler for deleting an application. Calls a server action.
   const handleDeleteApplication = async (id: number) => {
     const originalApplications = applications;
     setApplications((prev) => prev.filter((app) => app.id !== id));
@@ -145,6 +172,7 @@ export function DashboardClient({
     }
   };
 
+  // Handler for exporting the current view to a CSV file.
   const handleExport = () => {
     const headers = ["Company", "Role", "Date Applied", "Status", "Notes"];
     const rows = filteredApplications.map((app) => [
@@ -171,7 +199,10 @@ export function DashboardClient({
     document.body.removeChild(link);
   };
 
+  const currentView = isMobile ? 'card' : view;
+
   return (
+<<<<<<< HEAD
     <>
       <div className="flex-1 flex items-center justify-end gap-2">
         <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
@@ -197,8 +228,61 @@ export function DashboardClient({
         onDeleteApplication={handleDeleteApplication}
         onEditApplication={setEditingApplication}
       />
+=======
+    <div className="flex flex-1 flex-col gap-4 md:gap-8">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <StatsCards
+          applications={applications}
+          activeFilter={activeFilter}
+          onFilterChange={setActiveFilter}
+        />
+        <div className="hidden sm:flex items-center gap-2 ml-auto">
+          {!isMobile && <ViewToggle view={view} setView={setView} />}
+          <Button size="sm" variant="outline" onClick={handleExport}>
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+            <Button size="sm">
+              <PlusCircle className="h-4 w-4 mr-2" />
+              Add New
+            </Button>
+          </AddApplicationDialog>
+        </div>
+      </div>
+>>>>>>> main
 
-       {editingApplication && (
+      {currentView === 'list' ? (
+        <ApplicationsTable
+          applications={filteredApplications}
+          onDeleteApplication={handleDeleteApplication}
+          onEditApplication={setEditingApplication}
+        />
+      ) : (
+        <ApplicationsCards
+          applications={filteredApplications}
+          onUpdateStatus={handleUpdateStatus}
+          onDeleteApplication={handleDeleteApplication}
+          onEditApplication={setEditingApplication}
+        />
+      )}
+
+      {isMobile && (
+        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+          <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
+            <Download className="h-6 w-6" />
+            <span className="sr-only">Export</span>
+          </Button>
+          <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+            <Button size="icon" className="w-14 h-14 rounded-full shadow-lg">
+              <PlusCircle className="h-6 w-6" />
+              <span className="sr-only">Add New Application</span>
+            </Button>
+          </AddApplicationDialog>
+        </div>
+      )}
+
+      {editingApplication && (
         <EditApplicationDialog
           application={editingApplication}
           onApplicationUpdate={handleEditApplication}
@@ -206,6 +290,10 @@ export function DashboardClient({
           onOpenChange={(open) => !open && setEditingApplication(null)}
         />
       )}
+<<<<<<< HEAD
     </>
+=======
+    </div>
+>>>>>>> main
   );
 }

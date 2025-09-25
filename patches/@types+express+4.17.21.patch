@@ -1,0 +1,10 @@
+--- a/node_modules/@types/express/index.d.ts
++++ b/node_modules/@types/express/index.d.ts
+@@ -47,7 +47,7 @@
+      * This is a built-in middleware function in Express. It serves static files and is based on serve-static.
+      */
+-    var static: serveStatic.RequestHandlerConstructor<Response>;
++    var static_: serveStatic.RequestHandlerConstructor<Response>;
+ 
+     /**
+      * This is a built-in middleware function in Express. It parses incoming requests with urlencoded payloads and is based on body-parser.

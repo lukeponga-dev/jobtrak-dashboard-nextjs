@@ -1,15 +1,12 @@
 
-import Image from "next/image";
-import { LoginForm } from "./login-form";
-import { placeholderImages } from "@/lib/placeholder-images";
-
-const bgImage = placeholderImages.find(p => p.id === 'login-background-2');
+import { LoginClient } from "./login-client";
 
 export default function LoginPage({
   searchParams,
 }: {
   searchParams?: { message?: string };
 }) {
+<<<<<<< HEAD
   return (
     <div className="w-full min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
        {bgImage && (
@@ -27,4 +24,7 @@ export default function LoginPage({
       </div>
     </div>
   );
+=======
+  return <LoginClient searchParams={searchParams} />;
+>>>>>>> main
 }

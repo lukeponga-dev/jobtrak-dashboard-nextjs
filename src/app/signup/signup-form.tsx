@@ -1,20 +1,20 @@
+'use client';
 
-"use client";
-
-import { useFormStatus } from "react-dom";
-import Link from "next/link";
+import { useTransition } from 'react';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Logo } from "@/components/logo";
-import { Button } from "@/components/ui/button";
-import { signUp, getGoogleOauthUrl } from "@/lib/actions";
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Logo } from '@/components/logo';
+import { Button } from '@/components/ui/button';
+import { signUp, getGoogleOauthUrl } from '@/lib/actions';
+import { useToast } from '@/hooks/use-toast';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -43,106 +43,88 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export function SignupForm({ searchParams }: { searchParams: { message: string } }) {
+  const [isPending, startTransition] = useTransition();
+  const { toast } = useToast();
 
-function AuthFormContent({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
-  const { pending } = useFormStatus();
+  const handleSignUp = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    startTransition(async () => {
+      await signUp(formData);
+    });
+  };
 
-  return (
-    <>
-      <div className="space-y-4">
-        <form className="space-y-4" action={signUp}>
-          <div className="space-y-2">
-            <Label htmlFor="full-name">Full name</Label>
-            <Input
-              id="full-name"
-              name="full-name"
-              placeholder="Max Robinson"
-              required
-              disabled={pending}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-              disabled={pending}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" name="password" type="password" required disabled={pending} />
-          </div>
-          <Button
-            type="submit"
-            className="w-full"
-            loading={pending}
-          >
-            Create an account
-          </Button>
-        </form>
-
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t" />
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-card px-2 text-muted-foreground">
-              Or continue with
-            </span>
-          </div>
-        </div>
-        
-        <form action={getGoogleOauthUrl}>
-          <Button variant="outline" className="w-full" type="submit" loading={pending}>
-            <GoogleIcon className="mr-2" />
-            Sign up with Google
-          </Button>
-        </form>
-
-        {searchParams?.message && (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">
-            {searchParams.message}
-          </p>
-        )}
-      </div>
-      <div className="mt-4 text-center text-sm">
-        Already have an account?{" "}
-        <Link href="/login" className="text-primary/80 hover:text-primary underline">
-          Login
-        </Link>
-      </div>
-    </>
-  );
-}
-
-
-export function SignupForm({
-  searchParams,
-}: {
-  searchParams: { message: string };
-}) {
+  const handleGoogleSignIn = () => {
+    startTransition(async () => {
+      const result = await getGoogleOauthUrl();
+      if (result.success && result.url) {
+        window.location.href = result.url;
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Sign-up Failed',
+          description: result.error,
+        });
+      }
+    });
+  };
 
   return (
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
       <CardHeader className="space-y-2 text-center">
-         <div className="flex justify-center">
-            <Logo />
+        <div className="flex justify-center">
+          <Logo />
         </div>
         <CardTitle className="text-2xl font-bold">Create an Account</CardTitle>
-        <CardDescription>
-          Enter your information to get started with JobTrackr.
-        </CardDescription>
+        <CardDescription>Enter your information to get started with JobTrackr.</CardDescription>
       </CardHeader>
       <CardContent>
-         <AuthFormContent searchParams={searchParams} />
+        <div className="space-y-4">
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="full-name">Full name</Label>
+              <Input id="full-name" name="full-name" placeholder="Max Robinson" required disabled={isPending} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input id="email" name="email" type="email" placeholder="m@example.com" required disabled={isPending} />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" name="password" type="password" required disabled={isPending} />
+            </div>
+            <Button type="submit" className="w-full" loading={isPending}>
+              Create an account
+            </Button>
+          </form>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+            </div>
+          </div>
+
+          <Button variant="outline" className="w-full" type="button" onClick={handleGoogleSignIn} loading={isPending}>
+            <GoogleIcon className="mr-2" />
+            Sign up with Google
+          </Button>
+
+          {searchParams?.message && (
+            <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">
+              {searchParams.message}
+            </p>
+          )}
+        </div>
+        <div className="mt-4 text-center text-sm">
+          Already have an account?{' '}
+          <Link href="/login" className="text-primary/80 hover:text-primary underline">
+            Login
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

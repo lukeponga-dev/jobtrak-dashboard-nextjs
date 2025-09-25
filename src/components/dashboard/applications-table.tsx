@@ -20,20 +20,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
-import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
+import { Card, CardContent } from "../ui/card";
 import { format } from "date-fns";
 import { StatusBadge } from "./status-badge";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
-  onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
   onEditApplication: (application: JobApplication) => void;
 };
@@ -43,7 +35,6 @@ type SortDirection = "asc" | "desc";
 
 export function ApplicationsTable({
   applications,
-  onUpdateStatus,
   onDeleteApplication,
   onEditApplication,
 }: ApplicationsTableProps) {
@@ -80,11 +71,13 @@ export function ApplicationsTable({
   const SortableHeader = ({
     sortKey: key,
     children,
+    className,
   }: {
     sortKey: SortKey;
     children: React.ReactNode;
+    className?: string;
   }) => (
-    <TableHead>
+    <TableHead className={className}>
       <Button variant="ghost" onClick={() => handleSort(key)}>
         {children}
         <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -94,6 +87,7 @@ export function ApplicationsTable({
 
   if (applications.length === 0) {
     return (
+<<<<<<< HEAD
       <div className="px-4 lg:px-6">
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
@@ -104,10 +98,21 @@ export function ApplicationsTable({
           </CardContent>
         </Card>
       </div>
+=======
+      <Card>
+        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+          <h3 className="text-xl font-semibold">No Applications Yet</h3>
+          <p className="text-muted-foreground mt-2">
+            Click "Add New" to start tracking your job search.
+          </p>
+        </CardContent>
+      </Card>
+>>>>>>> main
     );
   }
 
   return (
+<<<<<<< HEAD
     <div className="px-4 lg:px-6">
       {/* Mobile View */}
       <div className="grid gap-4 md:hidden">
@@ -251,5 +256,47 @@ export function ApplicationsTable({
         </div>
       </Card>
     </div>
+=======
+    <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <SortableHeader sortKey="company">Company</SortableHeader>
+              <SortableHeader sortKey="role">Role</SortableHeader>
+              <SortableHeader sortKey="date">Date Applied</SortableHeader>
+              <SortableHeader sortKey="status">Status</SortableHeader>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sortedApplications.map((app) => (
+              <TableRow key={app.id}>
+                <TableCell className="font-medium">{app.company}</TableCell>
+                <TableCell>{app.role}</TableCell>
+                <TableCell>{format(new Date(app.date), "MMM d, yyyy")}</TableCell>
+                <TableCell>
+                  <StatusBadge status={app.status} />
+                </TableCell>
+                <TableCell className="text-right">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button aria-haspopup="true" size="icon" variant="ghost">
+                        <MoreHorizontal className="h-4 w-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => onEditApplication(app)}>Edit</DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">Delete</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+    </Card>
+>>>>>>> main
   );
 }
