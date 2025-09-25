@@ -68,6 +68,45 @@ npm run dev
 
 The application will be available at [http://localhost:9002](http://localhost:9002).
 
+## 🗂️ Project Structure
+
+```
+.
+├── src
+│   ├── app         # Next.js App Router pages and layouts
+│   ├── ai          # Genkit AI flows and configuration
+│   ├── components  # Reusable React components
+│   ├── lib         # Core logic, Supabase clients, and actions
+│   ├── hooks       # Custom React hooks
+│   └── middleware.ts # Next.js middleware for session management
+├── supabase
+│   └── migrations  # Database migration files
+└── ...
+```
+
+## 📈 Database Schema (ERD)
+
+This diagram shows the relationship between the `users` (managed by Supabase Auth) and the `job_applications` tables.
+
+```mermaid
+erDiagram
+    users {
+        UUID id PK "Primary Key (managed by Supabase)"
+        string email "User's email"
+        json user_metadata "User's metadata (e.g., full_name)"
+    }
+    job_applications {
+        int id PK "Primary Key (auto-increment)"
+        UUID user_id FK "Foreign Key to users.id"
+        string company "Company Name"
+        string role "Job Role"
+        timestamp date "Date of Application"
+        string status "Application Status (e.g., Applied)"
+        text notes "User Notes (optional)"
+    }
+    users ||--o{ job_applications : "has many"
+```
+
 ## 🛠️ Building It Yourself: A High-Level Guide
 
 This project was initially created using [Firebase Studio](https://firebase.google.com/docs/studio), which automates much of the setup. However, you can build a similar application from scratch by following these steps.
@@ -120,19 +159,3 @@ Genkit powers the AI-driven suggestions and notes.
 4.  **Create Flows**: Define Genkit flows (e.g., `src/ai/flows/suggest-application-status.ts`) that take job details as input and use a Gemini model to provide AI features.
 
 This guide provides a high-level overview. Each step involves writing code for UI components, pages, and logic, which you can reference from this project's source code.
-
-## 📁 Project Structure
-
-```
-.
-├── src
-│   ├── app         # Next.js App Router pages and layouts
-│   ├── ai          # Genkit AI flows and configuration
-│   ├── components  # Reusable React components
-│   ├── lib         # Core logic, Supabase clients, and actions
-│   ├── hooks       # Custom React hooks
-│   └── middleware.ts # Next.js middleware for session management
-├── supabase
-│   └── migrations  # Database migration files
-└── ...
-```
