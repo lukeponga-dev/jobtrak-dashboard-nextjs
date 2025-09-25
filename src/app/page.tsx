@@ -52,10 +52,10 @@ export default function LandingPage() {
           <div className="relative container px-4 md:px-6 text-center text-primary-foreground z-10">
             <div className="space-y-4 max-w-3xl mx-auto">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-                Track Your Job Applications, Easily.
+                Organize Your Job Search.
               </h1>
               <p className="text-lg text-primary-foreground/80 md:text-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-                JobTrackr is the professional way to manage applications, stay organized, and gain an edge with AI-powered insights. Focus on what matters: acing the interview.
+                Manage every application in one place with JobTrackr. Stay organized, get AI-powered insights, and keep your focus where it matters—acing the interview.
               </p>
               <div className="space-x-4 pt-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                 <Link
