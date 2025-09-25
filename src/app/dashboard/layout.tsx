@@ -12,17 +12,7 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { LogOut } from "lucide-react";
-import Link from "next/link";
 
 
 export default async function DashboardLayout({
@@ -38,8 +28,6 @@ export default async function DashboardLayout({
   if (!user) {
     redirect("/login");
   }
-
-  const userFullName = user.user_metadata.full_name || user.email;
 
   return (
     <SidebarProvider>
@@ -60,9 +48,7 @@ export default async function DashboardLayout({
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <main className="flex flex-1 flex-col p-4 md:p-6 gap-4 md:gap-8">
-            {children}
-        </main>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   );

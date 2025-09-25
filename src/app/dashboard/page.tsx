@@ -53,8 +53,8 @@ export default async function DashboardPage() {
   // Render the client-side component with the initial data.
   // This separates server-side data fetching from client-side interactivity.
   return (
-    <>
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+    <main className="flex flex-1 flex-col p-4 md:p-6 gap-4 md:gap-8">
+       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div>
             <h1 className="text-2xl font-bold tracking-tight">Welcome, {authUser.user_metadata.full_name || authUser.email}!</h1>
             <p className="text-muted-foreground">Here&apos;s a summary of your job applications.</p>
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
       <DashboardClient
       initialApplications={applications}
       />
-    </>
+    </main>
   );
 }
 
