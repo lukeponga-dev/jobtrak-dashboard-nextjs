@@ -244,4 +244,5 @@ export function DashboardClient({
         />
       )}
     </div>
-  
+  );
+}
