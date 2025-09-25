@@ -115,39 +115,6 @@ export async function suggestApplicationStatus(
   }
 }
 
-/**
- * Calls the Genkit AI flow to generate starter notes for a job application.
- * @param input - The input data for the AI flow, including company and role.
- * @returns The generated notes from the AI or an error.
- */
-export async function generateApplicationNotes(
-  input: GenerateApplicationNotesInput
-) {
-  try {
-    const result = await genNotes(input);
-    return {success: true, data: result};
-  } catch (error) {
-    console.error('Error generating application notes:', error);
-    return {success: false, error: 'Failed to generate notes.'};
-  }
-}
-
-
-/**
- * Calls the Genkit AI flow to find job openings.
- * @param input - The input for the AI flow, including the search query.
- * @returns A list of found jobs or an error.
- */
-export async function findJobs(input: FindJobsInput) {
-  try {
-    const result = await findJobsFlow(input);
-    return { success: true, data: result };
-  } catch (error) {
-    console.error("Error generating application notes:", error);
-    return { success: false, error: "Failed to generate notes." };
-  }
-}
-
 export async function addApplication(application: Omit<JobApplication, 'id' | 'user_id'>) {
   const supabase = createClient();
   const {
@@ -173,7 +140,7 @@ export async function addApplication(application: Omit<JobApplication, 'id' | 'u
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true, data};
+    return {success: true, data};\
   } catch (error) {
     console.error('Error adding application:', error);
     return {success: false, error: 'Failed to add application.'};
@@ -199,7 +166,7 @@ export async function updateApplication(application: Omit<JobApplication, 'user_
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true, data};
+    return {success: true, data};\
   } catch (error) {
     console.error('Error updating application:', error);
     return {success: false, error: 'Failed to update application.'};
@@ -225,10 +192,10 @@ export async function updateApplicationStatus(input: {
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true};
+    return {success: true};\
   } catch (error) {
     console.error('Error updating status:', error);
-    return {success: false, error: 'Failed to update status.'};
+    return {success: false, error: 'Failed to update status.'};\
   }
 }
 
@@ -240,10 +207,10 @@ export async function deleteApplication(id: number) {
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true};
+    return {success: true};\
   } catch (error) { // CORRECT SYNTAX
     console.error('Error deleting application:', error);
-    return {success: false, error: 'Failed to delete application.'};
+    return {success: false, error: 'Failed to delete application.'};\
   }
 }
 
@@ -290,7 +257,7 @@ export async function changePassword(formData: FormData) {
     data: {user},
   } = await supabase.auth.getUser();
   if (!user) {
-    return {success: false, error: 'Authentication error.'};
+    return {success: false, error: 'Authentication error.'};\
   }
 
   const {error} = await supabase.auth.updateUser({
@@ -303,40 +270,11 @@ export async function changePassword(formData: FormData) {
       success: false,
       error:
         'Failed to change password. Your new password must be at least 6 characters long.',
-    };
+    };\
   }
 
   return {
     success: true,
     message: 'Your password has been changed successfully.',
-  };
-}
-
-/**
- * Simulates sending a support email. In a real application, this would integrate
- * with an email service like Resend or Nodemailer.
- * @param formData - The form data containing the subject and message.
- * @returns A success message or an error message.
- */
-export async function sendSupportEmail(formData: FormData) {
-  // This is a placeholder. In a real app, you'd use a service like Resend or Nodemailer.
-  const subject = formData.get('subject');
-  const message = formData.get('message');
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return { success: false, error: 'You must be logged in to send a support email.' };
-  }
-
-  console.log('--- Support Email ---');
-  console.log('From:', user.email);
-  console.log('Subject:', subject);
-  console.log('Message:', message);
-  console.log('---------------------');
-
-  // Simulate an async operation
-  await new Promise(res => setTimeout(res, 500));
-
-  return { success: true, message: 'Your support request has been sent.' };
+  };\
 }

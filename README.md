@@ -7,9 +7,8 @@ A simple, intuitive, and elegant job application tracking dashboard.
 - **Secure Authentication**: Sign up and log in securely with email/password or Google, powered by Supabase Auth.
 - **Intuitive Dashboard**: Get a quick overview of your application stats with clean, easy-to-read cards.
 - **Application Tracking**: Add, update, and delete job applications with details like company, role, date applied, and status.
-- **AI-Powered Suggestions**: Get smart suggestions for your application's status and generate starter notes for your applications.
+- **AI-Powered Suggestions**: Get smart suggestions for your application's status.
 - **Responsive Design**: A fully responsive layout that works beautifully on desktops, tablets, and mobile devices.
-- **Data Export**: Export your application data to a CSV file with a single click.
 
 ## 🚀 Tech Stack
 
@@ -116,12 +115,6 @@ cd my-job-tracker
 ### 2. Set Up ShadCN UI
 
 Integrate ShadCN UI for a library of high-quality, accessible components.
-
-```bash
-npx shadcn-ui@latest init
-```
-
-The CLI will ask you a few questions to configure `components.json`. You can accept the defaults or customize them. After initialization, add components as needed:
 
 ```bash
 npx shadcn-ui@latest add button card input label
