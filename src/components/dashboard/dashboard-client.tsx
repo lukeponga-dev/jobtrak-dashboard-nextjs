@@ -1,22 +1,9 @@
 /**
-<<<<<<< HEAD
- * @fileoverview This is the primary client component for the dashboard. It manages all
- * interactive state and logic for the job application tracker, including adding, editing,
- * updating, and deleting applications.
- *
- * - It receives the initial list of applications from a server component.
- * - It manages the local state for applications, allowing for optimistic UI updates.
- * - It handles user interactions like opening dialogs, filtering, and exporting data.
- * - All server communications are delegated to the server actions defined in `@/lib/actions`.
- */
-
-=======
  * @file This is the main client component for the dashboard.
  * It manages the state for job applications, handles all user interactions (add, edit, delete),
  * and orchestrates the rendering of child components like the stats cards and applications table.
  * It receives its initial data from a server component.
  */
->>>>>>> main
 "use client";
 
 import { useState, useMemo } from "react";
@@ -35,13 +22,10 @@ import {
   deleteApplication,
 } from "@/lib/actions";
 import { ApplicationsTable } from "./applications-table";
-<<<<<<< HEAD
-=======
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ApplicationsCards } from "./applications-cards";
 import { ViewToggle, type View } from "./view-toggle";
 
->>>>>>> main
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -54,10 +38,7 @@ export function DashboardClient({
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
-<<<<<<< HEAD
-=======
   // State for filtering applications by status.
->>>>>>> main
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
   const isMobile = useIsMobile();
   const [view, setView] = useState<View>(isMobile ? 'card' : 'list');
@@ -202,33 +183,6 @@ export function DashboardClient({
   const currentView = isMobile ? 'card' : view;
 
   return (
-<<<<<<< HEAD
-    <>
-      <div className="flex-1 flex items-center justify-end gap-2">
-        <Button size="sm" variant="outline" className="w-full sm:w-auto" onClick={handleExport}>
-          <Download className="h-4 w-4 mr-2" />
-          Export
-        </Button>
-        <AddApplicationDialog onApplicationAdd={handleAddApplication}>
-          <Button size="sm" className="w-full sm:w-auto">
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Add New
-          </Button>
-        </AddApplicationDialog>
-      </div>
-      <StatsCards 
-        applications={applications}
-        activeFilter={activeFilter}
-        onFilterChange={setActiveFilter}
-      />
-      
-      <ApplicationsTable
-        applications={filteredApplications}
-        onUpdateStatus={handleUpdateStatus}
-        onDeleteApplication={handleDeleteApplication}
-        onEditApplication={setEditingApplication}
-      />
-=======
     <div className="flex flex-1 flex-col gap-4 md:gap-8">
       <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <StatsCards
@@ -250,7 +204,6 @@ export function DashboardClient({
           </AddApplicationDialog>
         </div>
       </div>
->>>>>>> main
 
       {currentView === 'list' ? (
         <ApplicationsTable
@@ -290,10 +243,6 @@ export function DashboardClient({
           onOpenChange={(open) => !open && setEditingApplication(null)}
         />
       )}
-<<<<<<< HEAD
-    </>
-=======
     </div>
->>>>>>> main
   );
 }
