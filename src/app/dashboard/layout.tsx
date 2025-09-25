@@ -89,9 +89,6 @@ export default async function DashboardLayout({
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings">Settings</Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/support">Support</Link>
-              </DropdownMenuItem>
               <DropdownMenuSeparator />
                <DropdownMenuItem asChild>
                 <form action="/auth/signout" method="post" className="w-full">

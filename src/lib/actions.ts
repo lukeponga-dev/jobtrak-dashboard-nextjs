@@ -253,18 +253,3 @@ export async function changePassword(formData: FormData) {
     message: 'Your password has been changed successfully.',
   };
 }
-
-export async function sendSupportEmail(formData: FormData) {
-  // This is a placeholder. In a real app, you would use a service like Resend or SendGrid.
-  const subject = formData.get('subject') as string;
-  const message = formData.get('message') as string;
-  console.log('--- Support Email ---');
-  console.log('Subject:', subject);
-  console.log('Message:', message);
-  console.log('---------------------');
-
-  // Simulate network delay
-  await new Promise(res => setTimeout(res, 1000));
-
-  return {success: true};
-}
