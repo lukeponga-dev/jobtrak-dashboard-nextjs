@@ -17,19 +17,18 @@ export async function signIn(formData: FormData) {
   const password = formData.get('password') as string;
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const {error} = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
-    return { success: false, error: 'Could not authenticate user.' };
+    return {success: false, error: 'Could not authenticate user.'};
   }
 
-  revalidatePath('/dashboard');
-  return { success: true };
+  revalidatePath('/dashboard', 'layout');
+  return {success: true};
 }
-
 
 export async function signUp(formData: FormData) {
   const origin = headers().get('origin');
@@ -68,16 +67,17 @@ export async function getGoogleOauthUrl() {
 
   if (error) {
     console.error('Error getting Google OAuth URL:', error);
-    return { error: 'Could not get Google OAuth URL' };
+    // Fallback to a safe redirect or error page.
+    return redirect('/login?message=Could not sign in with Google');
   }
-  
+
   if (data.url) {
     redirect(data.url);
+  } else {
+    // Handle the case where URL is not returned
+    return redirect('/login?message=Could not get Google sign-in URL');
   }
-
-  return { error: 'Could not get Google OAuth URL' };
 }
-
 
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
@@ -137,9 +137,7 @@ export async function addApplication(
   }
 }
 
-export async function updateApplication(
-  application: Omit<JobApplication, 'user_id'>
-) {
+export async function updateApplication(application: JobApplication) {
   const supabase = createClient();
   try {
     const {data, error} = await supabase
@@ -254,4 +252,19 @@ export async function changePassword(formData: FormData) {
     success: true,
     message: 'Your password has been changed successfully.',
   };
+}
+
+export async function sendSupportEmail(formData: FormData) {
+  // This is a placeholder. In a real app, you would use a service like Resend or SendGrid.
+  const subject = formData.get('subject') as string;
+  const message = formData.get('message') as string;
+  console.log('--- Support Email ---');
+  console.log('Subject:', subject);
+  console.log('Message:', message);
+  console.log('---------------------');
+
+  // Simulate network delay
+  await new Promise(res => setTimeout(res, 1000));
+
+  return {success: true};
 }

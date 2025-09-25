@@ -41,6 +41,7 @@ export default async function DashboardLayout({
   }
 
   const userFullName = user.user_metadata.full_name || user.email;
+  const userInitial = user.email?.charAt(0).toUpperCase() || '?';
 
   return (
     <SidebarProvider>
@@ -61,9 +62,9 @@ export default async function DashboardLayout({
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur sm:px-6">
           <SidebarTrigger className="sm:hidden" />
-          <div className="relative ml-auto flex-1 md:grow-0" />
+          <div className="flex-1" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -77,7 +78,7 @@ export default async function DashboardLayout({
                     alt={user.user_metadata.full_name}
                   />
                   <AvatarFallback>
-                    {user.email?.charAt(0).toUpperCase()}
+                    {userInitial}
                   </AvatarFallback>
                 </Avatar>
               </Button>
@@ -87,6 +88,9 @@ export default async function DashboardLayout({
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
                 <Link href="/dashboard/settings">Settings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/support">Support</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
                <DropdownMenuItem asChild>

@@ -36,7 +36,7 @@ export function StatsCards({
     filter: ApplicationStatus | "All";
   }[] = [
     {
-      title: "Total Applied",
+      title: "Total",
       value: totalApplications,
       icon: Briefcase,
       color: "text-primary",
@@ -57,7 +57,7 @@ export function StatsCards({
       filter: "Interviewing",
     },
     {
-      title: "Offers Received",
+      title: "Offers",
       value: offerCount,
       icon: Award,
       color: "text-green-400",
@@ -73,18 +73,16 @@ export function StatsCards({
   ];
 
   return (
-    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 px-4 lg:px-6">
-      {stats.map((stat, index) => (
+    <div className="grid gap-4 grid-cols-2 lg:grid-cols-5 px-4 lg:px-6">
+      {stats.map((stat) => (
         <Card
           key={stat.title}
           className={cn(
-            "cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1.5",
-            "animate-fade-in-up",
+            "cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1",
             activeFilter === stat.filter
-              ? "ring-2 ring-primary bg-primary/10"
+              ? "ring-2 ring-primary bg-card"
               : "ring-0"
           )}
-          style={{ animationDelay: `${index * 100}ms` }}
           onClick={() => onFilterChange(stat.filter)}
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

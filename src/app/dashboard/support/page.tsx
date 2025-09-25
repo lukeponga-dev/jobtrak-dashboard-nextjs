@@ -44,7 +44,7 @@ export default function SupportPage() {
       if (result.success) {
         toast({
           title: 'Message Sent!',
-          description: "Your support request has been sent successfully.",
+          description: "We've received your request and will get back to you shortly.",
         });
         setSubject('');
         setMessage('');
@@ -52,7 +52,7 @@ export default function SupportPage() {
         toast({
           variant: 'destructive',
           title: 'Error',
-          description: result.error,
+          description: "Something went wrong. Please try again.",
         });
       }
     });
