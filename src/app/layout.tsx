@@ -1,4 +1,4 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from "geist/font/sans";
@@ -29,13 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={cn(
+      <body
+        className={cn(
           "min-h-screen bg-background font-sans antialiased",
           GeistSans.variable
-        )}>
-        {/* Renders the child components, which represent the current page. */}
+        )}
+      >
         {children}
-        {/* The Toaster component is included to handle toast notifications throughout the app. */}
         <Toaster />
       </body>
     </html>

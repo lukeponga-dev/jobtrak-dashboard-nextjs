@@ -11,11 +11,18 @@
 import {revalidatePath} from 'next/cache';
 import {suggestApplicationStatus as suggestStatus} from '@/ai/flows/suggest-application-status';
 import {generateApplicationNotes as genNotes} from '@/ai/flows/generate-application-notes.ts';
+import { findJobs as findJobsFlow } from '@/ai/flows/find-jobs-flow';
+
+import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
+import type {GenerateApplicationNotesInput} from '@/ai/flows/generate-application-notes.ts';
+import type { FindJobsInput } from '@/ai/flows/find-jobs-flow.d';
+
 import {findJobs as findJobsFlow} from '@/ai/flows/find-jobs-flow';
 
 import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
 import type {GenerateApplicationNotesInput} from '@/ai/flows/generate-application-notes.ts';
 import type {FindJobsInput} from '@/ai/flows/find-jobs-flow.d';
+
 
 import type {JobApplication, ApplicationStatus} from './types';
 import {createClient} from './supabase/server';
@@ -38,11 +45,15 @@ export async function signIn(formData: FormData) {
   });
 
   if (error) {
-    return { success: false, error: 'Could not authenticate user.' };
+    return { error: 'Could not authenticate user.' };
   }
+
+  revalidatePath('/dashboard', 'layout');
+  redirect('/dashboard');
 
   revalidatePath('/dashboard');
   return redirect('/dashboard');
+
 }
 
 /**
@@ -151,6 +162,21 @@ export async function findJobs(input: FindJobsInput) {
   }
 }
 
+
+/**
+ * Calls the Genkit AI flow to find job openings.
+ * @param input - The input data for the AI flow, including the search query.
+ * @returns The found jobs from the AI or an error.
+ */
+export async function findJobs(input: FindJobsInput) {
+  try {
+    const result = await findJobsFlow(input);
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error finding jobs:', error);
+    return { success: false, error: 'Failed to find jobs.' };
+  }
+}
 
 /**
  * Adds a new job application to the database for the currently authenticated user.

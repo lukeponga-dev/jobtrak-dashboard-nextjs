@@ -53,9 +53,12 @@ export default async function DashboardPage() {
   // Render the client-side component with the initial data.
   // This separates server-side data fetching from client-side interactivity.
   return (
-    <DashboardClient
+    <>
+      <h1 className="text-lg font-semibold md:text-2xl mb-4">Welcome, {authUser.user_metadata.full_name || authUser.email}!</h1>
+      <DashboardClient
       initialApplications={applications}
-    />
+      />
+    </>
   );
 }
 

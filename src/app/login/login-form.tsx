@@ -2,13 +2,6 @@
 
 import { useTransition } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-
-import {Button} from '@/components/ui/button';
-import {Input} from '@/components/ui/input';
-import {Label} from '@/components/ui/label';
-import {Logo} from '@/components/logo';
-import {signIn, getGoogleOauthUrl} from '@/lib/actions';
 import {
   Card,
   CardContent,
@@ -16,6 +9,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Logo } from '@/components/logo';
+import { signIn, getGoogleOauthUrl } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -45,25 +43,24 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-
-export function LoginForm({searchParams}: {searchParams?: {message?: string}}) {
-   const [isPending, startTransition] = useTransition();
-   const [isGooglePending, startGoogleTransition] = useTransition();
-   const router = useRouter();
-   const { toast } = useToast();
+export function LoginForm({
+  searchParams,
+}: {
+  searchParams?: { message?: string };
+}) {
+  const [isPending, startTransition] = useTransition();
+  const [isGooglePending, startGoogleTransition] = useTransition();
+  const { toast } = useToast();
 
   const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     startTransition(async () => {
       const result = await signIn(formData);
-      if (result.success) {
-        router.push('/dashboard');
-        router.refresh(); // Refresh the page to update the user session
-      } else {
+      if (result?.error) {
         toast({
-          variant: "destructive",
-          title: "Login Failed",
+          variant: 'destructive',
+          title: 'Login Failed',
           description: result.error,
         });
       }
@@ -77,8 +74,8 @@ export function LoginForm({searchParams}: {searchParams?: {message?: string}}) {
         window.location.href = result.url;
       } else {
         toast({
-          variant: "destructive",
-          title: "Login Failed",
+          variant: 'destructive',
+          title: 'Login Failed',
           description: result.error,
         });
       }
@@ -97,7 +94,7 @@ export function LoginForm({searchParams}: {searchParams?: {message?: string}}) {
         </CardDescription>
       </CardHeader>
       <CardContent>
-         <div className="space-y-4">
+        <div className="space-y-4">
           <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -111,15 +108,7 @@ export function LoginForm({searchParams}: {searchParams?: {message?: string}}) {
               />
             </div>
             <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="#"
-                  className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 name="password"
@@ -143,7 +132,7 @@ export function LoginForm({searchParams}: {searchParams?: {message?: string}}) {
               </span>
             </div>
           </div>
-          
+
           <Button
             variant="outline"
             className="w-full"

@@ -4,7 +4,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+
+import { Home, Settings, Search } from "lucide-react";
+=======
 import { Home, Settings, Search, LifeBuoy } from "lucide-react";
+
 
 export function SidebarNav() {
   const pathname = usePathname();

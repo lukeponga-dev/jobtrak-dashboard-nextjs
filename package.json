@@ -59,7 +59,11 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   },
+
+  "overrides": {
+    "@types/express": "4.17.21"
   "resolutions": {
     "@types/express": "^4.17.21"
+
   }
 }
