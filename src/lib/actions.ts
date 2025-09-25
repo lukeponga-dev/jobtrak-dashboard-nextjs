@@ -15,7 +15,7 @@ import { findJobs as findJobsFlow } from '@/ai/flows/find-jobs-flow';
 
 import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
 import type {GenerateApplicationNotesInput} from '@/ai/flows/generate-application-notes.ts';
-import type { FindJobsInput } from '@/ai/flows/find-jobs-flow';
+import type { FindJobsInput } from '@/ai/flows/find-jobs-flow.d';
 
 import type {JobApplication, ApplicationStatus} from './types';
 import {createClient} from './supabase/server';
@@ -38,11 +38,11 @@ export async function signIn(formData: FormData) {
   });
 
   if (error) {
-    return { success: false, error: 'Could not authenticate user.' };
+    return { error: 'Could not authenticate user.' };
   }
 
-  revalidatePath('/dashboard');
-  return { success: true };
+  revalidatePath('/dashboard', 'layout');
+  redirect('/dashboard');
 }
 
 /**
