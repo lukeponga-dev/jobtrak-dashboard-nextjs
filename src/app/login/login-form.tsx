@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -100,7 +100,7 @@ export function LoginForm() {
           </div>
           
           <form action={getGoogleOauthUrl}>
-            <Button variant="outline" className="w-full" type="submit" disabled={pending}>
+            <Button variant="outline" className="w-full" type="submit" loading={pending}>
               <GoogleIcon className="mr-2" />
               Sign in with Google
             </Button>
