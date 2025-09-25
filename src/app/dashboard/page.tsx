@@ -54,7 +54,12 @@ export default async function DashboardPage() {
   // This separates server-side data fetching from client-side interactivity.
   return (
     <>
-      <h1 className="text-lg font-semibold md:text-2xl mb-4">Welcome, {authUser.user_metadata.full_name || authUser.email}!</h1>
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <div>
+            <h1 className="text-2xl font-bold tracking-tight">Welcome, {authUser.user_metadata.full_name || authUser.email}!</h1>
+            <p className="text-muted-foreground">Here&apos;s a summary of your job applications.</p>
+        </div>
+      </div>
       <DashboardClient
       initialApplications={applications}
       />

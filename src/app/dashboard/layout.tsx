@@ -10,7 +10,6 @@ import {
   SidebarHeader,
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -62,7 +61,6 @@ export default async function DashboardLayout({
       </Sidebar>
       <SidebarInset>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-          <SidebarTrigger className="sm:hidden" />
           <div className="relative ml-auto flex-1 md:grow-0" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -100,7 +98,9 @@ export default async function DashboardLayout({
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        {children}
+        <main className="flex flex-1 flex-col p-4 md:p-6 gap-4 md:gap-8">
+            {children}
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );
