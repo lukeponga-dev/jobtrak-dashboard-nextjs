@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useTransition } from 'react';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { findJobs } from '@/lib/actions';
 import { useToast } from '@/hooks/use-toast';
 import { JobCard, JobCardSkeleton } from './job-card';
-import type { FindJobsOutput } from '@/ai/flows/find-jobs-flow';
+import type { FindJobsOutput } from '@/ai/flows/find-jobs-flow.d';
 import { Sparkles } from 'lucide-react';
 
 export function JobFinderClient() {

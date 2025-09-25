@@ -7,7 +7,7 @@
  *
  * This flow:
  * 1. Defines a tool (`findJobsTool`) that returns a mock list of jobs from sources like Indeed, LinkedIn, Seek, and Trade Me.
- * 2. Defines the input (`FindJobsInput`) and output (`FindJobsOutput`) schemas.
+ * 2. Imports the input (`FindJobsInput`) and output (`FindJobsOutput`) schemas from a separate types file.
  * 3. Creates a prompt instructing the AI to use the tool to answer user queries.
  * 4. Defines the main flow (`findJobsFlow`) that orchestrates the tool call.
  * 5. Exports a wrapper function to be used as a Server Action.
@@ -15,6 +15,13 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {
+  FindJobsInputSchema,
+  FindJobsOutputSchema,
+  type FindJobsInput,
+  type FindJobsOutput,
+} from './find-jobs-flow.d';
+
 
 // Mock data simulating job listings from different platforms.
 const MOCK_JOBS = [
@@ -88,26 +95,7 @@ const findJobsTool = ai.defineTool(
   }
 );
 
-// 2. Define the schema for the flow's input and output.
-const FindJobsInputSchema = z.object({
-  query: z.string(),
-});
-export type FindJobsInput = z.infer<typeof FindJobsInputSchema>;
-
-const FindJobsOutputSchema = z.object({
-  jobs: z.array(
-    z.object({
-      title: z.string(),
-      company: z.string(),
-      location: z.string(),
-      url: z.string(),
-    })
-  ),
-});
-export type FindJobsOutput = z.infer<typeof FindJobsOutputSchema>;
-
-
-// 3. Define the AI prompt that instructs the model to use the tool.
+// 2. Define the AI prompt that instructs the model to use the tool.
 const prompt = ai.definePrompt({
   name: 'jobFinderPrompt',
   input: {schema: FindJobsInputSchema},
@@ -120,7 +108,7 @@ const prompt = ai.definePrompt({
   Return the jobs you find. If no jobs are found, return an empty array.`,
 });
 
-// 4. Define the main Genkit flow.
+// 3. Define the main Genkit flow.
 const findJobsFlow = ai.defineFlow(
   {
     name: 'findJobsFlow',
@@ -135,7 +123,7 @@ const findJobsFlow = ai.defineFlow(
 
 
 /**
- * 5. Public-facing function that can be called from Server Actions.
+ * 4. Public-facing function that can be called from Server Actions.
  * It invokes the Genkit flow to find jobs.
  */
 export async function findJobs(
