@@ -18,10 +18,11 @@ export const metadata: Metadata = {
 
 /**
  * The root layout for the entire application.
- * This component wraps all pages, providing a consistent structure, font, and background.
+ * This component wraps all pages, providing a consistent structure, font, and global components
+ * like the Toaster for notifications. It is a Server Component that applies to all routes.
  *
  * @param {object} props - The properties for the component.
- * @param {React.ReactNode} props.children - The child components to be rendered within the layout.
+ * @param {React.ReactNode} props.children - The child components to be rendered within the layout (i.e., the pages).
  * @returns {JSX.Element} The root layout component.
  */
 export default function RootLayout({

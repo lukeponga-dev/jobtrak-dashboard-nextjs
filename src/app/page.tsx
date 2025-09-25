@@ -12,7 +12,7 @@ const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 /**
  * The main landing page for the application.
  * This page serves as the entry point for new users, providing a brief introduction
- * to the app and navigation links to sign up or log in.
+ * to the app and navigation links to sign up or log in. It is a Server Component.
  *
  * @returns {JSX.Element} The landing page component.
  */

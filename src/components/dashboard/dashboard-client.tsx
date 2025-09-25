@@ -1,4 +1,9 @@
-
+/**
+ * @file This is the main client component for the dashboard.
+ * It manages the state for job applications, handles all user interactions (add, edit, delete),
+ * and orchestrates the rendering of child components like the stats cards and applications table.
+ * It receives its initial data from a server component.
+ */
 "use client";
 
 import { useState, useMemo } from "react";
@@ -26,16 +31,20 @@ type DashboardClientProps = {
 export function DashboardClient({
   initialApplications
 }: DashboardClientProps) {
+  // State for managing the list of applications.
   const [applications, setApplications] = useState<JobApplication[]>(
     initialApplications
   );
+  // State for filtering applications by status.
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
   const isMobile = useIsMobile();
 
+  // State for tracking which application is currently being edited.
   const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
 
   const { toast } = useToast();
 
+  // Memoized derivation of applications to display based on the active filter.
   const filteredApplications = useMemo(() => {
     if (activeFilter === "All") {
       return applications;
@@ -43,6 +52,7 @@ export function DashboardClient({
     return applications.filter((app) => app.status === activeFilter);
   }, [applications, activeFilter]);
 
+  // Handler for adding a new application. Calls a server action.
   const handleAddApplication = async (
     newApplication: Omit<JobApplication, "id" | "user_id">
   ) => {
@@ -67,6 +77,7 @@ export function DashboardClient({
     }
   };
 
+  // Handler for editing an existing application. Calls a server action.
   const handleEditApplication = async (updatedApplication: JobApplication) => {
     const originalApplications = applications;
     setApplications((prev) =>
@@ -93,7 +104,7 @@ export function DashboardClient({
     setEditingApplication(null);
   };
 
-
+  // Handler for updating only the status of an application.
   const handleUpdateStatus = async (id: number, status: ApplicationStatus) => {
     const originalApplications = applications;
     setApplications((prev) =>
@@ -116,6 +127,7 @@ export function DashboardClient({
     }
   };
 
+  // Handler for deleting an application. Calls a server action.
   const handleDeleteApplication = async (id: number) => {
     const originalApplications = applications;
     setApplications((prev) => prev.filter((app) => app.id !== id));
@@ -137,6 +149,7 @@ export function DashboardClient({
     }
   };
 
+  // Handler for exporting the current view to a CSV file.
   const handleExport = () => {
     const headers = ["Company", "Role", "Date Applied", "Status", "Notes"];
     const rows = filteredApplications.map((app) => [

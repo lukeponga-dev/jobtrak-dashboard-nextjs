@@ -1,13 +1,18 @@
-
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
 import type { JobApplication } from "@/lib/types";
 
 /**
- * The main dashboard page, responsible for server-side data fetching and authentication.
- * This component fetches the user's job applications from the Supabase database
- * and passes them to a client component for rendering.
+ * The main dashboard page, acting as a server-side entry point for the `/dashboard` route.
+ *
+ * This component is responsible for server-side concerns:
+ * 1.  **Authentication Check**: It verifies that a user is logged in. If not, it redirects them to the `/login` page.
+ * 2.  **Initial Data Fetching**: It fetches the initial list of job applications for the authenticated user directly from the Supabase database.
+ * 3.  **Passing Data to Client**: It passes the fetched data as props to the `DashboardClient` component, which handles all client-side interactivity.
+ *
+ * This pattern separates concerns, allowing the server to handle security and data fetching,
+ * while the client handles the interactive user interface.
  *
  * @returns {Promise<JSX.Element>} A promise that resolves to the dashboard page component.
  */

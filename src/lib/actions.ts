@@ -1,3 +1,11 @@
+/**
+ * @file This file contains all the server-side actions for the application.
+ * Server Actions are asynchronous functions that run on the server and can be called
+ * directly from client components, making it easy to handle form submissions and data mutations.
+ * They are a key feature of the Next.js App Router.
+ *
+ * @see https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
+ */
 'use server';
 
 import {revalidatePath} from 'next/cache';
@@ -12,6 +20,11 @@ import {createClient} from './supabase/server';
 import {headers} from 'next/headers';
 import {redirect} from 'next/navigation';
 
+/**
+ * Handles user sign-in using email and password with Supabase.
+ * @param formData - The form data containing the user's email and password.
+ * @returns An object indicating success or failure, with an error message if applicable.
+ */
 export async function signIn(formData: FormData) {
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
@@ -30,7 +43,11 @@ export async function signIn(formData: FormData) {
   return { success: true };
 }
 
-
+/**
+ * Handles new user sign-up with Supabase.
+ * @param formData - The form data containing the user's full name, email, and password.
+ * @returns A redirect to the login page with a confirmation message or to the signup page with an error.
+ */
 export async function signUp(formData: FormData) {
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
@@ -56,6 +73,10 @@ export async function signUp(formData: FormData) {
   return redirect('/login?message=Check email to continue sign up process');
 }
 
+/**
+ * Initiates the Google OAuth sign-in flow with Supabase.
+ * @returns An object with the OAuth URL on success, or an error message on failure.
+ */
 export async function getGoogleOauthUrl() {
   const origin = headers().get('origin');
   const supabase = createClient();
@@ -78,7 +99,11 @@ export async function getGoogleOauthUrl() {
   return { success: false, error: 'Could not get Google OAuth URL' };
 }
 
-
+/**
+ * Calls the Genkit AI flow to suggest a job application status.
+ * @param input - The input data for the AI flow, including job role and application date.
+ * @returns The suggested status from the AI or an error.
+ */
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
 ) {
@@ -91,6 +116,11 @@ export async function suggestApplicationStatus(
   }
 }
 
+/**
+ * Calls the Genkit AI flow to generate starter notes for a job application.
+ * @param input - The input data for the AI flow, including company and role.
+ * @returns The generated notes from the AI or an error.
+ */
 export async function generateApplicationNotes(
   input: GenerateApplicationNotesInput
 ) {
@@ -103,6 +133,11 @@ export async function generateApplicationNotes(
   }
 }
 
+/**
+ * Adds a new job application to the database for the currently authenticated user.
+ * @param application - The job application data to add.
+ * @returns The newly created application data on success, or an error.
+ */
 export async function addApplication(
   application: Omit<JobApplication, 'id'>
 ) {
@@ -137,6 +172,11 @@ export async function addApplication(
   }
 }
 
+/**
+ * Updates an existing job application in the database.
+ * @param application - The job application data to update.
+ * @returns The updated application data on success, or an error.
+ */
 export async function updateApplication(
   application: Omit<JobApplication, 'user_id'>
 ) {
@@ -165,6 +205,11 @@ export async function updateApplication(
   }
 }
 
+/**
+ * Updates only the status of a specific job application.
+ * @param input - An object containing the application ID and the new status.
+ * @returns An object indicating success or failure.
+ */
 export async function updateApplicationStatus(input: {
   id: number;
   status: ApplicationStatus;
@@ -186,6 +231,11 @@ export async function updateApplicationStatus(input: {
   }
 }
 
+/**
+ * Deletes a job application from the database.
+ * @param id - The ID of the application to delete.
+ * @returns An object indicating success or failure.
+ */
 export async function deleteApplication(id: number) {
   const supabase = createClient();
   try {
@@ -201,6 +251,11 @@ export async function deleteApplication(id: number) {
   }
 }
 
+/**
+ * Updates the full name of the currently authenticated user.
+ * @param formData - The form data containing the new full name.
+ * @returns A success message or an error message.
+ */
 export async function updateUser(formData: FormData) {
   const supabase = createClient();
   const fullName = formData.get('fullName') as string;
@@ -226,6 +281,11 @@ export async function updateUser(formData: FormData) {
   return {success: true, message: 'Your name has been updated successfully.'};
 }
 
+/**
+ * Changes the password for the currently authenticated user.
+ * @param formData - The form data containing the new password.
+ * @returns A success message or an error message.
+ */
 export async function changePassword(formData: FormData) {
   const supabase = createClient();
   const newPassword = formData.get('newPassword') as string;
@@ -256,6 +316,12 @@ export async function changePassword(formData: FormData) {
   };
 }
 
+/**
+ * Simulates sending a support email. In a real application, this would integrate
+ * with an email service like Resend or Nodemailer.
+ * @param formData - The form data containing the subject and message.
+ * @returns A success message or an error message.
+ */
 export async function sendSupportEmail(formData: FormData) {
   // This is a placeholder. In a real app, you'd use a service like Resend or Nodemailer.
   const subject = formData.get('subject');
