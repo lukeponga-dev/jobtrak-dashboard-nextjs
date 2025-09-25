@@ -85,7 +85,7 @@ export default function LandingPage() {
         </section>
         
         {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32 bg-card">
+        <section id="features" className="w-full py-16 md:py-24 lg:py-32 bg-card">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -96,7 +96,7 @@ export default function LandingPage() {
                 </p>
               </div>
             </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
+            <div className="mx-auto grid max-w-5xl items-center gap-8 py-12 lg:grid-cols-3 lg:gap-12">
               <div className="flex flex-col justify-center space-y-4 text-center items-center">
                 <div className="bg-primary/10 p-4 rounded-full">
                   <LayoutDashboard className="h-8 w-8 text-primary" />
@@ -123,15 +123,15 @@ export default function LandingPage() {
         </section>
 
         {/* Testimonial Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="w-full py-16 md:py-24 lg:py-32">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-            <div className="space-y-3">
+            <div className="space-y-4">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">What Users Are Saying</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                 JobTrackr has transformed how our users approach the job market.
               </p>
             </div>
-            <div className="mx-auto max-w-3xl space-y-6">
+            <div className="mx-auto max-w-3xl space-y-8">
               <div className="rounded-lg border bg-card p-6 shadow-sm">
                 <p className="text-lg italic text-foreground">
                   "This is the tool I wish I had during my last job search. The AI suggestions are a game-changer and the interface is just so clean and easy to use. Highly recommended!"
@@ -154,7 +154,7 @@ export default function LandingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-card border-t">
+        <section className="w-full py-16 md:py-24 lg:py-32 bg-card border-t">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Ready to Land Your Dream Job?</h2>
@@ -178,7 +178,7 @@ export default function LandingPage() {
 
       </main>
       
-      <footer className="flex items-center justify-center py-6 border-t bg-background">
+      <footer className="flex items-center justify-center py-8 border-t bg-background">
         <p className="text-sm text-muted-foreground">&copy; 2024 JobTrackr. All rights reserved.</p>
       </footer>
     </div>

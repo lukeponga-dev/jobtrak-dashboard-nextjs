@@ -1,11 +1,8 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import { cn } from "@/lib/utils";
-
-// Initialize the Inter font with the 'latin' subset and a CSS variable for consistency.
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 /**
  * Defines the metadata for the application, including the title and description.
@@ -34,7 +31,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={cn(
           "min-h-screen bg-background font-sans antialiased",
-          inter.variable
+          GeistSans.variable
         )}>
         {/* Renders the child components, which represent the current page. */}
         {children}
