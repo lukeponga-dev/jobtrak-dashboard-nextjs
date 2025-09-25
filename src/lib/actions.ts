@@ -255,3 +255,26 @@ export async function changePassword(formData: FormData) {
     message: 'Your password has been changed successfully.',
   };
 }
+
+export async function sendSupportEmail(formData: FormData) {
+  // This is a placeholder. In a real app, you'd use a service like Resend or Nodemailer.
+  const subject = formData.get('subject');
+  const message = formData.get('message');
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { success: false, error: 'You must be logged in to send a support email.' };
+  }
+
+  console.log('--- Support Email ---');
+  console.log('From:', user.email);
+  console.log('Subject:', subject);
+  console.log('Message:', message);
+  console.log('---------------------');
+
+  // Simulate an async operation
+  await new Promise(res => setTimeout(res, 500));
+
+  return { success: true, message: 'Your support request has been sent.' };
+}
