@@ -1,23 +1,5 @@
 
-import { z } from 'genkit';
-
-// Define the input and output schemas for the main flow.
-export const FindJobsInputSchema = z.object({
-  query: z.string(),
-});
-export type FindJobsInput = z.infer<typeof FindJobsInputSchema>;
-
-export const FindJobsOutputSchema = z.object({
-  jobs: z.array(
-    z.object({
-      title: z.string(),
-      company: z.string(),
-      location: z.string(),
-      description: z.string(),
-      url: z.string(),
-    })
-  ).describe('A list of job openings that match th')
-  import {z} from 'genkit';
+import {z} from 'genkit';
 
 /**
  * @fileOverview Type definitions for the findJobs AI flow.
@@ -51,6 +33,5 @@ export type Job = z.infer<typeof JobSchema>;
 // Schema for the flow's output.
 export const FindJobsOutputSchema = z.object({
   jobs: z.array(JobSchema),
-
 });
 export type FindJobsOutput = z.infer<typeof FindJobsOutputSchema>;
