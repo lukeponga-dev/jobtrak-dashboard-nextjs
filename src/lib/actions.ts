@@ -1,4 +1,3 @@
-
 'use server';
 
 import {revalidatePath} from 'next/cache';
@@ -18,16 +17,16 @@ export async function signIn(formData: FormData) {
   const password = formData.get('password') as string;
   const supabase = createClient();
 
-  const {error} = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
-    return redirect('/login?message=Could not authenticate user');
+    return { success: false, error: 'Could not authenticate user' };
   }
 
-  return redirect('/dashboard');
+  return { success: true };
 }
 
 export async function signUp(formData: FormData) {
@@ -55,7 +54,7 @@ export async function signUp(formData: FormData) {
   return redirect('/login?message=Check email to continue sign up process');
 }
 
-export async function getGoogleOauthUrl(formData: FormData) {
+export async function getGoogleOauthUrl() {
   const origin = headers().get('origin');
   const supabase = createClient();
   const {data, error} = await supabase.auth.signInWithOAuth({
@@ -67,15 +66,16 @@ export async function getGoogleOauthUrl(formData: FormData) {
 
   if (error) {
     console.error('Error getting Google OAuth URL:', error);
-    return redirect('/login?message=Could not get Google OAuth URL');
+    return { error: 'Could not get Google OAuth URL' };
   }
-
+  
   if (data.url) {
-    redirect(data.url);
+    return { url: data.url };
   }
 
-  return redirect('/login?message=Could not get Google OAuth URL');
+  return { error: 'Could not get Google OAuth URL' };
 }
+
 
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
@@ -120,7 +120,6 @@ export async function addApplication(
         {
           ...application,
           user_id: user.id,
-          date: application.created_at,
         },
       ])
       .select()
@@ -144,9 +143,11 @@ export async function updateApplication(
     const {data, error} = await supabase
       .from('job_applications')
       .update({
+        company: application.company,
+        role: application.role,
         status: application.status,
         notes: application.notes,
-        date: application.created_at,
+        date: application.date,
       })
       .eq('id', application.id)
       .select()
