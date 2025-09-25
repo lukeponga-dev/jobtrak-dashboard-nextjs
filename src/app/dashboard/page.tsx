@@ -35,7 +35,7 @@ export default async function DashboardPage() {
   try {
     // Fetch job applications for the authenticated user from the database.
     const { data, error } = await supabase
-      .from("applications")
+      .from("job_applications") // Changed from "applications" to "job_applications"
       .select("id, company, role, date, status, notes")
       .eq("user_id", authUser.id)
       .order("date", { ascending: false });
