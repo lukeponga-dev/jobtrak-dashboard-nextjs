@@ -6,11 +6,11 @@ import type { NextConfig } from 'next';
  * This file allows customization of the build process, server behavior, and other features.
  */
 const nextConfig: NextConfig = {
-  transpilePackages: [
-    '@genkit-ai/ai',
-    '@genkit-ai/googleai',
-    '@genkit-ai/next',
-  ],
+  /* General config options can be placed here */
+  
+  /**
+   * TypeScript-specific configurations.
+   */
   typescript: {
     /**
      * If set to true, TypeScript errors will not fail the build.
@@ -68,6 +68,7 @@ const nextConfig: NextConfig = {
        */
       bodySizeLimit: '2mb',
     },
+    transpilePackages: ['@genkit-ai/ai', '@genkit-ai/core', '@genkit-ai/googleai', '@genkit-ai/next'],
   },
 };
 

@@ -83,7 +83,7 @@ export default async function LandingPage() {
               <p className="text-lg text-primary-foreground/80 md:text-xl">
                 JobTrackr is the smart, AI-powered dashboard that helps you manage applications, track progress, and land your dream job faster.
               </p>
-              <div className="space-x-4 pt-4">
+              <div className="space-x-4 pt-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                 <Link
                   href="/signup"
                   className={cn(buttonVariants({ size: 'lg' }))}

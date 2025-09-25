@@ -27,7 +27,6 @@ A simple, intuitive, and elegant job application tracking dashboard.
 
 - [Node.js](https://nodejs.org/en) (v18 or later)
 - [npm](https://www.npmjs.com/)
-
 ### 1. Set Up Environment Variables
 
 Create a `.env` file in the root of your project and add your Supabase credentials and Gemini API key:
