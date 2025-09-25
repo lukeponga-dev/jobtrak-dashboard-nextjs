@@ -100,9 +100,7 @@ export default async function DashboardLayout({
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="p-4 md:p-6">
-          {children}
-        </main>
+        {children}
       </SidebarInset>
     </SidebarProvider>
   );
