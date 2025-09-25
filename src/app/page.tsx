@@ -51,13 +51,13 @@ export default function LandingPage() {
           )}
           <div className="relative container px-4 md:px-6 text-center text-primary-foreground z-10">
             <div className="space-y-4 max-w-3xl mx-auto">
-              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                 Land Your Dream Job Faster
               </h1>
-              <p className="text-lg text-primary-foreground/80 md:text-xl">
+              <p className="text-lg text-primary-foreground/80 md:text-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 JobTrackr is the ultimate tool to organize, track, and accelerate your job search. Say goodbye to messy spreadsheets and hello to streamlined success.
               </p>
-              <div className="space-x-4 pt-4">
+              <div className="space-x-4 pt-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                 <Link
                   href="/signup"
                   className={cn(buttonVariants({ size: 'lg' }), "animate-pulse")}
@@ -71,15 +71,15 @@ export default function LandingPage() {
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
-            <div className="mx-auto grid max-w-5xl items-center gap-6 lg:grid-cols-3 lg:gap-12">
+            <div className="mx-auto grid max-w-5xl items-start gap-8 lg:grid-cols-3 lg:gap-12">
               <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Features Built for Job Seekers</h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Everything you need to stay organized and motivated during your job search, all in one place.
                 </p>
               </div>
-              <div className="grid gap-6 col-span-2">
-                <div className="flex flex-col items-start space-y-2">
+              <div className="grid gap-6 col-span-2 md:grid-cols-3">
+                <div className="flex flex-col items-start space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <LayoutDashboard className="h-8 w-8 text-primary" />
                   </div>
@@ -88,7 +88,7 @@ export default function LandingPage() {
                     Quickly view your application pipeline, from applied to offer, with our clean and simple dashboard.
                   </p>
                 </div>
-                <div className="flex flex-col items-start space-y-2">
+                <div className="flex flex-col items-start space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <Sparkles className="h-8 w-8 text-primary" />
                   </div>
@@ -97,7 +97,7 @@ export default function LandingPage() {
                     Get AI-driven suggestions for your application status and notes to keep you on track.
                   </p>
                 </div>
-                <div className="flex flex-col items-start space-y-2">
+                <div className="flex flex-col items-start space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <ClipboardCheck className="h-8 w-8 text-primary" />
                   </div>
