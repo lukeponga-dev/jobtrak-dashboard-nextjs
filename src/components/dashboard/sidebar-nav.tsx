@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Logo } from "../logo";
-import { Home, Settings } from "lucide-react";
+import { Home, Settings, LifeBuoy } from "lucide-react";
 
 type SidebarNavProps = {
   isMobile?: boolean;
@@ -17,6 +17,7 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
+    { href: "/dashboard/support", label: "Support", icon: LifeBuoy },
   ];
 
   return (
