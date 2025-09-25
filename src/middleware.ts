@@ -1,29 +1,24 @@
-import { type NextRequest } from 'next/server';
-import { updateSession } from '@/lib/supabase/middleware';
-
 /**
- * Middleware function to handle session updates for incoming requests.
+ * @fileoverview This middleware is responsible for managing user sessions in the application.
+ * It runs on every request to paths defined in the `matcher` config.
  *
- * This function is invoked for every incoming request that matches the `config.matcher` pattern.
- * It uses the `updateSession` utility from the Supabase SSR library to manage user sessions.
- * This is crucial for keeping the user's authentication state (e.g., cookies) in sync
- * between the browser, server components, and server actions.
+ * The `updateSession` function from `@/lib/supabase/middleware` is called to:
+ * 1. Check for Supabase environment variables and redirect to an error page if they are missing.
+ * 2. Initialize the Supabase server client with cookies from the incoming request.
+ * 3. Refresh the user's auth session if it's expired.
+ * 4. Pass the updated session information to subsequent server components via response cookies.
  *
- * It also includes a check to ensure Supabase environment variables are set, redirecting
- * to an error page if they are missing.
- *
- * @param {NextRequest} request - The incoming Next.js request object.
- * @returns {Promise<Response>} A promise that resolves to the response after session handling.
- *
- * @see https://supabase.com/docs/guides/auth/server-side/nextjs
+ * This ensures that user authentication state is always up-to-date and consistent
+ * throughout the application.
  */
+
+import { type NextRequest } from 'next/server'
+import { updateSession } from '@/lib/supabase/middleware'
+
 export async function middleware(request: NextRequest) {
-  // `updateSession` handles session updates, including refreshing tokens
-  // and ensuring the user's authentication state is current.
-  return await updateSession(request);
+  return await updateSession(request)
 }
 
-// The config object specifies which paths the middleware should run on.
 export const config = {
   matcher: [
     /*
@@ -31,9 +26,8 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * This prevents the middleware from running on static assets, which is unnecessary
-     * and can hurt performance.
+     * Feel free to modify this pattern to include more paths.
      */
     '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
-};
+}
