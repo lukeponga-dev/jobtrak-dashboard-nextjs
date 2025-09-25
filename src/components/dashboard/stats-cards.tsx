@@ -25,7 +25,9 @@ export function StatsCards({
   const rejectedCount = applications.filter(
     (app) => app.status === "Rejected"
   ).length;
-  const appliedCount = totalApplications - interviewingCount - offerCount - rejectedCount;
+  const appliedCount = applications.filter(
+    (app) => app.status === "Applied"
+  ).length;
 
 
   const stats: {
@@ -36,7 +38,7 @@ export function StatsCards({
     filter: ApplicationStatus | "All";
   }[] = [
     {
-      title: "Total",
+      title: "Total Apps",
       value: totalApplications,
       icon: Briefcase,
       color: "text-primary",
@@ -46,34 +48,34 @@ export function StatsCards({
       title: "Applied",
       value: appliedCount,
       icon: ClipboardList,
-      color: "text-blue-400",
+      color: "text-blue-500",
       filter: "Applied",
     },
     {
       title: "Interviewing",
       value: interviewingCount,
       icon: ClipboardList,
-      color: "text-yellow-400",
+      color: "text-yellow-500",
       filter: "Interviewing",
     },
     {
       title: "Offers",
       value: offerCount,
       icon: Award,
-      color: "text-green-400",
+      color: "text-green-500",
       filter: "Offer",
     },
     {
       title: "Rejected",
       value: rejectedCount,
       icon: XCircle,
-      color: "text-red-400",
+      color: "text-red-500",
       filter: "Rejected",
     },
   ];
 
   return (
-    <div className="grid gap-4 grid-cols-2 lg:grid-cols-5 px-4 lg:px-6">
+    <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 px-4 lg:px-6">
       {stats.map((stat) => (
         <Card
           key={stat.title}

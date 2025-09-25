@@ -29,6 +29,7 @@ import {
 } from "../ui/select";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { format } from "date-fns";
+import { StatusBadge } from "./status-badge";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
@@ -98,7 +99,7 @@ export function ApplicationsTable({
           <CardContent className="flex flex-col items-center justify-center py-12 text-center">
             <h3 className="text-xl font-semibold">No Applications Yet</h3>
             <p className="text-muted-foreground mt-2">
-              Click "Add Application" to start tracking your job search.
+              Click "Add New" to start tracking your job search.
             </p>
           </CardContent>
         </Card>
@@ -112,7 +113,7 @@ export function ApplicationsTable({
       <div className="grid gap-4 md:hidden">
         {sortedApplications.map((app) => (
           <Card key={app.id}>
-            <CardHeader className="flex flex-row items-start justify-between gap-4">
+            <CardHeader className="flex flex-row items-start justify-between gap-4 pb-4">
               <div className="flex flex-col gap-1">
                 <CardTitle className="text-base font-bold leading-tight">
                   {app.role}
@@ -140,28 +141,26 @@ export function ApplicationsTable({
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => onDeleteApplication(app.id)}
-                    className="text-destructive"
+                    className="text-destructive focus:text-destructive focus:bg-destructive/10"
                   >
                     Delete
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </CardHeader>
-            <CardContent className="grid grid-cols-2 gap-x-4 gap-y-2">
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p className="font-medium">Applied on</p>
-                <p>{format(new Date(app.date), "MMM d, yyyy")}</p>
-              </div>
-              <div className="text-sm text-muted-foreground space-y-1">
-                <p className="font-medium">Status</p>
-                <Select
+            <CardContent className="flex flex-col gap-4">
+              <div className="flex justify-between items-center text-sm">
+                 <div className="text-muted-foreground">Status</div>
+                 <Select
                   value={app.status}
                   onValueChange={(value: ApplicationStatus) =>
                     onUpdateStatus(app.id, value)
                   }
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Update status" />
+                  <SelectTrigger className="w-auto h-auto px-2 py-1 text-xs gap-1 border-0">
+                    <SelectValue asChild>
+                       <StatusBadge status={app.status} />
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Applied">Applied</SelectItem>
@@ -170,6 +169,10 @@ export function ApplicationsTable({
                     <SelectItem value="Rejected">Rejected</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+               <div className="flex justify-between items-center text-sm">
+                  <div className="text-muted-foreground">Applied on</div>
+                  <div>{format(new Date(app.date), "MMM d, yyyy")}</div>
               </div>
             </CardContent>
           </Card>
@@ -206,8 +209,10 @@ export function ApplicationsTable({
                         onUpdateStatus(app.id, value)
                       }
                     >
-                      <SelectTrigger className="w-[120px] text-xs h-8">
-                        <SelectValue placeholder="Update..." />
+                      <SelectTrigger className="w-auto text-xs h-8">
+                         <SelectValue asChild>
+                           <StatusBadge status={app.status} />
+                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Applied">Applied</SelectItem>
@@ -232,7 +237,7 @@ export function ApplicationsTable({
                           <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => onDeleteApplication(app.id)}
-                          className="text-destructive"
+                          className="text-destructive focus:text-destructive focus:bg-destructive/10"
                         >
                           Delete
                         </DropdownMenuItem>
