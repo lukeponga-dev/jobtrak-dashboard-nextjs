@@ -10,19 +10,27 @@ import {z} from 'genkit';
 
 // Schema for the flow's input.
 export const FindJobsInputSchema = z.object({
-  query: z.string(),
+  query: z.string().optional(),
+  location: z.string().optional(),
+  type: z.enum(['Full-time', 'Part-time', 'Contract', 'Remote', 'All']).optional(),
 });
 export type FindJobsInput = z.infer<typeof FindJobsInputSchema>;
 
+// Schema for a single job.
+export const JobSchema = z.object({
+  title: z.string(),
+  company: z.string(),
+  location: z.string(),
+  url: z.string(),
+  source: z.string(),
+  datePosted: z.string(),
+  type: z.string(),
+});
+export type Job = z.infer<typeof JobSchema>;
+
+
 // Schema for the flow's output.
 export const FindJobsOutputSchema = z.object({
-  jobs: z.array(
-    z.object({
-      title: z.string(),
-      company: z.string(),
-      location: z.string(),
-      url: z.string(),
-    })
-  ),
+  jobs: z.array(JobSchema),
 });
 export type FindJobsOutput = z.infer<typeof FindJobsOutputSchema>;
