@@ -235,24 +235,16 @@ export async function updateApplicationStatus(input: {
   }
 }
 
-/**
- * Deletes a job application from the database.
- * @param id - The ID of the application to delete.
- * @returns An object indicating success or failure.
- */
 export async function deleteApplication(id: number) {
   const supabase = createClient();
   try {
-    const { error } = await supabase
-      .from('job_applications')
-      .delete()
-      .eq('id', id);
+    const {error} = await supabase.from('job_applications').delete().eq('id', id);
 
     if (error) throw error;
 
     revalidatePath('/dashboard');
     return {success: true};
-  } catch (error)
+  } catch (error) { // CORRECT SYNTAX
     console.error('Error deleting application:', error);
     return {success: false, error: 'Failed to delete application.'};
   }
