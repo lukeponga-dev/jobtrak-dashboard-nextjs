@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-
 # JobTrackr: Professional Job Application Tracker
-=======
-# projectRedo
->>>>>>> main
 
 A simple, intuitive, and elegant job application tracking dashboard.
 
-<<<<<<< HEAD
 ## ✨ Features
 
 - **Secure Authentication**: Sign up and log in securely with email/password or Google, powered by Supabase Auth.
@@ -33,10 +27,6 @@ A simple, intuitive, and elegant job application tracking dashboard.
 
 - [Node.js](https://nodejs.org/en) (v18 or later)
 - [npm](https://www.npmjs.com/)
-=======
-## Getting Started
->>>>>>> main
-
 ### 1. Set Up Environment Variables
 
 Create a `.env` file in the root of your project and add your Supabase credentials and Gemini API key:
@@ -47,13 +37,10 @@ NEXT_PUBLIC_SUPABASE_URL="YOUR_SUPABASE_URL"
 NEXT_PUBLIC_SUPABASE_ANON_KEY="YOUR_SUPABASE_ANON_KEY"
 DATABASE_URL="YOUR_SUPABASE_DATABASE_CONNECTION_STRING"
 
-<<<<<<< HEAD
 # Gemini API key from Google AI Studio
 GEMINI_API_KEY="YOUR_GEMINI_API_KEY"
 ```
 
-=======
->>>>>>> main
 ### 2. Install Dependencies
 
 ```bash
@@ -73,7 +60,6 @@ npm run dev
 ```
 
 The application will be available at [http://localhost:9002](http://localhost:9002).
-<<<<<<< HEAD
 
 ## 🗂️ Project Structure
 
@@ -166,5 +152,3 @@ Genkit powers the AI-driven suggestions and notes.
 4.  **Create Flows**: Define Genkit flows (e.g., `src/ai/flows/suggest-application-status.ts`) that take job details as input and use a Gemini model to provide AI features.
 
 This guide provides a high-level overview. Each step involves writing code for UI components, pages, and logic, which you can reference from this project's source code.
-=======
->>>>>>> main

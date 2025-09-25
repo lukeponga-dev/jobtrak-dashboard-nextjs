@@ -7,12 +7,7 @@ import type { NextConfig } from 'next';
  */
 const nextConfig: NextConfig = {
   /* General config options can be placed here */
-  transpilePackages: [
-    '@genkit-ai/ai',
-    '@genkit-ai/googleai',
-    '@genkit-ai/next',
-  ],
-
+  
   /**
    * TypeScript-specific configurations.
    */
@@ -73,7 +68,7 @@ const nextConfig: NextConfig = {
        */
       bodySizeLimit: '2mb',
     },
-    transpilePackages: ['@genkit-ai/ai', '@genkit-ai/core'],
+    transpilePackages: ['@genkit-ai/ai', '@genkit-ai/core', '@genkit-ai/googleai', '@genkit-ai/next'],
   },
 };
 
