@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useTransition } from 'react';
@@ -73,7 +72,16 @@ export function LoginForm({searchParams}: {searchParams?: {message?: string}}) {
 
   const handleGoogleSignIn = () => {
     startGoogleTransition(async () => {
-      await getGoogleOauthUrl();
+      const result = await getGoogleOauthUrl();
+      if (result.success && result.url) {
+        window.location.href = result.url;
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: result.error,
+        });
+      }
     });
   };
 

@@ -59,7 +59,7 @@ export async function signUp(formData: FormData) {
 export async function getGoogleOauthUrl() {
   const origin = headers().get('origin');
   const supabase = createClient();
-  const {data, error} = await supabase.auth.signInWithOAuth({
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: `${origin}/auth/callback`,
@@ -68,14 +68,14 @@ export async function getGoogleOauthUrl() {
 
   if (error) {
     console.error('Error getting Google OAuth URL:', error);
-    return { error: 'Could not get Google OAuth URL' };
-  }
-  
-  if (data.url) {
-    redirect(data.url);
+    return { success: false, error: 'Could not get Google OAuth URL' };
   }
 
-  return { error: 'Could not get Google OAuth URL' };
+  if (data.url) {
+    return { success: true, url: data.url };
+  }
+
+  return { success: false, error: 'Could not get Google OAuth URL' };
 }
 
 
