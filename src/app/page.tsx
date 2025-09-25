@@ -10,6 +10,7 @@ import {
   FileStack,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { createClient } from '@/lib/supabase/server';
 
 const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 const testimonialAvatar = placeholderImages.find(p => p.id === 'testimonial-avatar');
@@ -21,7 +22,12 @@ const testimonialAvatar = placeholderImages.find(p => p.id === 'testimonial-avat
  *
  * @returns {JSX.Element} The landing page component.
  */
-export default function LandingPage() {
+export default async function LandingPage() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
@@ -29,18 +35,29 @@ export default function LandingPage() {
           <Logo />
         </Link>
         <nav className="ml-auto flex gap-2">
-          <Link
-            href="/login"
-            className={cn(buttonVariants({ variant: 'ghost' }))}
-          >
-            Login
-          </Link>
-          <Link
-            href="/signup"
-            className={cn(buttonVariants({ variant: 'default' }))}
-          >
-            Sign Up
-          </Link>
+          {user ? (
+            <Link
+              href="/dashboard"
+              className={cn(buttonVariants({ variant: 'default' }))}
+            >
+              Go to Dashboard
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className={cn(buttonVariants({ variant: 'ghost' }))}
+              >
+                Login
+              </Link>
+              <Link
+                href="/signup"
+                className={cn(buttonVariants({ variant: 'default' }))}
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </nav>
       </header>
 

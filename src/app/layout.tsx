@@ -3,7 +3,6 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { GeistSans } from "geist/font/sans";
 import { cn } from "@/lib/utils";
-import { Sidebar } from "@/components/layout/sidebar";
 
 /**
  * Defines the metadata for the application, including the title and description.
@@ -36,12 +35,7 @@ export default function RootLayout({
           GeistSans.variable
         )}
       >
-        <div className="flex">
-          <Sidebar />
-          <main className="flex-1">
-            {children}
-          </main>
-        </div>
+        {children}
         <Toaster />
       </body>
     </html>
