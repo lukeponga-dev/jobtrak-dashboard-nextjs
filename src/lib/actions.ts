@@ -23,10 +23,10 @@ export async function signIn(formData: FormData) {
   });
 
   if (error) {
-    return { success: false, error: 'Could not authenticate user' };
+    return redirect('/login?message=Could not authenticate user');
   }
 
-  return { success: true };
+  return redirect('/dashboard');
 }
 
 export async function signUp(formData: FormData) {
@@ -70,7 +70,7 @@ export async function getGoogleOauthUrl() {
   }
   
   if (data.url) {
-    return { url: data.url };
+    redirect(data.url);
   }
 
   return { error: 'Could not get Google OAuth URL' };
