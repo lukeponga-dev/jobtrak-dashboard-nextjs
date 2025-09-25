@@ -53,9 +53,9 @@ export default async function DashboardLayout({
         </SidebarContent>
         <SidebarFooter>
             <form action="/auth/signout" method="post" className="p-2">
-              <Button type="submit" className="w-full justify-start gap-2">
-                <LogOut />
-                Logout
+              <Button type="submit" variant="ghost" className="w-full justify-start gap-2">
+                <LogOut className="h-4 w-4" />
+                <span>Logout</span>
               </Button>
             </form>
         </SidebarFooter>
@@ -91,8 +91,9 @@ export default async function DashboardLayout({
               <DropdownMenuSeparator />
                <DropdownMenuItem asChild>
                 <form action="/auth/signout" method="post" className="w-full">
-                  <button type="submit" className="w-full text-left">
-                    Logout
+                  <button type="submit" className="w-full text-left flex items-center gap-2">
+                     <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
                   </button>
                 </form>
               </DropdownMenuItem>

@@ -4,14 +4,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Logo } from "../logo";
-import { Home, Settings, LifeBuoy } from "lucide-react";
+import { Home, Settings } from "lucide-react";
 
-type SidebarNavProps = {
-  isMobile?: boolean;
-};
-
-export function SidebarNav({ isMobile = false }: SidebarNavProps) {
+export function SidebarNav() {
   const pathname = usePathname();
 
   const navItems = [
@@ -21,15 +16,6 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
 
   return (
     <nav className="grid items-start gap-2 px-2 text-sm font-medium lg:px-4">
-       {isMobile && (
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2 text-lg font-semibold mb-4"
-        >
-          <Logo />
-          <span className="sr-only">JobTrackr</span>
-        </Link>
-      )}
       {navItems.map((item) => (
         <Link
           key={item.label}
