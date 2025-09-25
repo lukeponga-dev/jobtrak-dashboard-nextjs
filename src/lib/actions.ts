@@ -3,10 +3,10 @@
 
 import { revalidatePath } from "next/cache";
 import { suggestApplicationStatus as suggestStatus } from "@/ai/flows/suggest-application-status";
-import { generateApplicationNotes as genNotes } from "@/ai/flows/generate-application-notes";
+import { generateApplicationNotes as genNotes } from "@/ai/flows/generate-application-notes.ts";
 
 import type { SuggestApplicationStatusInput } from "@/ai/flows/suggest-application-status";
-import type { GenerateApplicationNotesInput } from "@/ai/flows/generate-application-notes";
+import type { GenerateApplicationNotesInput } from "@/ai/flows/generate-application-notes.ts";
 
 import type { JobApplication, ApplicationStatus } from "./types";
 import { createClient } from "./supabase/server";
@@ -69,14 +69,14 @@ export async function getGoogleOauthUrl() {
 
   if (error) {
     console.error('Error getting Google OAuth URL:', error);
-    return { error: 'Could not get Google OAuth URL' };
+    return redirect('/login?message=Could not get Google OAuth URL');
   }
 
   if (data.url) {
     redirect(data.url);
   }
   
-  return { error: 'Could not get Google OAuth URL' };
+  return redirect('/login?message=Could not get Google OAuth URL');
 }
 
 
