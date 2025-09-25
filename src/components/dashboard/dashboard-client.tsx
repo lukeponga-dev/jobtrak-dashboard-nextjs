@@ -195,7 +195,7 @@ export function DashboardClient({
       </div>
 
        {isMobile && (
-         <div className="fixed bottom-4 right-4 space-y-2">
+         <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
             <Button size="icon" variant="outline" className="w-14 h-14 rounded-full shadow-lg" onClick={handleExport}>
               <Download className="h-6 w-6" />
               <span className="sr-only">Export</span>
