@@ -104,7 +104,7 @@ export async function generateApplicationNotes(
 }
 
 export async function addApplication(
-  application: Omit<JobApplication, 'id' | 'user_id'>
+  application: Omit<JobApplication, 'id'>
 ) {
   const supabase = createClient();
   const {
