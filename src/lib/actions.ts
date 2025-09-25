@@ -11,6 +11,7 @@ import type { GenerateApplicationNotesInput } from "@/ai/flows/generate-applicat
 import type { JobApplication, ApplicationStatus } from "./types";
 import { createClient } from "./supabase/server";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 
 export async function signIn(formData: FormData) {
@@ -24,10 +25,10 @@ export async function signIn(formData: FormData) {
   });
 
   if (error) {
-    return { success: false, error: "Could not authenticate user" };
+    return redirect("/login?message=Could not authenticate user");
   }
 
-  return { success: true };
+  return redirect("/dashboard");
 }
 
 export async function signUp(formData: FormData) {
@@ -49,10 +50,10 @@ export async function signUp(formData: FormData) {
   });
 
   if (error) {
-    return { error: "Could not authenticate user" };
+    return redirect("/login?message=Could not authenticate user");
   }
 
-  return { message: "Check email to continue sign up process" };
+  return redirect("/login?message=Check email to continue sign up process");
 }
 
 
@@ -71,7 +72,11 @@ export async function getGoogleOauthUrl() {
     return { error: 'Could not get Google OAuth URL' };
   }
 
-  return { url: data.url };
+  if (data.url) {
+    redirect(data.url);
+  }
+  
+  return { error: 'Could not get Google OAuth URL' };
 }
 
 

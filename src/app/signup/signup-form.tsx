@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useTransition } from "react";
+import { useFormStatus } from "react-dom";
 import Link from "next/link";
 import {
   Card,
@@ -15,8 +15,6 @@ import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/logo";
 import { Button } from "@/components/ui/button";
 import { signUp, getGoogleOauthUrl } from "@/lib/actions";
-import { useRouter } from "next/navigation";
-import { Separator } from "@/components/ui/separator";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -51,30 +49,7 @@ export function SignupForm({
 }: {
   searchParams: { message: string };
 }) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-
-  const handleSignUp = (formData: FormData) => {
-    startTransition(async () => {
-      const result = await signUp(formData);
-      if (result?.error) {
-        router.push(`/signup?message=${result.error}`);
-      } else if (result?.message) {
-        router.push(`/signup?message=${result.message}`);
-      }
-    });
-  };
-
-  const handleGoogleSignIn = () => {
-    startTransition(async () => {
-      const { url, error } = await getGoogleOauthUrl();
-      if (url) {
-        router.push(url);
-      } else if (error) {
-        router.push(`/login?message=${error}`);
-      }
-    });
-  };
+  const { pending } = useFormStatus();
 
   return (
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
@@ -89,7 +64,7 @@ export function SignupForm({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <form className="space-y-4" action={handleSignUp}>
+          <form className="space-y-4" action={signUp}>
             <div className="space-y-2">
               <Label htmlFor="full-name">Full name</Label>
               <Input
@@ -116,7 +91,7 @@ export function SignupForm({
             <Button
               type="submit"
               className="w-full"
-              loading={isPending}
+              loading={pending}
             >
               Create an account
             </Button>
@@ -133,10 +108,12 @@ export function SignupForm({
             </div>
           </div>
           
-          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isPending}>
-            <GoogleIcon className="mr-2" />
-            Sign up with Google
-          </Button>
+          <form action={getGoogleOauthUrl}>
+            <Button variant="outline" className="w-full" type="submit" disabled={pending}>
+              <GoogleIcon className="mr-2" />
+              Sign up with Google
+            </Button>
+          </form>
 
           {searchParams?.message && (
             <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center text-sm rounded-md">

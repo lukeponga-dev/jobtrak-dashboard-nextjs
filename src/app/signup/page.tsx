@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import { SignupForm } from "./signup-form";
 import { placeholderImages } from "@/lib/placeholder-images";

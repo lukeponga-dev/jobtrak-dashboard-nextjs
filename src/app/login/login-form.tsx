@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useTransition } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import React, { useTransition } from "react";
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -47,32 +48,7 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 
 export function LoginForm() {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
-
-  const handleSignIn = (formData: FormData) => {
-    startTransition(async () => {
-      const result = await signIn(formData);
-      if (result?.error) {
-        // You might want to show an error message to the user
-        console.error(result.error);
-        router.push(`/login?message=${result.error}`);
-      } else if (result?.success) {
-        router.push("/dashboard");
-      }
-    });
-  };
-
-  const handleGoogleSignIn = () => {
-    startTransition(async () => {
-      const { url, error } = await getGoogleOauthUrl();
-      if (url) {
-        router.push(url);
-      } else if (error) {
-        router.push(`/login?message=${error}`);
-      }
-    });
-  };
+  const { pending } = useFormStatus();
 
   return (
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
@@ -87,7 +63,7 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <form action={handleSignIn} className="space-y-4">
+          <form action={signIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -110,7 +86,7 @@ export function LoginForm() {
               </div>
               <Input id="password" name="password" type="password" required />
             </div>
-            <Button type="submit" className="w-full" loading={isPending}>
+            <Button type="submit" className="w-full" loading={pending}>
               Login
             </Button>
           </form>
@@ -126,10 +102,12 @@ export function LoginForm() {
             </div>
           </div>
           
-          <Button variant="outline" className="w-full" onClick={handleGoogleSignIn} disabled={isPending}>
-            <GoogleIcon className="mr-2" />
-            Sign in with Google
-          </Button>
+          <form action={getGoogleOauthUrl}>
+            <Button variant="outline" className="w-full" type="submit" disabled={pending}>
+              <GoogleIcon className="mr-2" />
+              Sign in with Google
+            </Button>
+          </form>
         </div>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}
