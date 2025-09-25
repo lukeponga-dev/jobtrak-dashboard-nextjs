@@ -72,6 +72,7 @@ export function SignupForm({
                 name="full-name"
                 placeholder="Max Robinson"
                 required
+                disabled={pending}
               />
             </div>
             <div className="space-y-2">
@@ -82,11 +83,12 @@ export function SignupForm({
                 type="email"
                 placeholder="m@example.com"
                 required
+                disabled={pending}
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
+              <Input id="password" name="password" type="password" required disabled={pending} />
             </div>
             <Button
               type="submit"
@@ -109,7 +111,7 @@ export function SignupForm({
           </div>
           
           <form action={getGoogleOauthUrl}>
-            <Button variant="outline" className="w-full" type="submit" disabled={pending}>
+            <Button variant="outline" className="w-full" type="submit" loading={pending}>
               <GoogleIcon className="mr-2" />
               Sign up with Google
             </Button>

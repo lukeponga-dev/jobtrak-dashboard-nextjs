@@ -69,6 +69,7 @@ export function LoginForm() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                disabled={pending}
               />
             </div>
             <div className="space-y-2">
@@ -81,7 +82,7 @@ export function LoginForm() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" name="password" type="password" required />
+              <Input id="password" name="password" type="password" required disabled={pending} />
             </div>
             <Button type="submit" className="w-full" loading={pending}>
               Login
