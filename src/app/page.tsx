@@ -10,7 +10,7 @@ const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
+      <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50 animate-fade-in">
         <Link href="#" className="flex items-center justify-center">
           <Logo />
         </Link>
@@ -37,12 +37,13 @@ export default function LandingPage() {
               alt={heroImage.description}
               data-ai-hint={heroImage.imageHint}
               fill
+              priority
               className="object-cover absolute inset-0 z-0"
               style={{ filter: 'brightness(0.3)' }}
             />
           )}
           <div className="relative container px-4 md:px-6 text-center text-primary-foreground z-10">
-            <div className="space-y-4 max-w-3xl mx-auto">
+            <div className="space-y-4 max-w-3xl mx-auto animate-fade-in-up">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                 Land Your Dream Job Faster
               </h1>
@@ -52,7 +53,7 @@ export default function LandingPage() {
               <div className="space-x-4 pt-4">
                 <Link
                   href="/signup"
-                  className={cn(buttonVariants({ size: 'lg' }))}
+                  className={cn(buttonVariants({ size: 'lg' }), "animate-pulse")}
                 >
                   Get Started for Free
                 </Link>
