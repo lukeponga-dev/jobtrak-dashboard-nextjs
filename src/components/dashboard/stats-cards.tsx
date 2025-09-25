@@ -25,7 +25,13 @@ export function StatsCards({
   const rejectedCount = applications.filter(
     (app) => app.status === "Rejected"
   ).length;
+<<<<<<< HEAD
+  const appliedCount = applications.filter(
+    (app) => app.status === "Applied"
+  ).length;
+=======
   const appliedCount = applications.filter((app) => app.status === "Applied").length;
+>>>>>>> main
 
 
   const stats: {
@@ -45,34 +51,50 @@ export function StatsCards({
      {
       title: "Applied",
       value: appliedCount,
+<<<<<<< HEAD
+      icon: ClipboardList,
+      color: "text-blue-500",
+=======
       icon: FileText,
       color: "text-blue-400",
+>>>>>>> main
       filter: "Applied",
     },
     {
       title: "Interviewing",
       value: interviewingCount,
       icon: ClipboardList,
-      color: "text-yellow-400",
+      color: "text-yellow-500",
       filter: "Interviewing",
     },
     {
       title: "Offers",
       value: offerCount,
       icon: Award,
-      color: "text-green-400",
+      color: "text-green-500",
       filter: "Offer",
     },
     {
       title: "Rejected",
       value: rejectedCount,
       icon: XCircle,
-      color: "text-red-400",
+      color: "text-red-500",
       filter: "Rejected",
     },
   ];
 
   return (
+<<<<<<< HEAD
+    <div className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 px-4 lg:px-6">
+      {stats.map((stat) => (
+        <Card
+          key={stat.title}
+          className={cn(
+            "cursor-pointer transition-all duration-300 ease-in-out hover:shadow-lg hover:-translate-y-1",
+            activeFilter === stat.filter
+              ? "ring-2 ring-primary bg-card"
+              : "ring-0"
+=======
     <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
       {stats.map((stat, index) => (
         <Card
@@ -83,8 +105,8 @@ export function StatsCards({
             activeFilter === stat.filter
               ? "ring-2 ring-primary bg-primary/10"
               : "ring-0 hover:bg-card/60"
+>>>>>>> main
           )}
-          style={{ animationDelay: `${index * 100}ms` }}
           onClick={() => onFilterChange(stat.filter)}
         >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

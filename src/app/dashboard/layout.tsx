@@ -29,6 +29,12 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
+<<<<<<< HEAD
+  const userFullName = user.user_metadata.full_name || user.email;
+  const userInitial = user.email?.charAt(0).toUpperCase() || '?';
+
+=======
+>>>>>>> main
   return (
     <SidebarProvider>
       <Sidebar>
@@ -48,6 +54,48 @@ export default async function DashboardLayout({
         </SidebarFooter>
       </Sidebar>
       <SidebarInset>
+<<<<<<< HEAD
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur sm:px-6">
+          <SidebarTrigger className="sm:hidden" />
+          <div className="flex-1" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="overflow-hidden rounded-full"
+              >
+                <Avatar>
+                  <AvatarImage
+                    src={user.user_metadata.avatar_url}
+                    alt={user.user_metadata.full_name}
+                  />
+                  <AvatarFallback>
+                    {userInitial}
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>{userFullName}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/settings">Settings</Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+               <DropdownMenuItem asChild>
+                <form action="/auth/signout" method="post" className="w-full">
+                  <button type="submit" className="w-full text-left flex items-center gap-2">
+                     <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
+                  </button>
+                </form>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </header>
+=======
+>>>>>>> main
         {children}
       </SidebarInset>
     </SidebarProvider>

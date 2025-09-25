@@ -29,8 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+<<<<<<< HEAD
+      <body className={cn(
+=======
       <body
         className={cn(
+>>>>>>> main
           "min-h-screen bg-background font-sans antialiased",
           GeistSans.variable
         )}

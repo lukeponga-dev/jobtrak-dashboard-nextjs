@@ -7,10 +7,15 @@ import { placeholderImages } from '@/lib/placeholder-images';
 import {
   LayoutDashboard,
   Sparkles,
+<<<<<<< HEAD
+  ClipboardCheck,
+} from 'lucide-react';
+=======
   FileStack,
 } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { createClient } from '@/lib/supabase/server';
+>>>>>>> main
 
 const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 const testimonialAvatar = placeholderImages.find(p => p.id === 'testimonial-avatar');
@@ -29,6 +34,26 @@ export default async function LandingPage() {
   } = await supabase.auth.getUser();
 
   return (
+<<<<<<< HEAD
+    <div className="flex flex-col min-h-dvh">
+      <header className="px-4 lg:px-6 h-16 flex items-center justify-between bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
+        <Logo />
+        <nav className="flex gap-2">
+          <Link
+            href="/login"
+            className={cn(buttonVariants({ variant: 'ghost' }))}
+            prefetch={false}
+          >
+            Login
+          </Link>
+          <Link
+            href="/signup"
+            className={cn(buttonVariants({ variant: 'default' }))}
+            prefetch={false}
+          >
+            Sign Up
+          </Link>
+=======
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
         <Link href="#" className="flex items-center justify-center">
@@ -58,12 +83,17 @@ export default async function LandingPage() {
               </Link>
             </>
           )}
+>>>>>>> main
         </nav>
       </header>
 
       <main className="flex-1">
+<<<<<<< HEAD
+        <section className="relative w-full h-dvh flex items-center justify-center">
+=======
         {/* Hero Section */}
         <section className="relative w-full h-[80vh] flex items-center justify-center">
+>>>>>>> main
           {heroImage && (
             <Image
               src={heroImage.imageUrl}
@@ -76,17 +106,31 @@ export default async function LandingPage() {
             />
           )}
           <div className="relative container px-4 md:px-6 text-center text-primary-foreground z-10">
+<<<<<<< HEAD
+            <div className="space-y-4 max-w-3xl mx-auto">
+              <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                Organize Your Job Search.
+              </h1>
+              <p className="text-lg text-primary-foreground/80 md:text-xl animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+                Manage every application in one place with JobTrackr. Stay organized, get AI-powered insights, and keep your focus where it matters—acing the interview.
+=======
             <div className="space-y-6 max-w-3xl mx-auto">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
                 Take Control of Your Job Search
               </h1>
               <p className="text-lg text-primary-foreground/80 md:text-xl">
                 JobTrackr is the smart, AI-powered dashboard that helps you manage applications, track progress, and land your dream job faster.
+>>>>>>> main
               </p>
-              <div className="space-x-4 pt-4">
+              <div className="space-x-4 pt-4 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
                 <Link
                   href="/signup"
+<<<<<<< HEAD
+                  className={cn(buttonVariants({ size: 'lg' }), "animate-pulse")}
+                  prefetch={false}
+=======
                   className={cn(buttonVariants({ size: 'lg' }))}
+>>>>>>> main
                 >
                   Get Started for Free
                 </Link>
@@ -100,6 +144,44 @@ export default async function LandingPage() {
             </div>
           </div>
         </section>
+<<<<<<< HEAD
+        <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
+          <div className="container px-4 md:px-6">
+            <div className="mx-auto grid max-w-5xl items-start gap-8 text-center">
+              <div className="space-y-4">
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">A Smarter Way to Job Hunt</h2>
+                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Our features are designed to save you time and provide the insights you need to succeed.
+                </p>
+              </div>
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="flex flex-col items-center space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                  <div className="bg-primary/10 p-3 rounded-full">
+                    <LayoutDashboard className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold">All-in-One Dashboard</h3>
+                  <p className="text-muted-foreground">
+                    Visualize your entire job search at a glance. See every application's status in one clean, organized view.
+                  </p>
+                </div>
+                <div className="flex flex-col items-center space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                  <div className="bg-primary/10 p-3 rounded-full">
+                    <Sparkles className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold">AI-Powered Insights</h3>
+                  <p className="text-muted-foreground">
+                    Leverage AI to suggest application statuses and generate starter notes, helping you prepare and stay ahead.
+                  </p>
+                </div>
+                <div className="flex flex-col items-center space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                  <div className="bg-primary/10 p-3 rounded-full">
+                    <ClipboardCheck className="h-8 w-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-bold">Centralized Tracking</h3>
+                  <p className="text-muted-foreground">
+                    Ditch the spreadsheets. Add, update, and manage every detail of your job applications in one place.
+                  </p>
+=======
         
         {/* Features Section */}
         <section id="features" className="w-full py-16 md:py-24 lg:py-32 bg-card">
@@ -164,11 +246,25 @@ export default async function LandingPage() {
                 <div>
                   <p className="font-semibold">Jane Doe</p>
                   <p className="text-sm text-muted-foreground">Software Engineer</p>
+>>>>>>> main
                 </div>
               </div>
             </div>
           </div>
         </section>
+<<<<<<< HEAD
+      </main>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center justify-center px-4 md:px-6 border-t">
+        <p className="text-xs text-muted-foreground">&copy; 2024 JobTrackr. All rights reserved.</p>
+        <nav className="flex gap-4 sm:gap-6">
+          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
+            Terms of Service
+          </Link>
+          <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
+            Privacy
+          </Link>
+        </nav>
+=======
 
         {/* CTA Section */}
         <section className="w-full py-16 md:py-24 lg:py-32 bg-card border-t">
@@ -197,6 +293,7 @@ export default async function LandingPage() {
       
       <footer className="flex items-center justify-center py-8 border-t bg-background">
         <p className="text-sm text-muted-foreground">&copy; 2024 JobTrackr. All rights reserved.</p>
+>>>>>>> main
       </footer>
     </div>
   );

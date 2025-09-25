@@ -1,3 +1,19 @@
+<<<<<<< HEAD
+/**
+ * @fileoverview This is the main server component for the dashboard page.
+ * It is responsible for fetching the initial set of job applications for the
+ * logged-in user from the Supabase database.
+ *
+ * - It first authenticates the user using `supabase.auth.getUser()`. If the user
+ *   is not logged in, they are redirected to the `/login` page.
+ * - It then fetches the user's job applications and passes them as a prop
+ *   to the `<DashboardClient />` component.
+ * - The actual rendering and all user interactions are handled by the client component,
+ *   keeping this page as a lean, data-fetching server component.
+ */
+
+=======
+>>>>>>> main
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { DashboardClient } from "@/components/dashboard/dashboard-client";
@@ -46,13 +62,25 @@ export default async function DashboardPage() {
   } catch (error) {
     // Log the error for debugging purposes.
     console.error("Database error:", error);
+<<<<<<< HEAD
+    // Fail gracefully on the server, the client will show an empty state.
+=======
     // Fail gracefully by providing an empty array if the database call fails.
+>>>>>>> main
     applications = [];
   }
 
   // Render the client-side component with the initial data.
   // This separates server-side data fetching from client-side interactivity.
   return (
+<<<<<<< HEAD
+    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex items-center">
+        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
+      </div>
+      <DashboardClient
+        initialApplications={applications}
+=======
     <main className="flex flex-1 flex-col p-4 md:p-6 gap-4 md:gap-8">
        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <div>
@@ -62,6 +90,7 @@ export default async function DashboardPage() {
       </div>
       <DashboardClient
       initialApplications={applications}
+>>>>>>> main
       />
     </main>
   );

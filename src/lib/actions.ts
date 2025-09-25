@@ -1,10 +1,18 @@
 /**
+<<<<<<< HEAD
+ * @fileoverview This file contains all the server-side actions for the JobTrackr application.
+ * It handles user authentication (sign-in, sign-up, Google OAuth), database operations
+ * (CRUD for job applications), and interactions with the Genkit AI for intelligent features
+ * like status suggestions and note generation. All functions in this file are designed to be
+ * securely called from client-side components.
+=======
  * @file This file contains all the server-side actions for the application.
  * Server Actions are asynchronous functions that run on the server and can be called
  * directly from client components, making it easy to handle form submissions and data mutations.
  * They are a key feature of the Next.js App Router.
  *
  * @see https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations
+>>>>>>> main
  */
 'use server';
 
@@ -32,12 +40,21 @@ export async function signIn(formData: FormData) {
   const password = formData.get('password') as string;
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const {error} = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
+<<<<<<< HEAD
+    return {success: false, error: 'Could not authenticate user.'};
+  }
+
+  revalidatePath('/dashboard', 'layout');
+  return {success: true};
+}
+
+=======
     return { error: 'Could not authenticate user.' };
   }
 
@@ -50,6 +67,7 @@ export async function signIn(formData: FormData) {
  * @param formData - The form data containing the user's full name, email, and password.
  * @returns A redirect to the login page with a confirmation message or to the signup page with an error.
  */
+>>>>>>> main
 export async function signUp(formData: FormData) {
   const origin = headers().get('origin');
   const email = formData.get('email') as string;
@@ -91,6 +109,20 @@ export async function getGoogleOauthUrl() {
 
   if (error) {
     console.error('Error getting Google OAuth URL:', error);
+<<<<<<< HEAD
+    // Fallback to a safe redirect or error page.
+    return redirect('/login?message=Could not sign in with Google');
+  }
+
+  if (data.url) {
+    redirect(data.url);
+  } else {
+    // Handle the case where URL is not returned
+    return redirect('/login?message=Could not get Google sign-in URL');
+  }
+}
+
+=======
     return { success: false, error: 'Could not get Google OAuth URL' };
   }
 
@@ -106,6 +138,7 @@ export async function getGoogleOauthUrl() {
  * @param input - The input data for the AI flow, including job role and application date.
  * @returns The suggested status from the AI or an error.
  */
+>>>>>>> main
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
 ) {
@@ -190,6 +223,9 @@ export async function addApplication(
   }
 }
 
+<<<<<<< HEAD
+export async function updateApplication(application: JobApplication) {
+=======
 /**
  * Updates an existing job application in the database.
  * @param application - The job application data to update.
@@ -198,6 +234,7 @@ export async function addApplication(
 export async function updateApplication(
   application: Omit<JobApplication, 'user_id'>
 ) {
+>>>>>>> main
   const supabase = createClient();
   try {
     const {data, error} = await supabase
@@ -263,7 +300,7 @@ export async function deleteApplication(id: number) {
 
     revalidatePath('/dashboard');
     return {success: true};
-  } catch (error) {
+  } catch (error)
     console.error('Error deleting application:', error);
     return {success: false, error: 'Failed to delete application.'};
   }
