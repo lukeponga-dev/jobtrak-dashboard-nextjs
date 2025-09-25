@@ -7,6 +7,7 @@ import type { NextConfig } from 'next';
  */
 const nextConfig: NextConfig = {
   /* General config options can be placed here */
+  output: 'standalone', // Enables standalone output for better deployment
   
   /**
    * TypeScript-specific configurations.
@@ -58,16 +59,20 @@ const nextConfig: NextConfig = {
   },
 
   /**
+   * Configuration for Server Actions.
+   */
+  serverActions: {
+    /**
+     * Sets the maximum size for the request body of Server Actions.
+     * This helps prevent denial-of-service attacks that use large payloads.
+     */
+    bodySizeLimit: '2mb',
+  },
+  
+  /**
    * Experimental features that may change or be removed in future versions of Next.js.
    */
   experimental: {
-    serverActions: {
-      /**
-       * Sets the maximum size for the request body of Server Actions.
-       * This helps prevent denial-of-service attacks that use large payloads.
-       */
-      bodySizeLimit: '2mb',
-    },
     transpilePackages: ['@genkit-ai/ai', '@genkit-ai/core', '@genkit-ai/googleai', '@genkit-ai/next'],
   },
 };
