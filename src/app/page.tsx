@@ -45,17 +45,17 @@ export default function LandingPage() {
           <div className="relative container px-4 md:px-6 text-center text-primary-foreground z-10">
             <div className="space-y-4 max-w-3xl mx-auto animate-fade-in-up">
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-                Land Your Dream Job Faster
+                Streamline Your Job Search
               </h1>
               <p className="text-lg text-primary-foreground/80 md:text-xl">
-                JobTrackr is the ultimate tool to organize, track, and accelerate your job search. Say goodbye to messy spreadsheets and hello to streamlined success.
+                Track applications, manage interviews, and land your next role with ease. JobTrackr brings clarity and control to your career journey.
               </p>
               <div className="space-x-4 pt-4">
                 <Link
                   href="/signup"
-                  className={cn(buttonVariants({ size: 'lg' }), "animate-pulse")}
+                  className={cn(buttonVariants({ size: 'lg' }))}
                 >
-                  Get Started for Free
+                  Sign Up Now
                 </Link>
               </div>
             </div>
