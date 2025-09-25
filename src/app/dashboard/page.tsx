@@ -1,3 +1,15 @@
+/**
+ * @fileoverview This is the main server component for the dashboard page.
+ * It is responsible for fetching the initial set of job applications for the
+ * logged-in user from the Supabase database.
+ *
+ * - It first authenticates the user using `supabase.auth.getUser()`. If the user
+ *   is not logged in, they are redirected to the `/login` page.
+ * - It then fetches the user's job applications and passes them as a prop
+ *   to the `<DashboardClient />` component.
+ * - The actual rendering and all user interactions are handled by the client component,
+ *   keeping this page as a lean, data-fetching server component.
+ */
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";

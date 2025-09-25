@@ -1,3 +1,13 @@
+/**
+ * @fileoverview This is the primary client component for the dashboard. It manages all
+ * interactive state and logic for the job application tracker, including adding, editing,
+ * updating, and deleting applications.
+ *
+ * - It receives the initial list of applications from a server component.
+ * - It manages the local state for applications, allowing for optimistic UI updates.
+ * - It handles user interactions like opening dialogs, filtering, and exporting data.
+ * - All server communications are delegated to the server actions defined in `@/lib/actions`.
+ */
 
 "use client";
 

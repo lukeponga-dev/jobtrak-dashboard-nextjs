@@ -1,3 +1,10 @@
+/**
+ * @fileoverview This file contains all the server-side actions for the JobTrackr application.
+ * It handles user authentication (sign-in, sign-up, Google OAuth), database operations
+ * (CRUD for job applications), and interactions with the Genkit AI for intelligent features
+ * like status suggestions and note generation. All functions in this file are designed to be
+ * securely called from client-side components.
+ */
 'use server';
 
 import {revalidatePath} from 'next/cache';
