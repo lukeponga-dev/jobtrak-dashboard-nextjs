@@ -11,8 +11,6 @@ import type { GenerateApplicationNotesInput } from "@/ai/flows/generate-applicat
 import type { JobApplication, ApplicationStatus } from "./types";
 import { createClient } from "./supabase/server";
 import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 
 export async function signIn(formData: FormData) {
