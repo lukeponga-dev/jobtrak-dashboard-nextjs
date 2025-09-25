@@ -23,6 +23,9 @@ import {
 } from "@/lib/actions";
 import { ApplicationsTable } from "./applications-table";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { ApplicationsCards } from "./applications-cards";
+import { ViewToggle, type View } from "./view-toggle";
+
 
 type DashboardClientProps = {
   initialApplications: JobApplication[];
@@ -38,6 +41,7 @@ export function DashboardClient({
   // State for filtering applications by status.
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
   const isMobile = useIsMobile();
+  const [view, setView] = useState<View>(isMobile ? 'card' : 'list');
 
   // State for tracking which application is currently being edited.
   const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
@@ -176,6 +180,8 @@ export function DashboardClient({
     document.body.removeChild(link);
   };
 
+  const currentView = isMobile ? 'card' : view;
+
   return (
     <div className="flex flex-col gap-8">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4">
@@ -188,6 +194,21 @@ export function DashboardClient({
                 <Button size="sm" variant="outline" onClick={handleExport}>
                     <Download className="h-4 w-4 mr-2" />
                     Export
+
+    <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+        <h1 className="font-semibold text-lg md:text-2xl">Dashboard</h1>
+         <div className="hidden sm:flex items-center gap-2 ml-auto">
+            {!isMobile && <ViewToggle view={view} setView={setView} />}
+            <Button size="sm" variant="outline" onClick={handleExport}>
+                <Download className="h-4 w-4 mr-2" />
+                Export
+            </Button>
+            <AddApplicationDialog onApplicationAdd={handleAddApplication}>
+                <Button size="sm">
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add New
+
                 </Button>
                 <AddApplicationDialog onApplicationAdd={handleAddApplication}>
                     <Button size="sm">
@@ -198,12 +219,21 @@ export function DashboardClient({
             </div>
         </div>
       
-      <ApplicationsTable
+      {currentView === 'list' ? (
+        <ApplicationsTable
+          applications={filteredApplications}
+          onDeleteApplication={handleDeleteApplication}
+          onEditApplication={setEditingApplication}
+        />
+      ) : (
+        <ApplicationsCards
           applications={filteredApplications}
           onUpdateStatus={handleUpdateStatus}
           onDeleteApplication={handleDeleteApplication}
           onEditApplication={setEditingApplication}
-      />
+        />
+      )}
+
 
        {isMobile && (
          <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">

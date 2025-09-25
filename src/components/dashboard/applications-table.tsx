@@ -20,20 +20,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
 import { Card, CardContent } from "../ui/card";
 import { format } from "date-fns";
 import { StatusBadge } from "./status-badge";
 
 type ApplicationsTableProps = {
   applications: JobApplication[];
-  onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
   onEditApplication: (application: JobApplication) => void;
 };
@@ -43,7 +35,6 @@ type SortDirection = "asc" | "desc";
 
 export function ApplicationsTable({
   applications,
-  onUpdateStatus,
   onDeleteApplication,
   onEditApplication,
 }: ApplicationsTableProps) {
@@ -109,39 +100,7 @@ export function ApplicationsTable({
 
   return (
     <Card>
-      <div className="relative w-full overflow-auto">
-        {/* Mobile View: Cards */}
-        <div className="grid gap-4 sm:hidden p-4">
-          {sortedApplications.map((app) => (
-            <div key={app.id} className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 space-y-3">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="font-semibold">{app.role}</p>
-                  <p className="text-sm text-muted-foreground">{app.company}</p>
-                </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="-mt-2 -mr-2">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => onEditApplication(app)}>Edit</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">Delete</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-              <div className="flex items-center justify-between text-sm text-muted-foreground">
-                 <span>{format(new Date(app.date), "MMM d, yyyy")}</span>
-                <StatusBadge status={app.status} />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Desktop View: Table */}
-        <Table className="hidden sm:table">
+        <Table>
           <TableHeader>
             <TableRow>
               <SortableHeader sortKey="company">Company</SortableHeader>
@@ -179,7 +138,6 @@ export function ApplicationsTable({
             ))}
           </TableBody>
         </Table>
-      </div>
     </Card>
   );
 }
