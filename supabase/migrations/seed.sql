@@ -27,7 +27,7 @@ on "public"."job_applications"
 as permissive
 for select
 to public
-using (true);
+using (true);   
 
 -- This policy allows users to insert their own applications.
 create policy "Enable insert for all users"
