@@ -17,7 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { findJobs as findJobsAction } from "@/lib/actions";
 import { useToast } from "@/hooks/use-toast";
-import type { FindJobsOutput } from "@/ai/flows/find-jobs-flow";
+import type { FindJobsOutput } from "@/ai/flows/find-jobs-flow.d";
 import { JobCard } from "./job-card";
 import { Skeleton } from "../ui/skeleton";
 

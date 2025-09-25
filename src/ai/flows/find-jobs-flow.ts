@@ -6,7 +6,7 @@
  *
  * This flow:
  * 1. Defines a `findJobsTool` that simulates searching a job board.
- * 2. Defines the input (`FindJobsInput`) and output (`FindJobsOutput`) schemas.
+ * 2. Imports the input (`FindJobsInput`) and output (`FindJobsOutput`) schemas.
  * 3. Creates a prompt that instructs the AI to use the tool to answer the user's request.
  * 4. Defines the main flow (`findJobsFlow`) that orchestrates the AI call.
  * 5. Exports a wrapper function (`findJobs`) to be used as a Server Action.
@@ -14,6 +14,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { FindJobsInputSchema, FindJobsOutputSchema, type FindJobsInput, type FindJobsOutput } from './find-jobs-flow.d';
 
 // Mock job data to simulate API results
 const MOCK_JOBS = [
@@ -61,7 +62,7 @@ const MOCK_JOBS = [
 // 1. Define the tool the AI can use to find jobs.
 const findJobsTool = ai.defineTool(
   {
-    name: 'findJobs',
+    name: 'findJobsTool',
     description: 'Search for job openings based on a query and optional location.',
     inputSchema: z.object({
       query: z.string().describe('The job title, keywords, or skills to search for.'),
@@ -78,7 +79,7 @@ const findJobsTool = ai.defineTool(
     ),
   },
   async (input) => {
-    console.log(`Tool 'findJobs' called with query: "${input.query}"`);
+    console.log(`Tool 'findJobsTool' called with query: "${input.query}"`);
     // In a real application, this would call a job board API.
     // For now, we'll return a filtered list from our mock data.
     const filteredJobs = MOCK_JOBS.filter(job => 
@@ -88,27 +89,6 @@ const findJobsTool = ai.defineTool(
     return filteredJobs;
   }
 );
-
-
-// 2. Define the input and output schemas for the main flow.
-export const FindJobsInputSchema = z.object({
-  query: z.string(),
-});
-export type FindJobsInput = z.infer<typeof FindJobsInputSchema>;
-
-export const FindJobsOutputSchema = z.object({
-  jobs: z.array(
-    z.object({
-      title: z.string(),
-      company: z.string(),
-      location: z.string(),
-      description: z.string(),
-      url: z.string(),
-    })
-  ).describe('A list of job openings that match the user query.'),
-});
-export type FindJobsOutput = z.infer<typeof FindJobsOutputSchema>;
-
 
 /**
  * Public-facing function that can be called from Server Actions.
@@ -130,7 +110,7 @@ const prompt = ai.definePrompt({
   tools: [findJobsTool],
   prompt: `You are an AI assistant that helps users find job openings.
   
-  Use the 'findJobs' tool to search for jobs based on the user's query: {{{query}}}
+  Use the 'findJobsTool' tool to search for jobs based on the user's query: {{{query}}}
 
   Return the list of jobs found by the tool. If no jobs are found, return an empty list.
   Do not invent jobs. Only return jobs provided by the tool.`,
