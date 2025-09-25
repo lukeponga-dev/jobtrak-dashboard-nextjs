@@ -1,3 +1,4 @@
+
 'use server';
 
 import {revalidatePath} from 'next/cache';
@@ -252,4 +253,23 @@ export async function changePassword(formData: FormData) {
     success: true,
     message: 'Your password has been changed successfully.',
   };
+}
+
+
+export async function sendSupportEmail(formData: FormData) {
+  const subject = formData.get('subject') as string;
+  const message = formData.get('message') as string;
+  const email = 'developmentdesignsltd@gmail.com';
+
+  if (!subject || !message) {
+    return { success: false, error: 'Subject and message are required.' };
+  }
+
+  try {
+    const mailto = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+    return { success: true, mailto };
+  } catch (error) {
+    console.error('Error creating mailto link:', error);
+    return { success: false, error: 'Could not create email link.' };
+  }
 }

@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { sendSupportEmail } from '@/lib/actions';
 
 export default function SupportPage() {
   const [isPending, startTransition] = useTransition();
@@ -22,7 +23,7 @@ export default function SupportPage() {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!subject || !message) {
       toast({
@@ -32,17 +33,29 @@ export default function SupportPage() {
       });
       return;
     }
-    
-    startTransition(() => {
-      // Simulate an API call
-      setTimeout(() => {
+
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.append('subject', subject);
+      formData.append('message', message);
+      
+      const result = await sendSupportEmail(formData);
+
+      if (result.success && result.mailto) {
+        window.location.href = result.mailto;
         toast({
-          title: 'Message Sent!',
-          description: "We've received your message and will get back to you shortly.",
+          title: 'Ready to Send!',
+          description: "Your email client has been opened to send the message.",
         });
         setSubject('');
         setMessage('');
-      }, 1000);
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: result.error,
+        });
+      }
     });
   };
 
@@ -68,6 +81,7 @@ export default function SupportPage() {
               <Label htmlFor="subject">Subject</Label>
               <Input
                 id="subject"
+                name="subject"
                 placeholder="e.g., Issue with exporting data"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
@@ -78,6 +92,7 @@ export default function SupportPage() {
               <Label htmlFor="message">Message</Label>
               <Textarea
                 id="message"
+                name="message"
                 placeholder="Please describe the issue in detail..."
                 className="min-h-[150px]"
                 value={message}
