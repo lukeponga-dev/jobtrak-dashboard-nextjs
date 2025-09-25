@@ -282,7 +282,7 @@ export async function sendSupportEmail(formData: FormData) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: `JobTrackr Support <${fromEmail}>`,
+      from: fromEmail,
       to: [toEmail],
       subject: `Support Request: ${subject}`,
       html: `<p>New support request from: ${userEmail}</p><p><strong>Message:</strong></p><p>${message.replace(/\n/g, '<br>')}</p>`,
@@ -295,8 +295,9 @@ export async function sendSupportEmail(formData: FormData) {
     }
 
     return { success: true, message: 'Your support request has been sent successfully!' };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error sending support email:', error);
-    return { success: false, error: 'Could not send support email.' };
+    const errorMessage = error.message || 'An unknown error occurred.';
+    return { success: false, error: `Could not send support email. Server said: ${errorMessage}` };
   }
 }
