@@ -6,11 +6,13 @@ import { Download, PlusCircle } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { AddApplicationDialog } from "./add-application-dialog";
+import { EditApplicationDialog } from "./edit-application-dialog";
 import { StatsCards } from "./stats-cards";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
 import { useToast } from "@/hooks/use-toast";
 import {
   addApplication,
+  updateApplication,
   updateApplicationStatus,
   deleteApplication,
 } from "@/lib/actions";
@@ -31,15 +33,13 @@ export function DashboardClient({
   const [view, setView] = useState<"card" | "table">("table");
   const [activeFilter, setActiveFilter] = useState<ApplicationStatus | "All">("All");
 
+  const [editingApplication, setEditingApplication] = useState<JobApplication | null>(null);
+
   const { toast } = useToast();
 
   const filteredApplications = useMemo(() => {
     if (activeFilter === "All") {
       return applications;
-    }
-    if (activeFilter === 'Applied') {
-      const otherStatuses = ["Interviewing", "Offer", "Rejected"];
-      return applications.filter(app => !otherStatuses.includes(app.status));
     }
     return applications.filter((app) => app.status === activeFilter);
   }, [applications, activeFilter]);
@@ -68,8 +68,34 @@ export function DashboardClient({
     }
   };
 
+  const handleEditApplication = async (updatedApplication: JobApplication) => {
+    const originalApplications = applications;
+    setApplications((prev) =>
+      prev.map((app) => (app.id === updatedApplication.id ? updatedApplication : app))
+    );
+
+    const result = await updateApplication(updatedApplication);
+    if (result.success && result.data) {
+       setApplications((prev) =>
+        prev.map((app) => (app.id === result.data.id ? result.data : app))
+      );
+      toast({
+        title: "Application Updated",
+        description: "Your application details have been saved.",
+      });
+    } else {
+      setApplications(originalApplications);
+      toast({
+        title: "Error updating application",
+        description: result.error,
+        variant: "destructive",
+      });
+    }
+    setEditingApplication(null);
+  };
+
+
   const handleUpdateStatus = async (id: number, status: ApplicationStatus) => {
-    // Optimistic update
     const originalApplications = applications;
     setApplications((prev) =>
       prev.map((app) => (app.id === id ? { ...app, status } : app))
@@ -82,7 +108,6 @@ export function DashboardClient({
         description: `The status has been updated to "${status}".`,
       });
     } else {
-      // Revert on failure
       setApplications(originalApplications);
       toast({
         title: "Error updating status",
@@ -167,6 +192,7 @@ export function DashboardClient({
             applications={filteredApplications}
             onUpdateStatus={handleUpdateStatus}
             onDeleteApplication={handleDeleteApplication}
+            onEditApplication={setEditingApplication}
           />
       </div>
       <div className="hidden md:block">
@@ -175,12 +201,14 @@ export function DashboardClient({
             applications={filteredApplications}
             onUpdateStatus={handleUpdateStatus}
             onDeleteApplication={handleDeleteApplication}
+            onEditApplication={setEditingApplication}
           />
         ) : (
           <ApplicationsCards
             applications={filteredApplications}
             onUpdateStatus={handleUpdateStatus}
             onDeleteApplication={handleDeleteApplication}
+            onEditApplication={setEditingApplication}
           />
         )}
       </div>
@@ -191,6 +219,15 @@ export function DashboardClient({
           </Button>
         </AddApplicationDialog>
       </div>
+
+       {editingApplication && (
+        <EditApplicationDialog
+          application={editingApplication}
+          onApplicationUpdate={handleEditApplication}
+          isOpen={!!editingApplication}
+          onOpenChange={(open) => !open && setEditingApplication(null)}
+        />
+      )}
     </main>
   );
 }

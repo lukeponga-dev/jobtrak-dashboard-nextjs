@@ -68,7 +68,11 @@ export async function signInWithGoogle() {
     return redirect('/login?message=Could not authenticate with Google');
   }
 
-  return redirect(data.url);
+  if (data.url) {
+    return redirect(data.url);
+  }
+
+  return redirect('/login?message=Could not authenticate with Google');
 }
 
 
@@ -110,6 +114,32 @@ export async function addApplication(application: Omit<JobApplication, 'id' | 'u
   } catch (error) {
     console.error("Error adding application:", error);
     return { success: false, error: "Failed to add application." };
+  }
+}
+
+export async function updateApplication(application: Omit<JobApplication, 'user_id'>) {
+  const supabase = createClient();
+  try {
+    const { data, error } = await supabase
+      .from('job_applications')
+      .update({
+        company: application.company,
+        role: application.role,
+        date: application.date,
+        status: application.status,
+        notes: application.notes,
+       })
+      .eq('id', application.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    
+    revalidatePath("/dashboard");
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error updating application:", error);
+    return { success: false, error: "Failed to update application." };
   }
 }
 

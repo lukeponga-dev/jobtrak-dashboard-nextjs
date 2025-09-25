@@ -15,6 +15,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
@@ -33,6 +34,7 @@ type ApplicationsTableProps = {
   applications: JobApplication[];
   onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
+  onEditApplication: (application: JobApplication) => void;
 };
 
 type SortKey = keyof JobApplication | null;
@@ -42,6 +44,7 @@ export function ApplicationsTable({
   applications,
   onUpdateStatus,
   onDeleteApplication,
+  onEditApplication,
 }: ApplicationsTableProps) {
   const [sortKey, setSortKey] = useState<SortKey>("date");
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
@@ -131,6 +134,10 @@ export function ApplicationsTable({
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={() => onEditApplication(app)}>
+                      Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={() => onDeleteApplication(app.id)}
                     className="text-destructive"
@@ -219,6 +226,10 @@ export function ApplicationsTable({
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
+                         <DropdownMenuItem onClick={() => onEditApplication(app)}>
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => onDeleteApplication(app.id)}
                           className="text-destructive"

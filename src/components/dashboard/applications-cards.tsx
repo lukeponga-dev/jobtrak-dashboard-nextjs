@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
@@ -27,12 +28,14 @@ type ApplicationsCardsProps = {
   applications: JobApplication[];
   onUpdateStatus: (id: number, status: ApplicationStatus) => void;
   onDeleteApplication: (id: number) => void;
+  onEditApplication: (application: JobApplication) => void;
 };
 
 export function ApplicationsCards({
   applications,
   onUpdateStatus,
   onDeleteApplication,
+  onEditApplication,
 }: ApplicationsCardsProps) {
   if (applications.length === 0) {
     return (
@@ -70,6 +73,10 @@ export function ApplicationsCards({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                     <DropdownMenuItem onClick={() => onEditApplication(app)}>
+                        Edit
+                      </DropdownMenuItem>
+                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => onDeleteApplication(app.id)} className="text-destructive">
                       Delete
                     </DropdownMenuItem>
