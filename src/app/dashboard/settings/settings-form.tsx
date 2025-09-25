@@ -2,7 +2,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { useForm, useFormState } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -45,7 +45,8 @@ type SettingsFormProps = {
 };
 
 export function SettingsForm({ user }: SettingsFormProps) {
-  const [isPending, startTransition] = useTransition();
+  const [isPendingInfo, startUpdateUserTransition] = useTransition();
+  const [isPendingPassword, startChangePasswordTransition] = useTransition();
   const { toast } = useToast();
 
   const infoForm = useForm<z.infer<typeof updateInfoSchema>>({
@@ -65,7 +66,7 @@ export function SettingsForm({ user }: SettingsFormProps) {
   });
 
   const onInfoSubmit = (values: z.infer<typeof updateInfoSchema>) => {
-    startTransition(async () => {
+    startUpdateUserTransition(async () => {
       const formData = new FormData();
       formData.append("fullName", values.fullName);
       const result = await updateUser(formData);
@@ -86,7 +87,7 @@ export function SettingsForm({ user }: SettingsFormProps) {
   };
 
   const onPasswordSubmit = (values: z.infer<typeof changePasswordSchema>) => {
-    startTransition(async () => {
+    startChangePasswordTransition(async () => {
       const formData = new FormData();
       formData.append("newPassword", values.newPassword);
       const result = await changePassword(formData);
@@ -143,7 +144,7 @@ export function SettingsForm({ user }: SettingsFormProps) {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4">
-            <Button type="submit" loading={infoForm.formState.isSubmitting}>
+            <Button type="submit" loading={isPendingInfo}>
               Save
             </Button>
           </CardFooter>
@@ -183,7 +184,7 @@ export function SettingsForm({ user }: SettingsFormProps) {
             />
           </CardContent>
           <CardFooter className="border-t px-6 py-4">
-            <Button type="submit" loading={passwordForm.formState.isSubmitting}>
+            <Button type="submit" loading={isPendingPassword}>
               Change Password
             </Button>
           </CardFooter>

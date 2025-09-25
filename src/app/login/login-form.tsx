@@ -1,20 +1,20 @@
+'use client';
 
-"use client";
-
-import { useFormStatus } from "react-dom";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Logo } from "@/components/logo";
-import { signIn, getGoogleOauthUrl } from "@/lib/actions";
+import { useTransition } from 'react';
+import Link from 'next/link';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Logo } from '@/components/logo';
+import { signIn, getGoogleOauthUrl } from '@/lib/actions';
+import { useToast } from '@/hooks/use-toast';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -43,15 +43,50 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
+export function LoginForm({
+  searchParams,
+}: {
+  searchParams?: { message?: string };
+}) {
+  const [isPending, startTransition] = useTransition();
+  const [isGooglePending, startGoogleTransition] = useTransition();
+  const { toast } = useToast();
 
-export function LoginForm() {
-  const { pending } = useFormStatus();
+  const handleSignIn = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    startTransition(async () => {
+      const result = await signIn(formData);
+      if (result?.error) {
+        toast({
+          variant: 'destructive',
+          title: 'Login Failed',
+          description: result.error,
+        });
+      }
+    });
+  };
+
+  const handleGoogleSignIn = () => {
+    startGoogleTransition(async () => {
+      const result = await getGoogleOauthUrl();
+      if (result.success && result.url) {
+        window.location.href = result.url;
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Login Failed',
+          description: result.error,
+        });
+      }
+    });
+  };
 
   return (
     <Card className="mx-auto max-w-sm w-full bg-card/80 backdrop-blur-sm border-border/50">
       <CardHeader className="space-y-2 text-center">
-         <div className="flex justify-center">
-            <Logo />
+        <div className="flex justify-center">
+          <Logo />
         </div>
         <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
         <CardDescription>
@@ -60,7 +95,7 @@ export function LoginForm() {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <form action={signIn} className="space-y-4">
+          <form onSubmit={handleSignIn} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -69,21 +104,20 @@ export function LoginForm() {
                 type="email"
                 placeholder="m@example.com"
                 required
+                disabled={isPending || isGooglePending}
               />
             </div>
             <div className="space-y-2">
-              <div className="flex items-center">
-                <Label htmlFor="password">Password</Label>
-                <Link
-                  href="#"
-                  className="ml-auto inline-block text-sm text-primary/80 hover:text-primary underline"
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-              <Input id="password" name="password" type="password" required />
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                required
+                disabled={isPending || isGooglePending}
+              />
             </div>
-            <Button type="submit" className="w-full" loading={pending}>
+            <Button type="submit" className="w-full" loading={isPending}>
               Login
             </Button>
           </form>
@@ -98,17 +132,31 @@ export function LoginForm() {
               </span>
             </div>
           </div>
-          
-          <form action={getGoogleOauthUrl}>
-            <Button variant="outline" className="w-full" type="submit" loading={pending}>
-              <GoogleIcon className="mr-2" />
-              Sign in with Google
-            </Button>
-          </form>
+
+          <Button
+            variant="outline"
+            className="w-full"
+            type="button"
+            onClick={handleGoogleSignIn}
+            loading={isGooglePending}
+            disabled={isPending}
+          >
+            <GoogleIcon className="mr-2" />
+            Sign in with Google
+          </Button>
+
+          {searchParams?.message && (
+            <p className="mt-4 p-4 bg-foreground/10 text-destructive text-center text-sm rounded-md">
+              {searchParams.message}
+            </p>
+          )}
         </div>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-primary/80 hover:text-primary underline">
+          Don&apos;t have an account?{' '}
+          <Link
+            href="/signup"
+            className="text-primary/80 hover:text-primary underline"
+          >
             Sign up
           </Link>
         </div>

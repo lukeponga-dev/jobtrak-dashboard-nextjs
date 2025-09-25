@@ -1,25 +1,10 @@
-import Image from "next/image";
-import { LoginForm } from "./login-form";
-import { placeholderImages } from "@/lib/placeholder-images";
 
-const bgImage = placeholderImages.find(p => p.id === 'login-background-2');
+import { LoginClient } from "./login-client";
 
-export default function LoginPage() {
-  return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 relative">
-       {bgImage && (
-        <Image
-          src={bgImage.imageUrl}
-          alt={bgImage.description}
-          data-ai-hint={bgImage.imageHint}
-          fill
-          className="object-cover absolute inset-0 z-0"
-          style={{ filter: 'brightness(0.3)'}}
-        />
-      )}
-      <div className="relative z-10 w-full">
-         <LoginForm />
-      </div>
-    </div>
-  );
+export default function LoginPage({
+  searchParams,
+}: {
+  searchParams?: { message?: string };
+}) {
+  return <LoginClient searchParams={searchParams} />;
 }

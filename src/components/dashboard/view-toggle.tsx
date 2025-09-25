@@ -1,32 +1,43 @@
-"use client";
 
-import { List, Table } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+'use client';
+
+import { List, LayoutGrid } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+export type View = 'list' | 'card';
 
 type ViewToggleProps = {
-  view: "card" | "table";
-  setView: (view: "card" | "table") => void;
+  view: View;
+  setView: (view: View) => void;
 };
 
 export function ViewToggle({ view, setView }: ViewToggleProps) {
   return (
     <div className="flex items-center rounded-md bg-muted p-1">
       <Button
-        variant={view === "card" ? "secondary" : "ghost"}
+        variant="ghost"
         size="sm"
-        className="p-2 h-auto"
-        onClick={() => setView("card")}
+        className={cn(
+          'h-7 px-2',
+          view === 'card' && 'bg-background text-foreground shadow-sm'
+        )}
+        onClick={() => setView('card')}
       >
-        <List className="h-4 w-4" />
+        <LayoutGrid className="h-4 w-4" />
+        <span className="sr-only">Card View</span>
       </Button>
       <Button
-        variant={view === "table" ? "secondary" : "ghost"}
+        variant="ghost"
         size="sm"
-        className="p-2 h-auto"
-        onClick={() => setView("table")}
+        className={cn(
+          'h-7 px-2',
+          view === 'list' && 'bg-background text-foreground shadow-sm'
+        )}
+        onClick={() => setView('list')}
       >
-        <Table className="h-4 w-4" />
+        <List className="h-4 w-4" />
+        <span className="sr-only">List View</span>
       </Button>
     </div>
   );

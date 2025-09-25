@@ -68,24 +68,19 @@ export function EditApplicationDialog({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      company: application.company,
-      role: application.role,
-      date: new Date(application.date),
-      status: application.status,
-      notes: application.notes || "",
-    },
   });
 
   useEffect(() => {
-    form.reset({
-      company: application.company,
-      role: application.role,
-      date: new Date(application.date),
-      status: application.status,
-      notes: application.notes || "",
-    });
-  }, [application, form]);
+    if (isOpen) {
+      form.reset({
+        company: application.company,
+        role: application.role,
+        date: new Date(application.date),
+        status: application.status,
+        notes: application.notes || "",
+      });
+    }
+  }, [application, form, isOpen]);
 
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -109,7 +104,7 @@ export function EditApplicationDialog({
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
             <FormField
               control={form.control}
               name="company"
