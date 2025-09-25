@@ -1,44 +1,43 @@
 
-"use server";
+'use server';
 
-import { revalidatePath } from "next/cache";
-import { suggestApplicationStatus as suggestStatus } from "@/ai/flows/suggest-application-status";
-import { generateApplicationNotes as genNotes } from "@/ai/flows/generate-application-notes.ts";
+import {revalidatePath} from 'next/cache';
+import {suggestApplicationStatus as suggestStatus} from '@/ai/flows/suggest-application-status';
+import {generateApplicationNotes as genNotes} from '@/ai/flows/generate-application-notes.ts';
 
-import type { SuggestApplicationStatusInput } from "@/ai/flows/suggest-application-status";
-import type { GenerateApplicationNotesInput } from "@/ai/flows/generate-application-notes.ts";
+import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
+import type {GenerateApplicationNotesInput} from '@/ai/flows/generate-application-notes.ts';
 
-import type { JobApplication, ApplicationStatus } from "./types";
-import { createClient } from "./supabase/server";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-
+import type {JobApplication, ApplicationStatus} from './types';
+import {createClient} from './supabase/server';
+import {headers} from 'next/headers';
+import {redirect} from 'next/navigation';
 
 export async function signIn(formData: FormData) {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signInWithPassword({
+  const {error} = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
   if (error) {
-    return { success: false, error: "Could not authenticate user" };
+    return redirect('/login?message=Could not authenticate user');
   }
 
-  return { success: true };
+  return redirect('/dashboard');
 }
 
 export async function signUp(formData: FormData) {
-  const origin = headers().get("origin");
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
-  const fullName = formData.get("full-name") as string;
+  const origin = headers().get('origin');
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+  const fullName = formData.get('full-name') as string;
   const supabase = createClient();
 
-  const { error } = await supabase.auth.signUp({
+  const {error} = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -50,17 +49,16 @@ export async function signUp(formData: FormData) {
   });
 
   if (error) {
-    return redirect("/login?message=Could not authenticate user");
+    return redirect('/signup?message=Could not authenticate user');
   }
 
-  return redirect("/login?message=Check email to continue sign up process");
+  return redirect('/login?message=Check email to continue sign up process');
 }
 
-
-export async function getGoogleOauthUrl() {
+export async function getGoogleOauthUrl(formData: FormData) {
   const origin = headers().get('origin');
   const supabase = createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
+  const {data, error} = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: `${origin}/auth/callback`,
@@ -75,164 +73,182 @@ export async function getGoogleOauthUrl() {
   if (data.url) {
     redirect(data.url);
   }
-  
+
   return redirect('/login?message=Could not get Google OAuth URL');
 }
-
 
 export async function suggestApplicationStatus(
   input: SuggestApplicationStatusInput
 ) {
   try {
     const result = await suggestStatus(input);
-    return { success: true, data: result };
+    return {success: true, data: result};
   } catch (error) {
-    console.error("Error suggesting application status:", error);
-    return { success: false, error: "Failed to suggest status." };
+    console.error('Error suggesting application status:', error);
+    return {success: false, error: 'Failed to suggest status.'};
   }
 }
 
-export async function generateApplicationNotes(input: GenerateApplicationNotesInput) {
+export async function generateApplicationNotes(
+  input: GenerateApplicationNotesInput
+) {
   try {
     const result = await genNotes(input);
-    return { success: true, data: result };
+    return {success: true, data: result};
   } catch (error) {
-    console.error("Error generating application notes:", error);
-    return { success: false, error: "Failed to generate notes." };
+    console.error('Error generating application notes:', error);
+    return {success: false, error: 'Failed to generate notes.'};
   }
 }
 
-export async function addApplication(application: Omit<JobApplication, 'id' | 'user_id'>) {
+export async function addApplication(
+  application: Omit<JobApplication, 'id' | 'user_id'>
+) {
   const supabase = createClient();
-   const {
-    data: { user },
+  const {
+    data: {user},
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { success: false, error: "Authentication error." };
+    return {success: false, error: 'Authentication error.'};
   }
 
   try {
-    const { data, error } = await supabase
+    const {data, error} = await supabase
       .from('job_applications')
       .insert([
-        { ...application, user_id: user.id },
+        {
+          ...application,
+          user_id: user.id,
+          date: application.created_at,
+        },
       ])
       .select()
       .single();
 
     if (error) throw error;
-    
-    revalidatePath("/dashboard");
-    return { success: true, data };
+
+    revalidatePath('/dashboard');
+    return {success: true, data};
   } catch (error) {
-    console.error("Error adding application:", error);
-    return { success: false, error: "Failed to add application." };
+    console.error('Error adding application:', error);
+    return {success: false, error: 'Failed to add application.'};
   }
 }
 
-export async function updateApplication(application: Omit<JobApplication, 'user_id'>) {
+export async function updateApplication(
+  application: Omit<JobApplication, 'user_id'>
+) {
   const supabase = createClient();
   try {
-    const { data, error } = await supabase
+    const {data, error} = await supabase
       .from('job_applications')
       .update({
-        company: application.company,
-        role: application.role,
-        date: application.date,
         status: application.status,
         notes: application.notes,
-       })
+        date: application.created_at,
+      })
       .eq('id', application.id)
       .select()
       .single();
 
     if (error) throw error;
-    
-    revalidatePath("/dashboard");
-    return { success: true, data };
+
+    revalidatePath('/dashboard');
+    return {success: true, data};
   } catch (error) {
-    console.error("Error updating application:", error);
-    return { success: false, error: "Failed to update application." };
+    console.error('Error updating application:', error);
+    return {success: false, error: 'Failed to update application.'};
   }
 }
 
-export async function updateApplicationStatus(input: {id: number, status: ApplicationStatus}) {
+export async function updateApplicationStatus(input: {
+  id: number;
+  status: ApplicationStatus;
+}) {
   const supabase = createClient();
   try {
-     const { error } = await supabase
+    const {error} = await supabase
       .from('job_applications')
-      .update({ status: input.status })
-      .eq('id', input.id)
+      .update({status: input.status})
+      .eq('id', input.id);
 
     if (error) throw error;
-    
-    revalidatePath("/dashboard");
-    return { success: true };
+
+    revalidatePath('/dashboard');
+    return {success: true};
   } catch (error) {
-    console.error("Error updating status:", error);
-    return { success: false, error: "Failed to update status." };
+    console.error('Error updating status:', error);
+    return {success: false, error: 'Failed to update status.'};
   }
 }
 
 export async function deleteApplication(id: number) {
-   const supabase = createClient();
+  const supabase = createClient();
   try {
-    const { error } = await supabase
-      .from('job_applications')
-      .delete()
-      .eq('id', id);
+    const {error} = await supabase.from('job_applications').delete().eq('id', id);
 
     if (error) throw error;
 
-    revalidatePath("/dashboard");
-    return { success: true };
+    revalidatePath('/dashboard');
+    return {success: true};
   } catch (error) {
-    console.error("Error deleting application:", error);
-    return { success: false, error: "Failed to delete application." };
+    console.error('Error deleting application:', error);
+    return {success: false, error: 'Failed to delete application.'};
   }
 }
 
 export async function updateUser(formData: FormData) {
   const supabase = createClient();
-  const fullName = formData.get("fullName") as string;
+  const fullName = formData.get('fullName') as string;
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: {user},
+  } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Authentication error." };
+    return {success: false, error: 'Authentication error.'};
   }
 
-  const { error } = await supabase.auth.updateUser({
-    data: { full_name: fullName }
+  const {error} = await supabase.auth.updateUser({
+    data: {full_name: fullName},
   });
 
   if (error) {
-    console.error("Error updating user:", error);
-    return { success: false, error: "Failed to update user information." };
+    console.error('Error updating user:', error);
+    return {success: false, error: 'Failed to update user information.'};
   }
-  
-  revalidatePath("/dashboard/settings");
-  revalidatePath("/dashboard", "layout");
-  return { success: true, message: "Your name has been updated successfully." };
+
+  revalidatePath('/dashboard/settings');
+  revalidatePath('/dashboard', 'layout');
+  return {success: true, message: 'Your name has been updated successfully.'};
 }
 
 export async function changePassword(formData: FormData) {
   const supabase = createClient();
-  const newPassword = formData.get("newPassword") as string;
+  const newPassword = formData.get('newPassword') as string;
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: {user},
+  } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Authentication error." };
+    return {success: false, error: 'Authentication error.'};
   }
 
-  const { error } = await supabase.auth.updateUser({
-    password: newPassword
+  const {error} = await supabase.auth.updateUser({
+    password: newPassword,
   });
 
   if (error) {
-    console.error("Error changing password:", error);
-    return { success: false, error: "Failed to change password. Your new password must be at least 6 characters long." };
+    console.error('Error changing password:', error);
+    return {
+      success: false,
+      error:
+        'Failed to change password. Your new password must be at least 6 characters long.',
+    };
   }
 
-  return { success: true, message: "Your password has been changed successfully." };
+  return {
+    success: true,
+    message: 'Your password has been changed successfully.',
+  };
 }
