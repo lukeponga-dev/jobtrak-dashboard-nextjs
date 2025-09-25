@@ -15,11 +15,9 @@ const heroImage = placeholderImages.find(p => p.id === 'landing-hero-3');
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-dvh">
-      <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
-        <Link href="#" className="flex items-center justify-center" prefetch={false}>
-          <Logo />
-        </Link>
-        <nav className="ml-auto flex gap-2">
+      <header className="px-4 lg:px-6 h-16 flex items-center justify-between bg-background/80 backdrop-blur-sm fixed top-0 w-full z-50">
+        <Logo />
+        <nav className="flex gap-2">
           <Link
             href="/login"
             className={cn(buttonVariants({ variant: 'ghost' }))}
@@ -71,15 +69,15 @@ export default function LandingPage() {
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-background">
           <div className="container px-4 md:px-6">
-            <div className="mx-auto grid max-w-5xl items-start gap-8 lg:grid-cols-3 lg:gap-12">
-              <div className="flex flex-col justify-center space-y-4 text-center lg:text-left">
+            <div className="mx-auto grid max-w-5xl items-start gap-8 text-center">
+              <div className="space-y-4">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">A Smarter Way to Job Hunt</h2>
                 <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Our features are designed to save you time and provide the insights you need to succeed.
                 </p>
               </div>
-              <div className="grid gap-6 col-span-2 md:grid-cols-3">
-                <div className="flex flex-col items-start space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="flex flex-col items-center space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <LayoutDashboard className="h-8 w-8 text-primary" />
                   </div>
@@ -88,7 +86,7 @@ export default function LandingPage() {
                     Visualize your entire job search at a glance. See every application's status in one clean, organized view.
                   </p>
                 </div>
-                <div className="flex flex-col items-start space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                <div className="flex flex-col items-center space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <Sparkles className="h-8 w-8 text-primary" />
                   </div>
@@ -97,7 +95,7 @@ export default function LandingPage() {
                     Leverage AI to suggest application statuses and generate starter notes, helping you prepare and stay ahead.
                   </p>
                 </div>
-                <div className="flex flex-col items-start space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
+                <div className="flex flex-col items-center space-y-2 p-6 rounded-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
                   <div className="bg-primary/10 p-3 rounded-full">
                     <ClipboardCheck className="h-8 w-8 text-primary" />
                   </div>
@@ -111,9 +109,9 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center justify-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">&copy; 2024 JobTrackr. All rights reserved.</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+        <nav className="flex gap-4 sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
             Terms of Service
           </Link>
