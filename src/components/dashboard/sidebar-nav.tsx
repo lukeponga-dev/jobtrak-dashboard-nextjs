@@ -17,7 +17,6 @@ export function SidebarNav({ isMobile = false }: SidebarNavProps) {
   const navItems = [
     { href: "/dashboard", label: "Dashboard", icon: Home },
     { href: "/dashboard/settings", label: "Settings", icon: Settings },
-    { href: "/dashboard/support", label: "Support", icon: LifeBuoy },
   ];
 
   return (
