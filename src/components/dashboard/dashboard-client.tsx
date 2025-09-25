@@ -45,7 +45,7 @@ export function DashboardClient({
   }, [applications, activeFilter]);
 
   const handleAddApplication = async (
-    newApplication: Omit<JobApplication, "id" | "user_id">
+    newApplication: Omit<JobApplication, "id">
   ) => {
     const result = await addApplication(newApplication);
 

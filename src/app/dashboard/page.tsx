@@ -17,7 +17,7 @@ export default async function DashboardPage() {
   let applications: JobApplication[] = [];
   try {
     const { data, error } = await supabase
-      .from("job_applications")
+      .from("applications")
       .select("id, company, role, date, status, notes")
       .eq("user_id", authUser.id)
       .order("date", { ascending: false });

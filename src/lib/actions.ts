@@ -102,7 +102,7 @@ export async function generateApplicationNotes(input: GenerateApplicationNotesIn
   }
 }
 
-export async function addApplication(application: Omit<JobApplication, 'id' | 'user_id'>) {
+export async function addApplication(application: Omit<JobApplication, 'id'>) {
   const supabase = createClient();
    const {
     data: { user },
@@ -114,7 +114,7 @@ export async function addApplication(application: Omit<JobApplication, 'id' | 'u
 
   try {
     const { data, error } = await supabase
-      .from('job_applications')
+      .from('applications')
       .insert([
         { ...application, user_id: user.id },
       ])
@@ -131,11 +131,11 @@ export async function addApplication(application: Omit<JobApplication, 'id' | 'u
   }
 }
 
-export async function updateApplication(application: Omit<JobApplication, 'user_id'>) {
+export async function updateApplication(application: JobApplication) {
   const supabase = createClient();
   try {
     const { data, error } = await supabase
-      .from('job_applications')
+      .from('applications')
       .update({
         company: application.company,
         role: application.role,
@@ -161,7 +161,7 @@ export async function updateApplicationStatus(input: {id: number, status: Applic
   const supabase = createClient();
   try {
      const { error } = await supabase
-      .from('job_applications')
+      .from('applications')
       .update({ status: input.status })
       .eq('id', input.id)
 
@@ -179,7 +179,7 @@ export async function deleteApplication(id: number) {
    const supabase = createClient();
   try {
     const { error } = await supabase
-      .from('job_applications')
+      .from('applications')
       .delete()
       .eq('id', id);
 
