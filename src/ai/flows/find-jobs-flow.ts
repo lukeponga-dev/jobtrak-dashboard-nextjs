@@ -5,7 +5,7 @@
  * This file defines a Genkit "flow" that uses an AI tool to search for jobs.
  *
  * This flow:
- * 1. Defines a `findJobs` tool that simulates searching a job board.
+ * 1. Defines a `findJobsTool` that simulates searching a job board.
  * 2. Defines the input (`FindJobsInput`) and output (`FindJobsOutput`) schemas.
  * 3. Creates a prompt that instructs the AI to use the tool to answer the user's request.
  * 4. Defines the main flow (`findJobsFlow`) that orchestrates the AI call.
@@ -59,7 +59,7 @@ const MOCK_JOBS = [
 ];
 
 // 1. Define the tool the AI can use to find jobs.
-const findJobs = ai.defineTool(
+const findJobsTool = ai.defineTool(
   {
     name: 'findJobs',
     description: 'Search for job openings based on a query and optional location.',
@@ -127,7 +127,7 @@ const prompt = ai.definePrompt({
   name: 'findJobsPrompt',
   input: {schema: FindJobsInputSchema},
   output: {schema: FindJobsOutputSchema},
-  tools: [findJobs],
+  tools: [findJobsTool],
   prompt: `You are an AI assistant that helps users find job openings.
   
   Use the 'findJobs' tool to search for jobs based on the user's query: {{{query}}}
