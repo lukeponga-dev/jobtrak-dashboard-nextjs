@@ -42,7 +42,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import type { JobApplication, ApplicationStatus } from "@/lib/types";
-import { suggestApplicationStatus, generateApplicationNotes } from "@/lib/actions";
+import { suggestApplicationStatus } from "@/lib/actions";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -64,7 +64,6 @@ export function AddApplicationDialog({
 }: AddApplicationDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSuggesting, startSuggestionTransition] = useTransition();
-  const [isGeneratingNotes, startGeneratingNotesTransition] = useTransition();
   const [isSubmitting, startSubmittingTransition] = useTransition();
   const { toast } = useToast();
 
@@ -119,34 +118,6 @@ export function AddApplicationDialog({
         toast({
           variant: "destructive",
           title: "Suggestion Failed",
-          description: result.error,
-        });
-      }
-    });
-  };
-
-  const handleGenerateNotes = () => {
-    const { company, role } = form.getValues();
-    if (!company || !role) {
-      toast({
-        variant: "destructive",
-        title: "Generation Failed",
-        description: "Please fill in the Company and Job Role first.",
-      });
-      return;
-    }
-    startGeneratingNotesTransition(async () => {
-      const result = await generateApplicationNotes({ company, role });
-      if (result.success && result.data) {
-        form.setValue("notes", result.data.suggestedNotes);
-        toast({
-          title: "AI Notes Generated",
-          description: "We've generated some starter notes for you.",
-        });
-      } else {
-        toast({
-          variant: "destructive",
-          title: "Generation Failed",
           description: result.error,
         });
       }
@@ -276,18 +247,6 @@ export function AddApplicationDialog({
                 <FormItem>
                   <div className="flex items-center justify-between">
                     <FormLabel>Notes</FormLabel>
-                     <Button
-                        type="button"
-                        variant="link"
-                        size="sm"
-                        className="h-auto p-0 text-xs"
-                        onClick={handleGenerateNotes}
-                        loading={isGeneratingNotes}
-                        aria-label="Generate Notes with AI"
-                      >
-                        {!isGeneratingNotes && <Sparkles className="h-3 w-3 mr-1" />}
-                        Generate Notes
-                      </Button>
                   </div>
                   <FormControl>
                     <Textarea

@@ -12,7 +12,6 @@ import {revalidatePath} from 'next/cache';
 import {suggestApplicationStatus as suggestStatus} from '@/ai/flows/suggest-application-status';
 
 import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
-import type {GenerateApplicationNotesInput} from '@/ai/flows/generate-application-notes.ts';
 
 import type {JobApplication, ApplicationStatus} from './types';
 import {createClient} from './supabase/server';
@@ -140,7 +139,7 @@ export async function addApplication(application: Omit<JobApplication, 'id' | 'u
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true, data};\
+    return {success: true, data};
   } catch (error) {
     console.error('Error adding application:', error);
     return {success: false, error: 'Failed to add application.'};
@@ -166,7 +165,7 @@ export async function updateApplication(application: Omit<JobApplication, 'user_
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true, data};\
+    return {success: true, data};
   } catch (error) {
     console.error('Error updating application:', error);
     return {success: false, error: 'Failed to update application.'};
@@ -187,15 +186,15 @@ export async function updateApplicationStatus(input: {
      const { error } = await supabase
       .from('job_applications')
       .update({ status: input.status })
-      .eq('id', input.id)
+      .eq('id', input.id);
 
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true};\
+    return {success: true};
   } catch (error) {
     console.error('Error updating status:', error);
-    return {success: false, error: 'Failed to update status.'};\
+    return {success: false, error: 'Failed to update status.'};
   }
 }
 
@@ -207,10 +206,10 @@ export async function deleteApplication(id: number) {
     if (error) throw error;
 
     revalidatePath('/dashboard');
-    return {success: true};\
+    return {success: true};
   } catch (error) { // CORRECT SYNTAX
     console.error('Error deleting application:', error);
-    return {success: false, error: 'Failed to delete application.'};\
+    return {success: false, error: 'Failed to delete application.'};
   }
 }
 
@@ -257,7 +256,7 @@ export async function changePassword(formData: FormData) {
     data: {user},
   } = await supabase.auth.getUser();
   if (!user) {
-    return {success: false, error: 'Authentication error.'};\
+    return {success: false, error: 'Authentication error.'};
   }
 
   const {error} = await supabase.auth.updateUser({
@@ -270,11 +269,11 @@ export async function changePassword(formData: FormData) {
       success: false,
       error:
         'Failed to change password. Your new password must be at least 6 characters long.',
-    };\
+    };
   }
 
   return {
     success: true,
     message: 'Your password has been changed successfully.',
-  };\
+  };
 }
