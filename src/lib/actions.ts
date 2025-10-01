@@ -10,8 +10,12 @@
 
 import {revalidatePath} from 'next/cache';
 import {suggestApplicationStatus as suggestStatus} from '@/ai/flows/suggest-application-status';
+import { generateApplicationNotes as genNotes } from '@/ai/flows/generate-application-notes';
+import { findJobs as findJobsFlow } from '@/ai/flows/find-jobs-flow';
 
 import type {SuggestApplicationStatusInput} from '@/ai/flows/suggest-application-status';
+import type { GenerateApplicationNotesInput } from '@/ai/flows/generate-application-notes';
+import type { FindJobsInput } from '@/ai/flows/find-jobs-flow';
 
 import type {JobApplication, ApplicationStatus} from './types';
 import {createClient} from './supabase/server';
@@ -114,6 +118,37 @@ export async function suggestApplicationStatus(
   }
 }
 
+/**
+ * Calls the Genkit AI flow to generate notes for a job application.
+ * @param input - The input data for the AI flow.
+ * @returns The generated notes or an error.
+ */
+export async function generateApplicationNotes(input: GenerateApplicationNotesInput) {
+  try {
+    const result = await genNotes(input);
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error generating application notes:', error);
+    return { success: false, error: 'Failed to generate notes.' };
+  }
+}
+
+/**
+ * Calls the Genkit AI flow to find jobs based on provided criteria.
+ * @param input - The search criteria for finding jobs.
+ * @returns A list of jobs or an error.
+ */
+export async function findJobs(input: FindJobsInput) {
+  try {
+    const result = await findJobsFlow(input);
+    return { success: true, data: result };
+  } catch (error) {
+    console.error('Error finding jobs:', error);
+    return { success: false, error: 'Failed to find jobs.' };
+  }
+}
+
+
 export async function addApplication(application: Omit<JobApplication, 'id' | 'user_id'>) {
   const supabase = createClient();
   const {
@@ -207,7 +242,7 @@ export async function deleteApplication(id: number) {
 
     revalidatePath('/dashboard');
     return {success: true};
-  } catch (error) { // CORRECT SYNTAX
+  } catch (error) {
     console.error('Error deleting application:', error);
     return {success: false, error: 'Failed to delete application.'};
   }
